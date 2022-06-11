@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/btnTwoUploadTragus"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TragusActivity">
+
+    <TextView
+        android:id="@+id/tragusToWallTitle"
+        android:layout_width="292dp"
+        android:layout_height="22dp"
+        android:gravity="center"
+        android:text="@string/tragus_to_wall_measurement"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.06" />
+
+    <ImageView
+        android:id="@+id/TragusImage"
+        android:layout_width="340dp"
+        android:layout_height="274dp"
+        android:contentDescription="@string/tragus_image_example"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.179"
+        app:srcCompat="@drawable/tragustowall" />
+
+    <TextView
+        android:id="@+id/tragusDescription"
+        android:layout_width="352dp"
+        android:layout_height="136dp"
+        android:text="@string/standing_bare_feet_back_to_wall_knees_straight_scapulae_buttocks_heels_against_wall_shoulders_level_outer_edges_of_feet_30_cm_apart_feet_parallel_ensure_head_in_as_neutral_position_anatomical_alignment_as_possible_take_a_photo_from_of_each_side_of_the_patients_face_with_the_wall_clearly_visible_in_the_photo_upload_each_one_respectively_below"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.389"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.636" />
+
+    <Button
+        android:id="@+id/btnTwoUploadTragus"
+        android:layout_width="139dp"
+        android:layout_height="68dp"
+        android:onClick="onClickTragusImage"
+        android:text="Upload second image"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.867"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.793" />
+
+    <Button
+        android:id="@+id/btnOneUploadTragus"
+        android:layout_width="139dp"
+        android:layout_height="68dp"
+        android:onClick="onClickTragusImage"
+        android:text="Upload first image"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.058"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.794" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

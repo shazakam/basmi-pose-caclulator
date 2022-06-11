@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">basmi-pose-caclulator</string>
+    <string name="tragus_to_wall_measurement">Tragus To Wall Measurement</string>
+    <string name="todo">TODO</string>
+    <string name="standing_bare_feet_back_to_wall_knees_straight_scapulae_buttocks_heels_against_wall_shoulders_level_outer_edges_of_feet_30_cm_apart_feet_parallel_ensure_head_in_as_neutral_position_anatomical_alignment_as_possible_take_a_photo_from_of_each_side_of_the_patients_face_with_the_wall_clearly_visible_in_the_photo_upload_each_one_respectively_below"><![CDATA[Standing bare feet; back to wall; knees straight; scapulae, buttocks, heels against wall; shoulders level; outer edges of feet 30 cm apart & feet parallel. Ensure head in as neutral position (anatomical alignment) as possible. Take a photo from of each side of the patients face with the wall clearly visible in the photo. Upload each one respectively below.]]></string>
+    <string name="upload_image">Upload Image</string>
+    <string name="welcome_to_the_basmi_calculator">Welcome to the BASMI Calculator</string>
+    <string name="calculate_basmi">Calculate BASMI</string>
+    <string name="tragus_image_example">Tragus Image Example</string>
 </resources>

@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="onTitleClick"
-        android:text="Calculate BASMI"
+        android:text="@string/calculate_basmi"
         app:backgroundTint="#050505"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,7 +24,7 @@
         android:layout_height="45dp"
         android:layout_marginTop="148dp"
         android:gravity="center"
-        android:text="Welcome to the BASMI Calculator"
+        android:text="@string/welcome_to_the_basmi_calculator"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
