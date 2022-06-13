@@ -21,7 +21,7 @@
         app:layout_constraintVertical_bias="0.06" />
 
     <ImageView
-        android:id="@+id/TragusImage"
+        android:id="@+id/tragusImage"
         android:layout_width="340dp"
         android:layout_height="274dp"
         android:contentDescription="@string/tragus_image_example"
@@ -51,7 +51,7 @@
         android:id="@+id/btnTwoUploadTragus"
         android:layout_width="139dp"
         android:layout_height="68dp"
-        android:onClick="onClickTragusImage"
+        android:onClick="onClickTragusImageBtnOne"
         android:text="Upload second image"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -64,7 +64,7 @@
         android:id="@+id/btnOneUploadTragus"
         android:layout_width="139dp"
         android:layout_height="68dp"
-        android:onClick="onClickTragusImage"
+        android:onClick="onClickTragusImageBtnOne"
         android:text="Upload first image"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -75,8 +75,9 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="202dp"
+        android:layout_height="216dp"
+        android:onClick="btnPrint"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -84,5 +85,16 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.255"
         tools:srcCompat="@tools:sample/avatars" />
+
+    <Button
+        android:id="@+id/btnPrintPose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp"
+        android:onClick="btnPrintPose"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
