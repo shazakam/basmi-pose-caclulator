@@ -21,91 +21,65 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.06" />
 
-    <ImageView
-        android:id="@+id/tragusImage"
-        android:layout_width="218dp"
-        android:layout_height="171dp"
-        android:contentDescription="@string/tragus_image_example"
+    <Button
+        android:id="@+id/btnLeftUploadTragus"
+        android:layout_width="132dp"
+        android:layout_height="59dp"
+        android:onClick="onClickTragusImageBtnOne"
+        android:text="Upload Left Side"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintHorizontal_bias="0.058"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.179"
-        app:srcCompat="@drawable/tragustowall"
-        tools:srcCompat="@drawable/tragustowall"
-        tools:visibility="visible" />
-
-    <TextView
-        android:id="@+id/tragusDescription"
-        android:layout_width="352dp"
-        android:layout_height="136dp"
-        android:text="@string/standing_bare_feet_back_to_wall_knees_straight_scapulae_buttocks_heels_against_wall_shoulders_level_outer_edges_of_feet_30_cm_apart_feet_parallel_ensure_head_in_as_neutral_position_anatomical_alignment_as_possible_take_a_photo_from_of_each_side_of_the_patients_face_with_the_wall_clearly_visible_in_the_photo_upload_each_one_respectively_below"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.473" />
+        app:layout_constraintVertical_bias="0.84" />
 
     <Button
-        android:id="@+id/btnTwoUploadTragus"
+        android:id="@+id/btnRightUploadTragus"
         android:layout_width="139dp"
         android:layout_height="68dp"
         android:onClick="onClickTragusImageBtnOne"
-        android:text="Upload second image"
+        android:text="Upload Right Side"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.941"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.778" />
-
-    <Button
-        android:id="@+id/btnOneUploadTragus"
-        android:layout_width="139dp"
-        android:layout_height="68dp"
-        android:onClick="onClickTragusImageBtnOne"
-        android:text="Upload first image"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.106"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.763" />
+        app:layout_constraintVertical_bias="0.84" />
 
     <Button
         android:id="@+id/btnPrintPose"
         android:layout_width="100dp"
         android:layout_height="51dp"
-        android:layout_marginBottom="76dp"
+        android:layout_marginBottom="236dp"
         android:onClick="btnPrintPose"
         android:text="Print Markers"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.073"
+        app:layout_constraintHorizontal_bias="0.475"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btnRetake"
         android:layout_width="112dp"
         android:layout_height="60dp"
-        android:layout_marginEnd="148dp"
-        android:layout_marginBottom="64dp"
+        android:layout_marginEnd="280dp"
+        android:layout_marginBottom="32dp"
         android:onClick="onClickDeletePoses"
         android:text="Remove uploads"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <Button
-        android:id="@+id/calibrate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="36dp"
-        android:layout_marginBottom="244dp"
-        android:onClick="onCalibrate"
-        android:text="Calibrate"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="188dp"
+        android:layout_height="190dp"
+        android:layout_marginTop="152dp"
+        android:rotation="-180"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

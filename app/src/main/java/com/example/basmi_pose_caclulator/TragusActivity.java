@@ -8,11 +8,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.PointF;
+
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -25,6 +30,8 @@ import com.google.mlkit.vision.pose.PoseDetector;
 import com.google.mlkit.vision.pose.PoseLandmark;
 import com.google.mlkit.vision.pose.accurate.AccuratePoseDetectorOptions;
 
+import java.io.IOException;
+
 
 public class TragusActivity extends AppCompatActivity {
 
@@ -33,8 +40,12 @@ public class TragusActivity extends AppCompatActivity {
     //MVP = Minimun Viable Product
     Pose poseOne = null;
     Pose poseTwo = null;
+    Boolean leftButtonClicked = false;
+    Boolean rightButtonClicked = false;
+    Button leftButton;
+    Button rightButton;
 
-    double myLIndexLWrist = 25;
+    double myLIndexLWrist = 21;
 
     PoseDetector tragusPoseDetector;
 
@@ -47,9 +58,9 @@ public class TragusActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tragus);
+        leftButton = findViewById(R.id.btnLeftUploadTragus);
+        rightButton = findViewById(R.id.btnRightUploadTragus);
 
-        //Initialise pose detector with defined options above
-        //tragusPoseDetector = PoseDetection.getClient(options);
     }
 
     //This tells what getImage should do with the result from the intent
@@ -63,8 +74,11 @@ public class TragusActivity extends AppCompatActivity {
                         tragusPoseDetector = PoseDetection.getClient(options);
 
                         Bundle extras = result.getData().getExtras();
-                        Bitmap imageBitmap = (Bitmap) extras.get("data");
-                        InputImage inputImage = InputImage.fromBitmap(imageBitmap, 90);
+                        Bitmap selectedImageBitmap = (Bitmap) extras.get("data");
+                        InputImage inputImage = InputImage.fromBitmap(selectedImageBitmap,90);
+                        ImageView imageView = findViewById(R.id.imageView);
+                        imageView.setImageBitmap(selectedImageBitmap);
+
                         Task<Pose> poseResult =
                                 tragusPoseDetector.process(inputImage)
                                         .addOnSuccessListener(
@@ -72,26 +86,32 @@ public class TragusActivity extends AppCompatActivity {
                                                     @Override
                                                     public void onSuccess(Pose pose) {
 
-                                                        if(poseOne == null){
+                                                        if(leftButtonClicked){
+                                                            Log.d("TRUE","BUTTON LEFT CLICKED");
+                                                            leftButton.setBackgroundColor(Color.GREEN);
+                                                            leftButtonClicked = false;
                                                             poseOne = pose;
                                                         }
-                                                        else if(poseTwo == null) {
+
+                                                        else if(rightButtonClicked){
+                                                            rightButton.setBackgroundColor(Color.GREEN);
+                                                            rightButtonClicked = false;
                                                             poseTwo = pose;
                                                         }
 
-                                                        //Calculate distance between tragus and index (test is for between L.I to R.I)
-                                                        float leftItorightI = euclideanDistance(pose.getPoseLandmark(PoseLandmark.LEFT_EAR).getPosition3D(),
-                                                                pose.getPoseLandmark(PoseLandmark.LEFT_INDEX).getPosition3D());
+                                                        double ratio = myLIndexLWrist/euclideanDistance(pose.getPoseLandmark(PoseLandmark.LEFT_INDEX).getPosition(),
+                                                                pose.getPoseLandmark(PoseLandmark.LEFT_WRIST).getPosition(),1.0);
 
-                                                        double ratio = myLIndexLWrist/euclideanDistance(pose.getPoseLandmark(PoseLandmark.LEFT_INDEX).getPosition3D(),
-                                                                pose.getPoseLandmark(PoseLandmark.LEFT_WRIST).getPosition3D());
+                                                        //Calculate distance between tragus and index (test is for between L.I to R.I)
+                                                        float leftItorightI = euclideanDistance(pose.getPoseLandmark(PoseLandmark.LEFT_EAR).getPosition(),
+                                                                pose.getPoseLandmark(PoseLandmark.LEFT_INDEX).getPosition(),ratio);
 
                                                         double final_result = ratio*leftItorightI;
 
                                                         Log.d("FINAL BLOODY RESULT: ",String.valueOf(final_result));
                                                         Log.d("RATIO",String.valueOf(ratio));
-                                                        Log.d("Distance",String.valueOf(euclideanDistance(pose.getPoseLandmark(PoseLandmark.LEFT_INDEX).getPosition3D(),
-                                                                        pose.getPoseLandmark(PoseLandmark.LEFT_WRIST).getPosition3D())));
+                                                        Log.d("Distance",String.valueOf(euclideanDistance(pose.getPoseLandmark(PoseLandmark.LEFT_INDEX).getPosition(),
+                                                                        pose.getPoseLandmark(PoseLandmark.LEFT_WRIST).getPosition(),ratio)));
                                                         tragusPoseDetector.close();
                                                     }
                                                 })
@@ -118,15 +138,35 @@ public class TragusActivity extends AppCompatActivity {
             }
     );
 
+    public static float euclideanDistance(PointF firstPoint, PointF secondPoint, double ratio) {
 
-    public static float euclideanDistance(PointF3D firstPoint, PointF3D secondPoint) {
+        //Calculate the vector from firstPoint to secondPoint and return its length
+        float xCoord= (float) ratio*(firstPoint.x - secondPoint.x);
+        float yCoord = (float) ratio*(firstPoint.y - secondPoint.y);
 
-        return (float) Math.sqrt(//Math.pow((secondPoint.getX() - firstPoint.getX()),2)
-                //+Math.pow((secondPoint.getY() - firstPoint.getY()),2)
-                Math.pow((secondPoint.getZ() - firstPoint.getZ()),2));
+        Log.d("X Coordinate",String.valueOf(xCoord));
+        Log.d("Y Coordinate",String.valueOf(yCoord));
+
+        PointF finalVector = new PointF();
+        finalVector.set(xCoord,yCoord);
+
+        return (float) Math.sqrt(Math.pow(xCoord,2)+Math.pow(yCoord,2));
     }
 
+    /*BUTTONS*/
     public void onClickTragusImageBtnOne(View view) {
+
+        int buttonId = view.getId();
+        if(buttonId == R.id.btnRightUploadTragus){
+            Log.d("TRUEEEEE","BUTTON RIGHT CLICKED");
+            rightButtonClicked = true;
+        }
+
+        else if(buttonId == R.id.btnLeftUploadTragus){
+            Log.d("FALSE","BUTTON LEFT CLICKED");
+            leftButtonClicked = true;
+        }
+
         //Intent to take Photo
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         getImage.launch(intent);
