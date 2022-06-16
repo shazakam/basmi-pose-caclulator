@@ -44,6 +44,11 @@ public class TragusActivity extends AppCompatActivity{
     Boolean rightButtonClicked = false;
     Button leftButton;
     Button rightButton;
+    double leftTragular;
+    double rightTragular;
+    static double tragularSum;
+    static int tragularCount;
+    static double currentAverage;
 
     double myLIndexLWrist = 21;
 
@@ -60,7 +65,11 @@ public class TragusActivity extends AppCompatActivity{
         setContentView(R.layout.activity_tragus);
         leftButton = findViewById(R.id.btnLeftUploadTragus);
         rightButton = findViewById(R.id.btnRightUploadTragus);
-
+        leftTragular = 0;
+        rightTragular = 0;
+        tragularSum = 0;
+        tragularCount = 0;
+        currentAverage = 0;
     }
 
     //This tells what getImage should do with the result from the intent
@@ -92,34 +101,16 @@ public class TragusActivity extends AppCompatActivity{
                                                             Log.d("TRUE","BUTTON LEFT CLICKED");
                                                             leftButton.setBackgroundColor(Color.GREEN);
                                                             leftButtonClicked = false;
-                                                            //poseOne = pose;
-                                                            calculator.tragularResult(0,pose,myLIndexLWrist);
+                                                            leftTragular = calculator.tragularResult(0,pose,myLIndexLWrist);
+                                                            extremeCaseEliminator(leftTragular);
                                                         }
 
                                                         else{
                                                             rightButton.setBackgroundColor(Color.GREEN);
                                                             rightButtonClicked = false;
-                                                            //poseTwo = pose;
-                                                            calculator.tragularResult(1,pose,myLIndexLWrist);
+                                                            rightTragular = calculator.tragularResult(1,pose,myLIndexLWrist);
+                                                            extremeCaseEliminator(rightTragular);
                                                         }
-                                                        /*
-                                                        PointF leftIndexPosition =  pose.getPoseLandmark(PoseLandmark.LEFT_INDEX).getPosition();
-                                                        PointF leftWristPosition = pose.getPoseLandmark(PoseLandmark.LEFT_WRIST).getPosition();
-                                                        PointF leftEarPosition = pose.getPoseLandmark(PoseLandmark.LEFT_EAR).getPosition();
-
-                                                        //double ratio = myLIndexLWrist/euclideanDistance(leftIndexPosition, leftWristPosition,1.0);
-                                                        double ratio = myLIndexLWrist/calculator.getDistance(leftIndexPosition, leftWristPosition,1.0);
-
-                                                        //Calculate distance between tragus and index (test is for between L.I to R.I)
-                                                        float tragularPreDist = calculator.getDistance(leftEarPosition, leftIndexPosition,ratio);
-                                                        //euclideanDistance(leftEarPosition, leftIndexPosition,ratio);
-
-                                                        double finalTragularDist = ratio*tragularPreDist;
-
-                                                        Log.d("FINAL BLOODY RESULT: ",String.valueOf(finalTragularDist));
-                                                        Log.d("RATIO",String.valueOf(ratio));
-                                                        Log.d("Distance",String.valueOf(euclideanDistance(leftIndexPosition, leftWristPosition,1.0)));*/
-                                                        tragusPoseDetector.close();
                                                     }
                                                 })
                                         .addOnFailureListener(
@@ -145,20 +136,24 @@ public class TragusActivity extends AppCompatActivity{
             }
     );
 
-    public static float euclideanDistance(PointF firstPoint, PointF secondPoint, double ratio) {
+    public void extremeCaseEliminator(double tragular) {
 
-        //Calculate the vector from firstPoint to secondPoint and return its length
-        float xCoord= (float) ratio*(firstPoint.x - secondPoint.x);
-        float yCoord = (float) ratio*(firstPoint.y - secondPoint.y);
+        if (tragular >= 45) {
+            Context context = getApplicationContext();
+            CharSequence text = "Image result faulty, upload image again please";
+            int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        } else {
+            tragularSum += tragular;
+            tragularCount++;
+            currentAverage = tragularSum/tragularCount;
 
-        Log.d("X Coordinate",String.valueOf(xCoord));
-        Log.d("Y Coordinate",String.valueOf(yCoord));
-
-        PointF finalVector = new PointF();
-        finalVector.set(xCoord,yCoord);
-        Log.d("VECTOR LENGTH",String.valueOf(finalVector.length()));
-
-        return (float) ratio*finalVector.length();
+            Log.d("TRAGULAR SUM",String.valueOf(tragularSum));
+            Log.d("TRAGULAR COUNT",String.valueOf(tragularCount));
+            Log.d("CURRENT AVERAGE",String.valueOf(currentAverage));
+        }
+        tragusPoseDetector.close();
     }
 
     /*BUTTONS*/
@@ -178,39 +173,6 @@ public class TragusActivity extends AppCompatActivity{
         //Intent to take Photo
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         getImage.launch(intent);
-    }
-
-    public void onClickDeletePoses(View view){
-        poseOne = null;
-        poseTwo = null;
-
-        Context context = getApplicationContext();
-        CharSequence text = "Upload Images with Buttons again Please";
-        int duration = Toast.LENGTH_SHORT;
-        Toast toast = Toast.makeText(context, text, duration);
-        toast.show();
-    }
-
-    public void btnPrintPose(View view){
-
-        if(poseOne != null && poseTwo != null){
-            for(PoseLandmark p: poseOne.getAllPoseLandmarks()){
-                Log.d("Pose One LANDMARK TYPE " +  String.valueOf(p.getLandmarkType()), p.getPosition().toString());
-                Log.d("Pose One Probability: " +  String.valueOf(p.getLandmarkType()), String.valueOf(p.getInFrameLikelihood()));
-            }
-
-            for(PoseLandmark p: poseTwo.getAllPoseLandmarks()){
-                Log.d("Pose Two LANDMARK TYPE " +  String.valueOf(p.getLandmarkType()), p.getPosition().toString());
-                Log.d("Pose Two Probability: " +  String.valueOf(p.getLandmarkType()), String.valueOf(p.getInFrameLikelihood()));
-            }
-        }
-        else{
-            Context context = getApplicationContext();
-            CharSequence text = "Upload all Images please";
-            int duration = Toast.LENGTH_SHORT;
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.show();
-        }
     }
 
 }

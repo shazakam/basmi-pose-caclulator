@@ -29,10 +29,10 @@
         android:text="Upload Left Side"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.114"
+        app:layout_constraintHorizontal_bias="0.129"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.818" />
+        app:layout_constraintVertical_bias="0.842" />
 
     <Button
         android:id="@+id/btnRightUploadTragus"
@@ -46,30 +46,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.84" />
-
-    <Button
-        android:id="@+id/btnPrintPose"
-        android:layout_width="100dp"
-        android:layout_height="51dp"
-        android:layout_marginBottom="208dp"
-        android:onClick="btnPrintPose"
-        android:text="Print Markers"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/btnRetake"
-        android:layout_width="112dp"
-        android:layout_height="60dp"
-        android:layout_marginBottom="28dp"
-        android:onClick="onClickDeletePoses"
-        android:text="Remove uploads"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.107"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/imageView"

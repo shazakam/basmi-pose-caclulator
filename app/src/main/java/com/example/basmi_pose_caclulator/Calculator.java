@@ -22,8 +22,8 @@ public class Calculator {
     public static float getDistance(PointF firstPoint, PointF secondPoint, double ratio) {
 
         //Calculate the vector from firstPoint to secondPoint and return its length
-        float xCoord= (float) ratio*(firstPoint.x - secondPoint.x);
-        float yCoord = (float) ratio*(firstPoint.y - secondPoint.y);
+        float xCoord= (float) (firstPoint.x - secondPoint.x);
+        float yCoord = (float) (firstPoint.y - secondPoint.y);
 
         Log.d("X Coordinate",String.valueOf(xCoord));
         Log.d("Y Coordinate",String.valueOf(yCoord));
@@ -33,10 +33,6 @@ public class Calculator {
         Log.d("VECTOR LENGTH",String.valueOf(finalVector.length()));
 
         return (float) finalVector.length();
-    }
-
-    public static float averageResult(float resultOne, float resultTwo){
-        return (resultOne+resultTwo)/2;
     }
 
     public static double tragularResult(int buttonClicked, Pose pose, Double indexToWristDist){
@@ -51,34 +47,29 @@ public class Calculator {
             double ratio = indexToWristDist/getDistance(leftIndexPosition, leftWristPosition,1.0);
 
             //Calculate distance between tragus and index (test is for between L.I to R.I)
-            float tragularPreDist = getDistance(leftEarPosition, leftIndexPosition,ratio);
-            //euclideanDistance(leftEarPosition, leftIndexPosition,ratio);
+            finalTragularDist = getDistance(leftEarPosition, leftIndexPosition,ratio);
 
-            finalTragularDist = tragularPreDist;
-
-            Log.d("FINAL BLOODY RESULT: ",String.valueOf(finalTragularDist));
+            Log.d("FINAL RESULT",String.valueOf(finalTragularDist));
             Log.d("RATIO",String.valueOf(ratio));
             Log.d("Distance",String.valueOf(getDistance(leftIndexPosition, leftWristPosition,1.0)));
         }
         else {
             PointF rightIndexPosition =  pose.getPoseLandmark(PoseLandmark.RIGHT_INDEX).getPosition();
             PointF rightWristPosition = pose.getPoseLandmark(PoseLandmark.RIGHT_WRIST).getPosition();
-            PointF rightEarPosition = pose.getPoseLandmark(PoseLandmark.RIGHT_PINKY).getPosition();
+            PointF rightEarPosition = pose.getPoseLandmark(PoseLandmark.RIGHT_EAR).getPosition();
 
             //double ratio = myLIndexLWrist/euclideanDistance(leftIndexPosition, leftWristPosition,1.0);
             double ratio = indexToWristDist/getDistance(rightIndexPosition, rightWristPosition,1.0);
 
             //Calculate distance between tragus and index (test is for between L.I to R.I)
-            float tragularPreDist = getDistance(rightEarPosition, rightIndexPosition,ratio);
-            //euclideanDistance(leftEarPosition, leftIndexPosition,ratio);
+            finalTragularDist = getDistance(rightEarPosition, rightIndexPosition,ratio);
 
-            finalTragularDist = tragularPreDist;
-
-            Log.d("FINAL BLOODY RESULT: ",String.valueOf(finalTragularDist));
+            Log.d("FINAL BLOODY RESULT",String.valueOf(finalTragularDist));
             Log.d("RATIO",String.valueOf(ratio));
             Log.d("Distance",String.valueOf(getDistance(rightIndexPosition, rightWristPosition,1.0)));
 
         }
+
         return finalTragularDist;
     }
 }
