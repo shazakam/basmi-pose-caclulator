@@ -33,7 +33,7 @@ import com.google.mlkit.vision.pose.accurate.AccuratePoseDetectorOptions;
 import java.io.IOException;
 
 
-public class TragusActivity extends AppCompatActivity {
+public class TragusActivity extends AppCompatActivity{
 
     //URI of images needs to be stored from OnClickTragusImage
     //Note to self may not be URI but BitMap instead
@@ -75,7 +75,7 @@ public class TragusActivity extends AppCompatActivity {
 
                         Bundle extras = result.getData().getExtras();
                         Bitmap selectedImageBitmap = (Bitmap) extras.get("data");
-                        InputImage inputImage = InputImage.fromBitmap(selectedImageBitmap,90);
+                        InputImage inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
                         ImageView imageView = findViewById(R.id.imageView);
                         imageView.setImageBitmap(selectedImageBitmap);
 
@@ -86,32 +86,39 @@ public class TragusActivity extends AppCompatActivity {
                                                     @Override
                                                     public void onSuccess(Pose pose) {
 
+                                                        Calculator calculator = new Calculator();
+
                                                         if(leftButtonClicked){
                                                             Log.d("TRUE","BUTTON LEFT CLICKED");
                                                             leftButton.setBackgroundColor(Color.GREEN);
                                                             leftButtonClicked = false;
-                                                            poseOne = pose;
+                                                            //poseOne = pose;
+                                                            calculator.tragularResult(0,pose,myLIndexLWrist);
                                                         }
 
-                                                        else if(rightButtonClicked){
+                                                        else{
                                                             rightButton.setBackgroundColor(Color.GREEN);
                                                             rightButtonClicked = false;
-                                                            poseTwo = pose;
+                                                            //poseTwo = pose;
+                                                            calculator.tragularResult(1,pose,myLIndexLWrist);
                                                         }
+                                                        /*
+                                                        PointF leftIndexPosition =  pose.getPoseLandmark(PoseLandmark.LEFT_INDEX).getPosition();
+                                                        PointF leftWristPosition = pose.getPoseLandmark(PoseLandmark.LEFT_WRIST).getPosition();
+                                                        PointF leftEarPosition = pose.getPoseLandmark(PoseLandmark.LEFT_EAR).getPosition();
 
-                                                        double ratio = myLIndexLWrist/euclideanDistance(pose.getPoseLandmark(PoseLandmark.LEFT_INDEX).getPosition(),
-                                                                pose.getPoseLandmark(PoseLandmark.LEFT_WRIST).getPosition(),1.0);
+                                                        //double ratio = myLIndexLWrist/euclideanDistance(leftIndexPosition, leftWristPosition,1.0);
+                                                        double ratio = myLIndexLWrist/calculator.getDistance(leftIndexPosition, leftWristPosition,1.0);
 
                                                         //Calculate distance between tragus and index (test is for between L.I to R.I)
-                                                        float leftItorightI = euclideanDistance(pose.getPoseLandmark(PoseLandmark.LEFT_EAR).getPosition(),
-                                                                pose.getPoseLandmark(PoseLandmark.LEFT_INDEX).getPosition(),ratio);
+                                                        float tragularPreDist = calculator.getDistance(leftEarPosition, leftIndexPosition,ratio);
+                                                        //euclideanDistance(leftEarPosition, leftIndexPosition,ratio);
 
-                                                        double final_result = ratio*leftItorightI;
+                                                        double finalTragularDist = ratio*tragularPreDist;
 
-                                                        Log.d("FINAL BLOODY RESULT: ",String.valueOf(final_result));
+                                                        Log.d("FINAL BLOODY RESULT: ",String.valueOf(finalTragularDist));
                                                         Log.d("RATIO",String.valueOf(ratio));
-                                                        Log.d("Distance",String.valueOf(euclideanDistance(pose.getPoseLandmark(PoseLandmark.LEFT_INDEX).getPosition(),
-                                                                        pose.getPoseLandmark(PoseLandmark.LEFT_WRIST).getPosition(),ratio)));
+                                                        Log.d("Distance",String.valueOf(euclideanDistance(leftIndexPosition, leftWristPosition,1.0)));*/
                                                         tragusPoseDetector.close();
                                                     }
                                                 })
@@ -149,8 +156,9 @@ public class TragusActivity extends AppCompatActivity {
 
         PointF finalVector = new PointF();
         finalVector.set(xCoord,yCoord);
+        Log.d("VECTOR LENGTH",String.valueOf(finalVector.length()));
 
-        return (float) Math.sqrt(Math.pow(xCoord,2)+Math.pow(yCoord,2));
+        return (float) ratio*finalVector.length();
     }
 
     /*BUTTONS*/
