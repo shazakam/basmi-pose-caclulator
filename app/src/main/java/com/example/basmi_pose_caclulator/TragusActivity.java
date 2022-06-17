@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PointF;
 
@@ -50,8 +51,6 @@ public class TragusActivity extends AppCompatActivity{
     static int tragularCount;
     static double currentAverage;
 
-    double myLIndexLWrist = 21;
-
     PoseDetector tragusPoseDetector;
 
     AccuratePoseDetectorOptions options =
@@ -68,7 +67,6 @@ public class TragusActivity extends AppCompatActivity{
         leftTragular = 0;
         rightTragular = 0;
         tragularSum = 0;
-        tragularCount = 0;
         currentAverage = 0;
     }
 
@@ -81,12 +79,18 @@ public class TragusActivity extends AppCompatActivity{
 
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                         tragusPoseDetector = PoseDetection.getClient(options);
-
+                        /*
                         Bundle extras = result.getData().getExtras();
                         Bitmap selectedImageBitmap = (Bitmap) extras.get("data");
                         InputImage inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
                         ImageView imageView = findViewById(R.id.imageView);
+                        imageView.setImageBitmap(selectedImageBitmap);*/
+
+                        Bitmap selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.tragular_right);
+                        InputImage inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
+                        ImageView imageView = findViewById(R.id.imageView);
                         imageView.setImageBitmap(selectedImageBitmap);
+
 
                         Task<Pose> poseResult =
                                 tragusPoseDetector.process(inputImage)
@@ -101,14 +105,14 @@ public class TragusActivity extends AppCompatActivity{
                                                             Log.d("TRUE","BUTTON LEFT CLICKED");
                                                             leftButton.setBackgroundColor(Color.GREEN);
                                                             leftButtonClicked = false;
-                                                            leftTragular = calculator.tragularResult(0,pose,myLIndexLWrist);
+                                                            leftTragular = calculator.tragularResult(0,pose);
                                                             extremeCaseEliminator(leftTragular);
                                                         }
 
                                                         else{
                                                             rightButton.setBackgroundColor(Color.GREEN);
                                                             rightButtonClicked = false;
-                                                            rightTragular = calculator.tragularResult(1,pose,myLIndexLWrist);
+                                                            rightTragular = calculator.tragularResult(1,pose);
                                                             extremeCaseEliminator(rightTragular);
                                                         }
                                                     }
@@ -146,12 +150,7 @@ public class TragusActivity extends AppCompatActivity{
             toast.show();
         } else {
             tragularSum += tragular;
-            tragularCount++;
-            currentAverage = tragularSum/tragularCount;
-
-            Log.d("TRAGULAR SUM",String.valueOf(tragularSum));
-            Log.d("TRAGULAR COUNT",String.valueOf(tragularCount));
-            Log.d("CURRENT AVERAGE",String.valueOf(currentAverage));
+            leftButton.setEnabled(false);
         }
         tragusPoseDetector.close();
     }

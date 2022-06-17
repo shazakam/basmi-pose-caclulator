@@ -6,7 +6,10 @@ import android.util.Log;
 import com.google.mlkit.vision.pose.Pose;
 import com.google.mlkit.vision.pose.PoseLandmark;
 
+
+
 public class Calculator {
+    static int indexToElbow = 45;
 
     //Final results obtained from each activity
     static float tragusToWall = 0;
@@ -32,19 +35,19 @@ public class Calculator {
         finalVector.set(xCoord,yCoord);
         Log.d("VECTOR LENGTH",String.valueOf(finalVector.length()));
 
-        return (float) finalVector.length();
+        return (float) ratio*finalVector.length();
     }
 
-    public static double tragularResult(int buttonClicked, Pose pose, Double indexToWristDist){
+    public static double tragularResult(int buttonClicked, Pose pose){
         double finalTragularDist;
         //If the left button was clicked
         if(buttonClicked == 0){
             PointF leftIndexPosition =  pose.getPoseLandmark(PoseLandmark.LEFT_INDEX).getPosition();
-            PointF leftWristPosition = pose.getPoseLandmark(PoseLandmark.LEFT_WRIST).getPosition();
+            PointF leftWristPosition = pose.getPoseLandmark(PoseLandmark.LEFT_ELBOW).getPosition();
             PointF leftEarPosition = pose.getPoseLandmark(PoseLandmark.LEFT_EAR).getPosition();
 
             //double ratio = myLIndexLWrist/euclideanDistance(leftIndexPosition, leftWristPosition,1.0);
-            double ratio = indexToWristDist/getDistance(leftIndexPosition, leftWristPosition,1.0);
+            double ratio = indexToElbow/getDistance(leftIndexPosition, leftWristPosition,1.0);
 
             //Calculate distance between tragus and index (test is for between L.I to R.I)
             finalTragularDist = getDistance(leftEarPosition, leftIndexPosition,ratio);
@@ -55,16 +58,16 @@ public class Calculator {
         }
         else {
             PointF rightIndexPosition =  pose.getPoseLandmark(PoseLandmark.RIGHT_INDEX).getPosition();
-            PointF rightWristPosition = pose.getPoseLandmark(PoseLandmark.RIGHT_WRIST).getPosition();
+            PointF rightWristPosition = pose.getPoseLandmark(PoseLandmark.RIGHT_ELBOW).getPosition();
             PointF rightEarPosition = pose.getPoseLandmark(PoseLandmark.RIGHT_EAR).getPosition();
 
             //double ratio = myLIndexLWrist/euclideanDistance(leftIndexPosition, leftWristPosition,1.0);
-            double ratio = indexToWristDist/getDistance(rightIndexPosition, rightWristPosition,1.0);
+            double ratio = indexToElbow/getDistance(rightIndexPosition, rightWristPosition,1.0);
 
             //Calculate distance between tragus and index (test is for between L.I to R.I)
             finalTragularDist = getDistance(rightEarPosition, rightIndexPosition,ratio);
 
-            Log.d("FINAL BLOODY RESULT",String.valueOf(finalTragularDist));
+            Log.d("FINAL RESULT RIGHT",String.valueOf(finalTragularDist));
             Log.d("RATIO",String.valueOf(ratio));
             Log.d("Distance",String.valueOf(getDistance(rightIndexPosition, rightWristPosition,1.0)));
 
