@@ -12,7 +12,7 @@ public class Calculator {
     static int indexToElbow = 45;
 
     //Final results obtained from each activity
-    static float tragusToWall = 0;
+    static int tragusToWall = 0;
     static float lumbarSideFlexion = 0;
     static float getLumbarSideFlexionSchober = 0;
     static float cervicalRotation = 0;
@@ -38,41 +38,74 @@ public class Calculator {
         return (float) ratio*finalVector.length();
     }
 
-    public static double tragularResult(int buttonClicked, Pose pose){
+    public double tragularResult(int buttonClicked, Pose pose){
         double finalTragularDist;
         //If the left button was clicked
         if(buttonClicked == 0){
             PointF leftIndexPosition =  pose.getPoseLandmark(PoseLandmark.LEFT_INDEX).getPosition();
-            PointF leftWristPosition = pose.getPoseLandmark(PoseLandmark.LEFT_ELBOW).getPosition();
+            PointF leftElbowPosition = pose.getPoseLandmark(PoseLandmark.LEFT_ELBOW).getPosition();
             PointF leftEarPosition = pose.getPoseLandmark(PoseLandmark.LEFT_EAR).getPosition();
 
             //double ratio = myLIndexLWrist/euclideanDistance(leftIndexPosition, leftWristPosition,1.0);
-            double ratio = indexToElbow/getDistance(leftIndexPosition, leftWristPosition,1.0);
+            double ratio = indexToElbow/getDistance(leftIndexPosition, leftElbowPosition,1.0);
 
             //Calculate distance between tragus and index (test is for between L.I to R.I)
             finalTragularDist = getDistance(leftEarPosition, leftIndexPosition,ratio);
 
             Log.d("FINAL RESULT",String.valueOf(finalTragularDist));
             Log.d("RATIO",String.valueOf(ratio));
-            Log.d("Distance",String.valueOf(getDistance(leftIndexPosition, leftWristPosition,1.0)));
+            Log.d("Distance",String.valueOf(getDistance(leftIndexPosition, leftElbowPosition,1.0)));
         }
         else {
             PointF rightIndexPosition =  pose.getPoseLandmark(PoseLandmark.RIGHT_INDEX).getPosition();
-            PointF rightWristPosition = pose.getPoseLandmark(PoseLandmark.RIGHT_ELBOW).getPosition();
+            PointF rightElbowPosition = pose.getPoseLandmark(PoseLandmark.RIGHT_ELBOW).getPosition();
             PointF rightEarPosition = pose.getPoseLandmark(PoseLandmark.RIGHT_EAR).getPosition();
 
-            //double ratio = myLIndexLWrist/euclideanDistance(leftIndexPosition, leftWristPosition,1.0);
-            double ratio = indexToElbow/getDistance(rightIndexPosition, rightWristPosition,1.0);
+            double ratio = indexToElbow/getDistance(rightIndexPosition, rightElbowPosition,1.0);
 
             //Calculate distance between tragus and index (test is for between L.I to R.I)
             finalTragularDist = getDistance(rightEarPosition, rightIndexPosition,ratio);
-
             Log.d("FINAL RESULT RIGHT",String.valueOf(finalTragularDist));
             Log.d("RATIO",String.valueOf(ratio));
-            Log.d("Distance",String.valueOf(getDistance(rightIndexPosition, rightWristPosition,1.0)));
+            Log.d("Distance",String.valueOf(getDistance(rightIndexPosition, rightElbowPosition,1.0)));
 
         }
-
         return finalTragularDist;
+    }
+
+    public int tragularScore(double tragularAverage){
+        if(tragularAverage < 10){
+            return 0;
+        }
+        else if(tragularAverage >= 10 && tragularAverage <= 12.9){
+            return 1;
+        }
+        else if(tragularAverage >= 13 && tragularAverage <= 15.9){
+            return 2;
+        }
+        else if(tragularAverage >= 16 && tragularAverage<= 18.9){
+            return 3;
+        }
+        else if(tragularAverage >= 19 && tragularAverage <= 21.9){
+            return 4;
+        }
+        else if(tragularAverage >= 22 && tragularAverage <= 24.9){
+            return 5;
+        }
+        else if(tragularAverage >= 25 && tragularAverage <= 27.9){
+            return 6;
+        }
+        else if(tragularAverage >= 28 && tragularAverage <= 30.9){
+            return 7;
+        }
+        else if(tragularAverage >= 31 && tragularAverage <= 33.9){
+            return 8;
+        }
+        else if(tragularAverage >= 34 && tragularAverage <= 36.9){
+            return 9;
+        }
+        else{
+            return 10;
+        }
     }
 }

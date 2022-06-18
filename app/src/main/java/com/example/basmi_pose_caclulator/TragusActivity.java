@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -67,7 +68,6 @@ public class TragusActivity extends AppCompatActivity{
         leftTragular = 0;
         rightTragular = 0;
         tragularSum = 0;
-        currentAverage = 0;
     }
 
     //This tells what getImage should do with the result from the intent
@@ -85,12 +85,22 @@ public class TragusActivity extends AppCompatActivity{
                         InputImage inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
                         ImageView imageView = findViewById(R.id.imageView);
                         imageView.setImageBitmap(selectedImageBitmap);*/
+                        Bitmap selectedImageBitmap;
+                        InputImage inputImage;
 
-                        Bitmap selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.tragular_right);
-                        InputImage inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
-                        ImageView imageView = findViewById(R.id.imageView);
-                        imageView.setImageBitmap(selectedImageBitmap);
+                        if(rightButtonClicked){
+                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.tragular_right);
+                            inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
+                            ImageView imageView = findViewById(R.id.imageView);
+                            imageView.setImageBitmap(selectedImageBitmap);
+                        }
 
+                        else{
+                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.tragular_left);
+                            inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
+                            ImageView imageView = findViewById(R.id.imageView);
+                            imageView.setImageBitmap(selectedImageBitmap);
+                        }
 
                         Task<Pose> poseResult =
                                 tragusPoseDetector.process(inputImage)
@@ -106,14 +116,24 @@ public class TragusActivity extends AppCompatActivity{
                                                             leftButton.setBackgroundColor(Color.GREEN);
                                                             leftButtonClicked = false;
                                                             leftTragular = calculator.tragularResult(0,pose);
-                                                            extremeCaseEliminator(leftTragular);
+                                                            leftButton.setEnabled(false);
+                                                            extremeCaseEliminator(leftTragular, leftButton);
                                                         }
 
                                                         else{
                                                             rightButton.setBackgroundColor(Color.GREEN);
                                                             rightButtonClicked = false;
                                                             rightTragular = calculator.tragularResult(1,pose);
-                                                            extremeCaseEliminator(rightTragular);
+                                                            rightButton.setEnabled(false);
+                                                            extremeCaseEliminator(rightTragular, rightButton);
+                                                        }
+
+                                                        if(checkForFinalResult()){
+                                                            Log.d("FINAL AVERAGE", String.valueOf(tragularSum/2));
+                                                            Log.d("FINAL TRAGULAR SCORE", String.valueOf(calculator.tragularScore(tragularSum/2)));
+                                                            Calculator.tragusToWall =  calculator.tragularScore(tragularSum/2);
+                                                            TextView tragularScoreView = findViewById(R.id.tragularScoreValue);
+                                                            tragularScoreView.setText(String.valueOf(Calculator.tragusToWall));
                                                         }
                                                     }
                                                 })
@@ -140,7 +160,7 @@ public class TragusActivity extends AppCompatActivity{
             }
     );
 
-    public void extremeCaseEliminator(double tragular) {
+    public void extremeCaseEliminator(double tragular, View view) {
 
         if (tragular >= 45) {
             Context context = getApplicationContext();
@@ -148,11 +168,20 @@ public class TragusActivity extends AppCompatActivity{
             int duration = Toast.LENGTH_SHORT;
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
+            view.setEnabled(true);
         } else {
             tragularSum += tragular;
-            leftButton.setEnabled(false);
         }
         tragusPoseDetector.close();
+    }
+
+    public boolean checkForFinalResult(){
+        if(rightTragular != 0 && leftTragular != 0){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     /*BUTTONS*/
