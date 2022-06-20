@@ -7,4 +7,12 @@
     <string name="welcome_to_the_basmi_calculator">Welcome to the BASMI Calculator</string>
     <string name="calculate_basmi">Calculate BASMI</string>
     <string name="tragus_image_example">Tragus Image Example</string>
+    <string name="upload_right_side">Upload Right Side</string>
+    <string name="upload_left_side">Upload Left Side</string>
+    <string name="final_tragular_score">Final Tragular Score:</string>
+    <string name="submit_length">Submit Length</string>
+    <string name="if_you_wish_to_change_your_index_to_elbow_length_click_on_the_length_below_input_your_desired_length_and_hit_submit_length">If you wish to change your index to elbow length click on the length below, input your desired length and hit submit length</string>
+    <string name="elbow_to_index_example">Elbow to index example</string>
+    <string name="tragus_to_wall_example">Tragus to wall example</string>
+    <string name="next">Next</string>
 </resources>

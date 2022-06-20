@@ -1,5 +1,7 @@
 package com.example.basmi_pose_caclulator;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.PointF;
 import android.util.Log;
 
@@ -9,16 +11,17 @@ import com.google.mlkit.vision.pose.PoseLandmark;
 
 
 public class Calculator {
-    static int indexToElbow = 45;
+    static int indexToElbow = 0;
 
     //Final results obtained from each activity
     static int tragusToWall = 0;
-    static float lumbarSideFlexion = 0;
+    static int lumbarSideFlexion = 0;
     static float getLumbarSideFlexionSchober = 0;
     static float cervicalRotation = 0;
     static float intermalleolarDist = 0;
 
     public Calculator(){
+
     }
 
 
@@ -108,4 +111,48 @@ public class Calculator {
             return 10;
         }
     }
+
+    public int lumbarScore(float lumbarAverage){
+        if(lumbarAverage >= 20){
+            return 0;
+        }
+        else if(lumbarAverage >= 18 && lumbarAverage < 20){
+            return 1;
+        }
+        else if(lumbarAverage>=15.9 && lumbarAverage < 18){
+            return 2;
+        }
+        else if(lumbarAverage>=13.8 && lumbarAverage < 15.9){
+            return 3;
+        }
+        else if(lumbarAverage >= 11.7 && lumbarAverage <13.8){
+            return 4;
+        }
+        else if(lumbarAverage >= 9.6 && lumbarAverage <11.7){
+            return 5;
+        }
+        else if(lumbarAverage >= 7.5 && lumbarAverage < 9.6){
+            return 6;
+        }
+        else if(lumbarAverage >= 5.4 && lumbarAverage < 7.5){
+            return 7;
+        }
+        else if(lumbarAverage >= 3.3 && lumbarAverage < 5.4){
+            return 8;
+        }
+        else if(lumbarAverage >= 1.2 && lumbarAverage < 3.3){
+            return 9;
+        }
+        else{
+            return 10;
+        }
+    }
+
+
+    public void printPoses(Pose pose){
+        for(PoseLandmark p:pose.getAllPoseLandmarks()){
+            Log.d("LANDMARK "+String.valueOf(p.getLandmarkType()),"Position: " + String.valueOf(p.getPosition()) + " likelihood: "+String.valueOf(p.getInFrameLikelihood()));
+        }
+    }
+
 }

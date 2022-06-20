@@ -8,6 +8,49 @@
 
     tools:context=".TragusActivity">
 
+    <LinearLayout
+        android:layout_width="340dp"
+        android:layout_height="55dp"
+        android:layout_marginBottom="60dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.338"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/btnRightUploadTragus"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="119dp"
+            android:layout_height="match_parent"
+            android:onClick="onClickTragusImageBtnOne"
+            android:text="@string/upload_right_side"
+            android:textColor="#F3F0F0"
+            app:backgroundTint="#151515"
+            app:iconTint="#E3E0E0" />
+
+        <Button
+            android:id="@+id/btnLeftUploadTragus"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="125dp"
+            android:layout_height="match_parent"
+            android:onClick="onClickTragusImageBtnOne"
+            android:text="@string/upload_left_side"
+            android:textColor="#F8F3F3"
+            app:backgroundTint="#131313" />
+
+        <Button
+            android:id="@+id/startLumbarSide"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="92dp"
+            android:layout_height="match_parent"
+            android:onClick="onTragusNextClick"
+            android:text="@string/next"
+            android:textColor="#F4EFEF"
+            app:backgroundTint="#151414" />
+
+    </LinearLayout>
+
     <TextView
         android:id="@+id/tragusToWallTitle"
         android:layout_width="292dp"
@@ -22,56 +65,35 @@
         app:layout_constraintVertical_bias="0.035" />
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="338dp"
-        android:layout_height="430dp"
+        android:id="@+id/elbowToIndexView"
+        android:layout_width="142dp"
+        android:layout_height="205dp"
+        android:contentDescription="@string/elbow_to_index_example"
         android:rotation="0"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintHorizontal_bias="0.219"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tragusToWallTitle"
-        app:layout_constraintVertical_bias="0.163"
+        tools:ignore="ImageContrastCheck"
         tools:srcCompat="@tools:sample/avatars" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="355dp"
-        android:layout_height="64dp"
-        android:layout_marginBottom="80dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <ImageView
+        android:id="@+id/tragularPositionExampleview"
+        android:layout_width="142dp"
+        android:layout_height="205dp"
+        android:contentDescription="@string/tragus_to_wall_example"
+        android:rotation="0"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <Button
-            android:id="@+id/btnRightUploadTragus"
-            android:layout_width="128dp"
-            android:layout_height="match_parent"
-            android:onClick="onClickTragusImageBtnOne"
-            android:text="Upload Right Side" />
-
-        <Button
-            android:id="@+id/btnLeftUploadTragus"
-            android:layout_width="122dp"
-            android:layout_height="match_parent"
-            android:onClick="onClickTragusImageBtnOne"
-            android:text="Upload Left Side" />
-
-        <Button
-            android:id="@+id/startLumbarSide"
-            android:layout_width="127dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="Next " />
-
-    </LinearLayout>
+        app:layout_constraintHorizontal_bias="0.825"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tragusToWallTitle"
+        tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/tragularScore"
         android:layout_width="143dp"
         android:layout_height="25dp"
-        android:text="Final Tragular Score:"
+        android:text="@string/final_tragular_score"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.104"
@@ -90,5 +112,58 @@
         app:layout_constraintStart_toEndOf="@+id/tragularScore"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.754" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="143dp"
+        android:layout_height="26dp"
+        android:layout_marginBottom="92dp"
+        android:text="Index to Elbow Length:"
+        app:layout_constraintBottom_toTopOf="@+id/tragularScore"
+        app:layout_constraintEnd_toStartOf="@+id/indexToElbowInput"
+        app:layout_constraintHorizontal_bias="0.823"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <EditText
+        android:id="@+id/indexToElbowInput"
+        android:layout_width="194dp"
+        android:layout_height="48dp"
+        android:ems="9"
+        android:hint="Enter Length"
+        android:inputType="number"
+        android:textColorHint="#757575"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.889"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.576" />
+
+    <Button
+        android:id="@+id/btnSubmitElbowIndex"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:onClick="onSubmitClick"
+        android:text="@string/submit_length"
+        app:backgroundTint="#151414"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.11"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="379dp"
+        android:layout_height="37dp"
+        android:layout_marginBottom="44dp"
+        android:text="@string/if_you_wish_to_change_your_index_to_elbow_length_click_on_the_length_below_input_your_desired_length_and_hit_submit_length"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
