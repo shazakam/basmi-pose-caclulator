@@ -33,7 +33,7 @@ import com.google.mlkit.vision.pose.PoseDetector;
 import com.google.mlkit.vision.pose.accurate.AccuratePoseDetectorOptions;
 
 public class IntermalleolarActivity extends AppCompatActivity {
-    EditText heelToKneeText;
+    EditText ankleToKneeText;
     PoseDetector intermalleolarPoseDetector;
     SharedPreferences sp;
     AccuratePoseDetectorOptions options = new AccuratePoseDetectorOptions.Builder()
@@ -44,17 +44,18 @@ public class IntermalleolarActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intermalleolar);
+        ankleToKneeText = findViewById(R.id.ankleToKneeText);
 
         //Used to store user data
         sp = getSharedPreferences("userLengths",Context.MODE_PRIVATE);
 
         //Checks to see if user already has data stored
         Log.d("DATA STORED", String.valueOf(sp.getInt("ankleToKnee",-1)));
-        /*
+
         if(sp.contains("ankleToKnee") == true){
-            heelToKneeText.setText(String.valueOf(sp.getInt("ankleToKnee",-1)));
+            ankleToKneeText.setText(String.valueOf(sp.getInt("ankleToKnee",-1)));
             Calculator.indexToElbow = sp.getInt("ankleToKnee",-1);
-        }*/
+        }
     }
 
     ActivityResultLauncher<Intent> getImageTragular = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
@@ -105,13 +106,26 @@ public class IntermalleolarActivity extends AppCompatActivity {
         getImageTragular.launch(intent);
     }
 
-    public void onSubmitHeelToKneeClick(View view){
+    public void onSubmitAnkleToKneeClick(View view){
+
+        try{
+            int ankleToKneeValue = Integer.parseInt(ankleToKneeText.getText().toString());
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putInt("ankleToKnee",ankleToKneeValue);
+            editor.apply();
+            Calculator.ankleToKnee = ankleToKneeValue;
+            toastMessage("Lengths Submitted");
+
+        } catch(NumberFormatException e){
+            toastMessage("Please input a valid length");
+        }
+        /*
         int ankleToKnee = 2; //Integer.parseInt(heelToKneeText.getText().toString());
         SharedPreferences.Editor editor = sp.edit();
         editor.putInt("ankleToKnee",ankleToKnee);
         editor.apply();
         Calculator.ankleToKnee = ankleToKnee;
-        toastMessage("Lengths Submitted");
+        toastMessage("Lengths Submitted");*/
     }
 
     public void toastMessage(String message){

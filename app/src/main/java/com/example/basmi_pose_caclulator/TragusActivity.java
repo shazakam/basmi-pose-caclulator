@@ -204,12 +204,18 @@ public class TragusActivity extends AppCompatActivity{
     }
 
     public void onSubmitClick(View view){
-        int indexToElbowValue = Integer.parseInt(indexToElbowText.getText().toString());
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putInt("indexToElbow",indexToElbowValue);
-        editor.apply();
-        Calculator.indexToElbow = indexToElbowValue;
-        toastMessage("Lengths Submitted");
+        try{
+            int indexToElbowValue = Integer.parseInt(indexToElbowText.getText().toString());
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putInt("indexToElbow",indexToElbowValue);
+            editor.apply();
+            Calculator.indexToElbow = indexToElbowValue;
+            toastMessage("Lengths Submitted");
+
+        } catch(NumberFormatException e){
+            toastMessage("Please input a valid length");
+        }
+
     }
 
     public void onTragusNextClick(View view){
@@ -226,7 +232,7 @@ public class TragusActivity extends AppCompatActivity{
         rightButton.setEnabled(true);
         rightButton.setBackgroundColor(Color.BLACK);
         TextView tragularScoreView = findViewById(R.id.tragularScoreValue);
-        tragularScoreView.setText(0);
+        tragularScoreView.setText(String.valueOf(0));
     }
 
     public void toastMessage(String message){
