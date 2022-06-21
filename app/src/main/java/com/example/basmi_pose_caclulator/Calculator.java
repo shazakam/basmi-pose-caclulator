@@ -12,12 +12,12 @@ import com.google.mlkit.vision.pose.PoseLandmark;
 
 public class Calculator {
     static int indexToElbow = 0;
-
+    static int ankleToKnee = 0;
     //Final results obtained from each activity
-    static int tragusToWall = 0;
-    static int lumbarSideFlexion = 0;
-    static float getLumbarSideFlexionSchober = 0;
-    static float cervicalRotation = 0;
+    static int tragusToWallDist = 0;
+    static int lumbarSideFlexionDist = 0;
+    static float getLumbarSideFlexionSchoberDist = 0;
+    static float cervicalRotationDist = 0;
     static float intermalleolarDist = 0;
 
     public Calculator(){
@@ -71,7 +71,6 @@ public class Calculator {
             Log.d("FINAL RESULT RIGHT",String.valueOf(finalTragularDist));
             Log.d("RATIO",String.valueOf(ratio));
             Log.d("Distance",String.valueOf(getDistance(rightIndexPosition, rightElbowPosition,1.0)));
-
         }
         return finalTragularDist;
     }
@@ -141,6 +140,54 @@ public class Calculator {
             return 8;
         }
         else if(lumbarAverage >= 1.2 && lumbarAverage < 3.3){
+            return 9;
+        }
+        else{
+            return 10;
+        }
+    }
+
+    public float getIntermalleolarResult(Pose pose){
+        float finalIntermalleolarDist;
+        PointF leftAnkle = pose.getPoseLandmark(PoseLandmark.LEFT_ANKLE).getPosition();
+        PointF leftKnee = pose.getPoseLandmark(PoseLandmark.LEFT_KNEE).getPosition();
+        PointF rightAnkle = pose.getPoseLandmark(PoseLandmark.RIGHT_ANKLE).getPosition();
+        PointF rightKnee = pose.getPoseLandmark(PoseLandmark.RIGHT_KNEE).getPosition();
+
+        float ratio = ankleToKnee/((getDistance(leftAnkle,leftKnee,1)+getDistance(rightAnkle,rightKnee,1))/2);
+        finalIntermalleolarDist = getDistance(leftAnkle,rightAnkle,ratio);
+        return finalIntermalleolarDist;
+    }
+
+    public int intermalleolarScore(float intermalleolarResult){
+        if(intermalleolarResult >= 120){
+            return 0;
+        }
+        else if(intermalleolarResult >= 110 && intermalleolarResult < 120){
+            return 1;
+        }
+        else if(intermalleolarResult >= 100 && intermalleolarResult < 110){
+            return 2;
+        }
+        else if(intermalleolarResult >= 90 && intermalleolarResult < 100){
+            return 3;
+        }
+        else if(intermalleolarResult >= 80 && intermalleolarResult < 90){
+            return 4;
+        }
+        else if(intermalleolarResult >= 70 && intermalleolarResult < 80){
+            return 5;
+        }
+        else if(intermalleolarResult >= 60 && intermalleolarResult < 70){
+            return 6;
+        }
+        else if(intermalleolarResult >= 50 && intermalleolarResult < 60){
+            return 7;
+        }
+        else if(intermalleolarResult >= 40 && intermalleolarResult <50){
+            return 8;
+        }
+        else if(intermalleolarResult >= 30 && intermalleolarResult < 40){
             return 9;
         }
         else{

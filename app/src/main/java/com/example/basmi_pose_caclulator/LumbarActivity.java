@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.os.Bundle;
@@ -18,7 +17,6 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -149,8 +147,9 @@ public class LumbarActivity extends AppCompatActivity {
                                                             float lumbarAverage  = (rightResult+leftResult)/2;
                                                             Log.d("FINAL LUMBAR DISTANCE",String.valueOf(lumbarAverage));
                                                             TextView lumbarScoreValueView = findViewById(R.id.lumbarScoreValue);
-                                                            lumbarScoreValueView.setText(String.valueOf(calculator.lumbarScore(lumbarAverage)));
-                                                            Log.d("FINAL LUMBAR SCORE",String.valueOf(calculator.lumbarScore(lumbarAverage)));
+                                                            calculator.lumbarSideFlexionDist = calculator.lumbarScore(lumbarAverage);
+                                                            lumbarScoreValueView.setText(String.valueOf(calculator.lumbarSideFlexionDist));
+                                                            Log.d("FINAL LUMBAR SCORE",String.valueOf(calculator.lumbarSideFlexionDist));
                                                         }
                                                         btnClicked = -2;
                                                     }
@@ -193,6 +192,11 @@ public class LumbarActivity extends AppCompatActivity {
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         getImageLumbar.launch(intent);
+    }
+
+    public void onLumbarNextClick(View view){
+        Intent intent = new Intent(this, IntermalleolarActivity.class);
+        startActivity(intent);
     }
 
     public void toastMessage(String message){

@@ -15,4 +15,7 @@
     <string name="elbow_to_index_example">Elbow to index example</string>
     <string name="tragus_to_wall_example">Tragus to wall example</string>
     <string name="next">Next</string>
+    <string name="intermalleolar_distance">Intermalleolar Distance</string>
+    <string name="enter_length">Enter Length</string>
+    <string name="upload_picture">Upload Picture</string>
 </resources>
