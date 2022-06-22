@@ -19,14 +19,14 @@
 
     <ImageView
         android:id="@+id/intermalleolarExample"
-        android:layout_width="158dp"
-        android:layout_height="163dp"
+        android:layout_width="178dp"
+        android:layout_height="242dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.068"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.139"
+        app:layout_constraintVertical_bias="0.155"
         tools:ignore="ImageContrastCheck"
         tools:srcCompat="@tools:sample/avatars" />
 
@@ -38,23 +38,37 @@
         app:backgroundTint="#131313"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.876"
+        app:layout_constraintHorizontal_bias="0.86"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.882" />
+        app:layout_constraintVertical_bias="0.881" />
 
     <Button
         android:id="@+id/btnSubmit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="16dp"
         android:onClick="onSubmitAnkleToKneeClick"
         android:text="Submit Length"
         app:backgroundTint="#0C0C0C"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.653" />
+        app:layout_constraintVertical_bias="0.78" />
+
+    <Button
+        android:id="@+id/btnIntermalleolarUpload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:onClick="onClickIntermalleolarUpload"
+        android:text="@string/upload_picture"
+        app:backgroundTint="#090909"
+        app:layout_constraintBottom_toBottomOf="@+id/btnSubmit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnSubmit"
+        app:layout_constraintTop_toTopOf="@+id/btnSubmit"
+        app:layout_constraintVertical_bias="0.0" />
 
     <EditText
         android:id="@+id/ankleToKneeText"
@@ -74,47 +88,43 @@
         android:id="@+id/intermalleolarScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="Intermalleolar Distance Score:"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.13"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.747" />
+        app:layout_constraintEnd_toEndOf="@+id/ankleToKneeLengthText"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/ankleToKneeLengthText"
+        app:layout_constraintTop_toBottomOf="@+id/ankleToKneeLengthText" />
 
     <TextView
         android:id="@+id/intermalleolarScoreValue"
         android:layout_width="82dp"
         android:layout_height="19dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/intermalleolarScore"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.747" />
-
-    <Button
-        android:id="@+id/btnIntermalleolarUpload"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:onClick="onClickIntermalleolarUpload"
-        android:text="@string/upload_picture"
-        app:backgroundTint="#090909"
-        app:layout_constraintBottom_toBottomOf="@+id/btnSubmit"
-        app:layout_constraintStart_toEndOf="@+id/btnSubmit"
-        app:layout_constraintTop_toTopOf="@+id/btnSubmit"
+        app:layout_constraintBottom_toBottomOf="@+id/intermalleolarScore"
+        app:layout_constraintStart_toEndOf="@+id/intermalleolarScore"
+        app:layout_constraintTop_toTopOf="@+id/intermalleolarScore"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/ankleToKneeLengthText"
         android:layout_width="138dp"
         android:layout_height="29dp"
-        android:layout_marginStart="28dp"
+        android:layout_marginStart="16dp"
         android:text="Ankle to Knee Length:"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.572" />
+        app:layout_constraintVertical_bias="0.65" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="178dp"
+        android:layout_height="242dp"
+        android:layout_marginStart="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/intermalleolarExample"
+        app:layout_constraintStart_toEndOf="@+id/intermalleolarExample"
+        app:layout_constraintTop_toTopOf="@+id/intermalleolarExample"
+        app:layout_constraintVertical_bias="0.0"
+        tools:srcCompat="@tools:sample/avatars" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

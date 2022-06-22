@@ -46,7 +46,7 @@
         android:id="@+id/lumbarLeftExample"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="76dp"
+        android:layout_marginTop="84dp"
         android:layout_marginEnd="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -56,17 +56,14 @@
         android:id="@+id/btnLumbarNext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="44dp"
+        android:layout_marginBottom="72dp"
         android:onClick="onLumbarNextClick"
         android:text="Next"
         app:backgroundTint="#121111"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.891"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lumbarScoreValue"
-        app:layout_constraintVertical_bias="0.567" />
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/lumbarDescription"
@@ -74,71 +71,71 @@
         android:layout_height="68dp"
         android:layout_marginStart="12dp"
         android:layout_marginEnd="12dp"
+        android:layout_marginBottom="32dp"
         android:text="Upload the following positions using the button below. From left to right, neutral, right lumbar flexion and left lumbar flexion. In each case slide your hand as far down your leg as possible."
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/lumbarScore"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.808"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.561" />
+        app:layout_constraintHorizontal_bias="0.085"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/lumbarScoreValue"
         android:layout_width="125dp"
         android:layout_height="20dp"
         android:layout_marginStart="28dp"
-        android:layout_marginTop="552dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintBottom_toBottomOf="@+id/lumbarScore"
         app:layout_constraintStart_toEndOf="@+id/lumbarScore"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/lumbarScore" />
 
     <TextView
         android:id="@+id/lumbarScore"
         android:layout_width="211dp"
         android:layout_height="24dp"
-        android:layout_marginTop="552dp"
+        android:layout_marginBottom="24dp"
         android:text="Final Lumbar Side Flexion Score:"
+        app:layout_constraintBottom_toTopOf="@+id/btnNeutralLumbarUpload"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.155"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintHorizontal_bias="0.08"
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <LinearLayout
-        android:layout_width="344dp"
-        android:layout_height="73dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="456dp"
-        android:layout_marginEnd="16dp"
-        android:orientation="horizontal"
+    <Button
+        android:id="@+id/btnNeutralLumbarUpload"
+        android:layout_width="115dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="176dp"
+        android:onClick="onClickLumbarUpload"
+        android:text="Upload Neutral Position"
+        app:backgroundTint="#100F0F"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnLeftLumbarUpload"
+        android:layout_width="115dp"
+        android:layout_height="80dp"
+        android:layout_marginEnd="4dp"
+        android:onClick="onClickLumbarUpload"
+        android:text="Upload Left Position"
+        app:backgroundTint="#121111"
+        app:layout_constraintBottom_toBottomOf="@+id/btnRightLumbarUpload"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.673"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="@+id/btnRightLumbarUpload"
+        app:layout_constraintVertical_bias="0.0" />
 
-        <Button
-            android:id="@+id/btnNeutralLumbarUpload"
-            android:layout_width="115dp"
-            android:layout_height="80dp"
-            android:onClick="onClickLumbarUpload"
-            android:text="Upload Neutral Position"
-            app:backgroundTint="#100F0F" />
+    <Button
+        android:id="@+id/btnRightLumbarUpload"
+        android:layout_width="115dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:onClick="onClickLumbarUpload"
+        android:text="Upload Right Position"
+        app:backgroundTint="#131212"
+        app:layout_constraintBottom_toBottomOf="@+id/btnNeutralLumbarUpload"
+        app:layout_constraintEnd_toStartOf="@+id/btnLeftLumbarUpload"
+        app:layout_constraintStart_toEndOf="@+id/btnNeutralLumbarUpload"
+        app:layout_constraintTop_toTopOf="@+id/btnNeutralLumbarUpload"
+        app:layout_constraintVertical_bias="0.0" />
 
-        <Button
-            android:id="@+id/btnRightLumbarUpload"
-            android:layout_width="115dp"
-            android:layout_height="80dp"
-            android:onClick="onClickLumbarUpload"
-            android:text="Upload Right Position"
-            app:backgroundTint="#131212" />
-
-        <Button
-            android:id="@+id/btnLeftLumbarUpload"
-            android:layout_width="115dp"
-            android:layout_height="80dp"
-            android:layout_marginEnd="16dp"
-            android:onClick="onClickLumbarUpload"
-            android:text="Upload Left Position"
-            app:backgroundTint="#121111" />
-    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
