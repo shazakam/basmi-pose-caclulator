@@ -89,14 +89,14 @@ public class TragusActivity extends AppCompatActivity{
 
                         //This if-else statement is just used for pre-loaded images and will be removed for when photos need to be uploaded
                         if(btnClicked == 0){
-                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.tragular_left);
+                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.sinead_left_tragular);
                             inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
                             ImageView imageView = findViewById(R.id.elbowToIndexView);
                             imageView.setImageBitmap(selectedImageBitmap);
                         }
 
                         else{
-                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.tragular_right);
+                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.sinead_right_tragular);
                             inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
                             ImageView imageView = findViewById(R.id.elbowToIndexView);
                             imageView.setImageBitmap(selectedImageBitmap);
@@ -113,7 +113,6 @@ public class TragusActivity extends AppCompatActivity{
 
                                                         if(btnClicked == 0){
                                                             //UI Change, info to see what is being executed
-                                                            Log.d("TRUE","BUTTON LEFT CLICKED");
                                                             leftButton.setBackgroundColor(Color.GREEN);
                                                             btnClicked = -1;
                                                             leftButton.setEnabled(false);
@@ -196,6 +195,9 @@ public class TragusActivity extends AppCompatActivity{
         else if(buttonId == R.id.btnLeftUploadTragus){
             Log.d("FALSE","BUTTON LEFT CLICKED");
             btnClicked = 0;
+        }
+        else{
+            Log.d("ERROR","ON CLICK TRAGUS NOT WORKING");
         }
 
         //Intent to take Photo

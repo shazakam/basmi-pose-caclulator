@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,34 +72,39 @@ public class LumbarActivity extends AppCompatActivity {
                         //Initialises pose detector with desired options
                         lumbarPoseDetector = PoseDetection.getClient(options);
                          //Taking Picture (Currently using predefined images)
+                        /*
                         Bundle extras = result.getData().getExtras();
                         Bitmap selectedImageBitmap = (Bitmap) extras.get("data");
-                        InputImage inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
+                        InputImage inputImage = InputImage.fromBitmap(selectedImageBitmap,0);*/
+
                         //ImageView imageView = findViewById(R.id.imageView);
                         //imageView.setImageBitmap(selectedImageBitmap);
-                        //Bitmap selectedImageBitmap;
-                        //InputImage inputImage;
+                        Bitmap selectedImageBitmap;
+                        InputImage inputImage;
 
                         //This if-else statement is just used for pre-loaded images and will be removed for when photos need to be uploaded
                         //Left Clicked
-                        /*
+
                         if(btnClicked == -1){
-                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.tragular_right);
+                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.sinead_left_flexion);
                             inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
-                            ImageView imageView = findViewById(R.id.elbowToIndexView);
+                            ImageView imageView = findViewById(R.id.lumbarNeutralExample);
                             imageView.setImageBitmap(selectedImageBitmap);
                         }
                         //Neutral Clicked
                         else if(btnClicked == 0){
-                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.tragular_left);
+                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.sinead_neutral);
                             inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
-                            ImageView imageView = findViewById(R.id.elbowToIndexView);
+                            ImageView imageView = findViewById(R.id.lumbarNeutralExample);
                             imageView.setImageBitmap(selectedImageBitmap);
                         }
                         //Right Clicked
                         else{
-
-                        }*/
+                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.sinead_right_flexion);
+                            inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
+                            ImageView imageView = findViewById(R.id.lumbarNeutralExample);
+                            imageView.setImageBitmap(selectedImageBitmap);
+                        }
 
                         Task<Pose> poseResult =
                                 lumbarPoseDetector.process(inputImage)
