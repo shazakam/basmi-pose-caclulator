@@ -32,37 +32,34 @@ import com.google.mlkit.vision.pose.PoseDetector;
 import com.google.mlkit.vision.pose.PoseLandmark;
 import com.google.mlkit.vision.pose.accurate.AccuratePoseDetectorOptions;
 
-public class LumbarActivity extends AppCompatActivity {
+public class CervicalActivity extends AppCompatActivity {
     Button neutralBtn;
     Button rightBtn;
     Button leftBtn;
     float leftResult;
     float rightResult;
-    PoseDetector lumbarPoseDetector;
+    PoseDetector cervicalPoseDetector;
     AccuratePoseDetectorOptions options =
             new AccuratePoseDetectorOptions.Builder()
                     .setDetectorMode(AccuratePoseDetectorOptions.SINGLE_IMAGE_MODE)
                     .build();
-    PointF leftNeutralCoordinate;
-    PointF rightNeutralCoordinate;
-
-
-    //-1=left,0=neutral,1=right, any other number indicates no clicking
     int btnClicked;
+    PointF midPointCoord;
+    PointF neutralNoseCoord;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lumbar);
-
+        setContentView(R.layout.activity_cervical);
+        leftBtn = findViewById(R.id.btnLeftCervicalUpload);
         neutralBtn = findViewById(R.id.btnNeutralLumbarUpload);
-        rightBtn = findViewById(R.id.btnRightLumbarUpload);
-        leftBtn = findViewById(R.id.btnLeftLumbarUpload);
+        rightBtn = findViewById(R.id.btnRightCervicalUpload);
         btnClicked = -2;
     }
 
+
     //This tells what getImage should do with the result from the intent
-    ActivityResultLauncher<Intent> getImageLumbar = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+    ActivityResultLauncher<Intent> getImageCervical = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 //What should be done once the result from the intent has been received
@@ -70,8 +67,8 @@ public class LumbarActivity extends AppCompatActivity {
 
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                         //Initialises pose detector with desired options
-                        lumbarPoseDetector = PoseDetection.getClient(options);
-                         //Taking Picture (Currently using predefined images)
+                        cervicalPoseDetector = PoseDetection.getClient(options);
+                        //Taking Picture (Currently using predefined images)
                         /*
                         Bundle extras = result.getData().getExtras();
                         Bitmap selectedImageBitmap = (Bitmap) extras.get("data");
@@ -106,7 +103,7 @@ public class LumbarActivity extends AppCompatActivity {
                         }
 
                         Task<Pose> poseResult =
-                                lumbarPoseDetector.process(inputImage)
+                                cervicalPoseDetector.process(inputImage)
                                         .addOnSuccessListener(
                                                 new OnSuccessListener<Pose>() {
                                                     @Override
@@ -120,10 +117,9 @@ public class LumbarActivity extends AppCompatActivity {
                                                             Log.d("TRUE","BUTTON LEFT CLICKED");
                                                             leftBtn.setBackgroundColor(Color.GREEN);
                                                             leftBtn.setEnabled(false);
+                                                            PointF noseCoord = pose.getPoseLandmark(PoseLandmark.NOSE).getPosition();
 
-                                                            float ratio = calculator.indexToElbow/calculator.getDistance(pose.getPoseLandmark(PoseLandmark.LEFT_INDEX).getPosition(),
-                                                                    pose.getPoseLandmark(PoseLandmark.LEFT_ELBOW).getPosition(),1);
-                                                            leftResult = calculator.getDistance(leftNeutralCoordinate, pose.getPoseLandmark(PoseLandmark.LEFT_INDEX).getPosition(), ratio);
+                                                            leftResult = (float) calculator.getRotation(midPointCoord,neutralNoseCoord,noseCoord);
 
                                                             Log.d("LEFT RESULT",String.valueOf(leftResult));
                                                         }
@@ -132,30 +128,29 @@ public class LumbarActivity extends AppCompatActivity {
                                                             Log.d("TRUE","BUTTON NEUTRAL CLICKED");
                                                             neutralBtn.setBackgroundColor(Color.GREEN);
                                                             neutralBtn.setEnabled(false);
-                                                            leftNeutralCoordinate = pose.getPoseLandmark(PoseLandmark.LEFT_INDEX).getPosition();
-                                                            rightNeutralCoordinate = pose.getPoseLandmark(PoseLandmark.RIGHT_INDEX).getPosition();
+                                                            midPointCoord = calculator.getMidPoint(pose.getPoseLandmark(PoseLandmark.LEFT_EAR).getPosition(),
+                                                                    pose.getPoseLandmark(PoseLandmark.RIGHT_EAR).getPosition());
+                                                            neutralNoseCoord = pose.getPoseLandmark(PoseLandmark.NOSE).getPosition();
                                                         }
 
                                                         else{
                                                             Log.d("TRUE","BUTTON RIGHT CLICKED");
                                                             rightBtn.setBackgroundColor(Color.GREEN);
                                                             rightBtn.setEnabled(false);
+                                                            PointF noseCoord = pose.getPoseLandmark(PoseLandmark.NOSE).getPosition();
 
-                                                            float ratio = calculator.indexToElbow/calculator.getDistance(pose.getPoseLandmark(PoseLandmark.RIGHT_INDEX).getPosition(),
-                                                                    pose.getPoseLandmark(PoseLandmark.RIGHT_ELBOW).getPosition(),1);
-
-                                                            rightResult = calculator.getDistance(rightNeutralCoordinate, pose.getPoseLandmark(PoseLandmark.RIGHT_INDEX).getPosition(), ratio);
+                                                            rightResult = (float) calculator.getRotation(midPointCoord,neutralNoseCoord,noseCoord);
                                                             Log.d("RIGHT RESULT",String.valueOf(rightResult));
 
                                                         }
 
                                                         if((!leftBtn.isEnabled()) && (!rightBtn.isEnabled()) && (!neutralBtn.isEnabled())){
-                                                            float lumbarAverage  = (rightResult+leftResult)/2;
-                                                            Log.d("FINAL LUMBAR DISTANCE",String.valueOf(lumbarAverage));
-                                                            TextView lumbarScoreValueView = findViewById(R.id.lumbarScoreValue);
-                                                            calculator.lumbarSideFlexionDist = calculator.lumbarScore(lumbarAverage);
-                                                            lumbarScoreValueView.setText(String.valueOf(calculator.lumbarSideFlexionDist));
-                                                            Log.d("FINAL LUMBAR SCORE",String.valueOf(calculator.lumbarSideFlexionDist));
+                                                            float cervicalAverage  = (rightResult+leftResult)/2;
+                                                            Log.d("FINAL CERVICAL ROTATION",String.valueOf(cervicalAverage));
+                                                            TextView lumbarScoreValueView = findViewById(R.id.cervicalScoreValue);
+                                                            calculator.cervicalRotation = calculator.getCervicalRotationScore(cervicalAverage);
+                                                            lumbarScoreValueView.setText(String.valueOf(calculator.cervicalRotation));
+                                                            Log.d("FINAL LUMBAR SCORE",String.valueOf(calculator.cervicalRotation));
                                                         }
                                                         btnClicked = -2;
                                                     }
@@ -173,21 +168,19 @@ public class LumbarActivity extends AppCompatActivity {
             }
     );
 
-
-
     /*BUTTONS*/
-    public void onClickLumbarUpload(View view){
+    public void onClickCervicalUpload(View view){
         int btnId = view.getId();
 
-        if(btnId == R.id.btnLeftLumbarUpload){
+        if(btnId == R.id.btnLeftCervicalUpload){
             btnClicked = -1;
             Log.d("BUTTON CLICKED","-1");
         }
-        else if(btnId == R.id.btnNeutralLumbarUpload){
+        else if(btnId == R.id.btnNeutralCervicalUpload){
             btnClicked = 0;
             Log.d("BUTTON CLICKED","0");
         }
-        else if(btnId == R.id.btnRightLumbarUpload){
+        else if(btnId == R.id.btnRightCervicalUpload){
             btnClicked = 1;
             Log.d("BUTTON CLICKED","1");
         }
@@ -197,12 +190,7 @@ public class LumbarActivity extends AppCompatActivity {
         }
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        getImageLumbar.launch(intent);
-    }
-
-    public void onLumbarNextClick(View view){
-        Intent intent = new Intent(this, IntermalleolarActivity.class);
-        startActivity(intent);
+        getImageCervical.launch(intent);
     }
 
     public void toastMessage(String message){

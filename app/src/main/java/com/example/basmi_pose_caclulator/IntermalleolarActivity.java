@@ -128,6 +128,11 @@ public class IntermalleolarActivity extends AppCompatActivity {
         toastMessage("Lengths Submitted");*/
     }
 
+    public void onIntermalleolarNextClick(View view){
+        Intent intent = new Intent(this, CervicalActivity.class);
+        startActivity(intent);
+    }
+
     public void toastMessage(String message){
         Context context = getApplicationContext();
         CharSequence text = message;

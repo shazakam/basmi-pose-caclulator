@@ -34,6 +34,7 @@
         android:id="@+id/btnIntermalleolarNext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="onIntermalleolarNextClick"
         android:text="Next"
         app:backgroundTint="#131313"
         app:layout_constraintBottom_toBottomOf="parent"

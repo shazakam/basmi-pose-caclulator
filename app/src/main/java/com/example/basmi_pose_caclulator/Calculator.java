@@ -17,7 +17,7 @@ public class Calculator {
     static int tragusToWallDist = 0;
     static int lumbarSideFlexionDist = 0;
     static float getLumbarSideFlexionSchoberDist = 0;
-    static float cervicalRotationDist = 0;
+    static float cervicalRotation = 0;
     static float intermalleolarDist = 0;
 
     public Calculator(){
@@ -147,6 +147,7 @@ public class Calculator {
         }
     }
 
+    //Is this one needed???
     public float getIntermalleolarResult(Pose pose){
         float finalIntermalleolarDist;
         PointF leftAnkle = pose.getPoseLandmark(PoseLandmark.LEFT_ANKLE).getPosition();
@@ -188,6 +189,56 @@ public class Calculator {
             return 8;
         }
         else if(intermalleolarResult >= 30 && intermalleolarResult < 40){
+            return 9;
+        }
+        else{
+            return 10;
+        }
+    }
+
+    public PointF getMidPoint(PointF firstCoord,PointF secondCoord){
+        float midX = (firstCoord.x + secondCoord.x)/2;
+        float midY = (firstCoord.y + secondCoord.y)/2;
+        PointF midPoint = new PointF(midX,midY);
+        return midPoint;
+    }
+
+    public double getRotation(PointF midPoint, PointF neutralNoseCoord, PointF noseCoord){
+        float radius = getDistance(midPoint,neutralNoseCoord,1);
+        float arc = getDistance(neutralNoseCoord,noseCoord,1);
+        double angle = Math.acos((2*Math.pow(radius,2)-Math.pow(arc,2))/(2*Math.pow(radius,2)));
+        return angle;
+    }
+
+    public float getCervicalRotationScore(float rotationAverage){
+        if(rotationAverage>= 85){
+            return 0;
+        }
+        else if(rotationAverage < 85 && rotationAverage >= 76.6){
+            return 1;
+        }
+        else if(rotationAverage < 76.6 && rotationAverage >= 68.1){
+            return 2;
+        }
+        else if(rotationAverage < 68.1 && rotationAverage >= 59.6){
+            return 3;
+        }
+        else if(rotationAverage < 59.6 && rotationAverage >= 51.1){
+            return 4;
+        }
+        else if(rotationAverage < 51.1 && rotationAverage >= 42.6){
+            return 5;
+        }
+        else if(rotationAverage < 42.6 && rotationAverage >= 34.1){
+            return 6;
+        }
+        else if(rotationAverage < 34.1 && rotationAverage >= 25.6){
+            return 7;
+        }
+        else if(rotationAverage < 25.6 && rotationAverage >= 17.1){
+            return 8;
+        }
+        else if(rotationAverage < 17.1 && rotationAverage >= 8.6){
             return 9;
         }
         else{
