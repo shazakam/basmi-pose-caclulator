@@ -71,13 +71,16 @@
         android:layout_width="340dp"
         android:layout_height="68dp"
         android:layout_marginStart="12dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="12dp"
-        android:layout_marginBottom="32dp"
-        android:text="Upload the following positions using the button below. From left to right, neutral, right lumbar flexion and left lumbar flexion. In each case slide your hand as far down your leg as possible."
+        android:layout_marginBottom="8dp"
+        android:text="@string/lumbar_explanation"
         app:layout_constraintBottom_toTopOf="@+id/lumbarScore"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.085"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.489"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lumbarNeutralExample"
+        app:layout_constraintVertical_bias="0.792" />
 
     <TextView
         android:id="@+id/lumbarScoreValue"

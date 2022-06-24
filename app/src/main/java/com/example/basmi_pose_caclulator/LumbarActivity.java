@@ -121,7 +121,7 @@ public class LumbarActivity extends AppCompatActivity {
                                                             leftBtn.setBackgroundColor(Color.GREEN);
                                                             leftBtn.setEnabled(false);
 
-                                                            float ratio = calculator.indexToElbow/calculator.getDistance(pose.getPoseLandmark(PoseLandmark.LEFT_INDEX).getPosition(),
+                                                            float ratio = calculator.indexToWrist /calculator.getDistance(pose.getPoseLandmark(PoseLandmark.LEFT_INDEX).getPosition(),
                                                                     pose.getPoseLandmark(PoseLandmark.LEFT_ELBOW).getPosition(),1);
                                                             leftResult = calculator.getDistance(leftNeutralCoordinate, pose.getPoseLandmark(PoseLandmark.LEFT_INDEX).getPosition(), ratio);
 
@@ -141,7 +141,7 @@ public class LumbarActivity extends AppCompatActivity {
                                                             rightBtn.setBackgroundColor(Color.GREEN);
                                                             rightBtn.setEnabled(false);
 
-                                                            float ratio = calculator.indexToElbow/calculator.getDistance(pose.getPoseLandmark(PoseLandmark.RIGHT_INDEX).getPosition(),
+                                                            float ratio = calculator.indexToWrist /calculator.getDistance(pose.getPoseLandmark(PoseLandmark.RIGHT_INDEX).getPosition(),
                                                                     pose.getPoseLandmark(PoseLandmark.RIGHT_ELBOW).getPosition(),1);
 
                                                             rightResult = calculator.getDistance(rightNeutralCoordinate, pose.getPoseLandmark(PoseLandmark.RIGHT_INDEX).getPosition(), ratio);

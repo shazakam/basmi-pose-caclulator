@@ -36,7 +36,7 @@ public class TragusActivity extends AppCompatActivity{
     Button rightButton;
     double leftTragular;
     double rightTragular;
-    EditText indexToElbowText;
+    EditText indexToWristText;
     PoseDetector tragusPoseDetector;
     SharedPreferences sp;
     AccuratePoseDetectorOptions options = new AccuratePoseDetectorOptions.Builder()
@@ -53,7 +53,7 @@ public class TragusActivity extends AppCompatActivity{
         //Initialising all the views, buttons and values
         leftButton = findViewById(R.id.btnLeftUploadTragus);
         rightButton = findViewById(R.id.btnRightUploadTragus);
-        indexToElbowText = findViewById(R.id.indexToElbowInput);
+        indexToWristText = findViewById(R.id.indexToElbowInput);
         leftTragular = 0;
         rightTragular = 0;
         btnClicked = -1;
@@ -63,8 +63,8 @@ public class TragusActivity extends AppCompatActivity{
 
         //Checks to see if user already has data stored
         if(sp.contains("indexToElbow") == true){
-            indexToElbowText.setText(String.valueOf(sp.getInt("indexToElbow",-1)));
-            Calculator.indexToElbow = sp.getInt("indexToElbow",-1);
+            indexToWristText.setText(String.valueOf(sp.getInt("indexToElbow",-1)));
+            Calculator.indexToWrist = sp.getInt("indexToElbow",-1);
         }
     }
 
@@ -91,14 +91,14 @@ public class TragusActivity extends AppCompatActivity{
                         if(btnClicked == 0){
                             selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.sinead_left_tragular);
                             inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
-                            ImageView imageView = findViewById(R.id.elbowToIndexView);
+                            ImageView imageView = findViewById(R.id.wristToIndexView);
                             imageView.setImageBitmap(selectedImageBitmap);
                         }
 
                         else{
                             selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.sinead_right_tragular);
                             inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
-                            ImageView imageView = findViewById(R.id.elbowToIndexView);
+                            ImageView imageView = findViewById(R.id.wristToIndexView);
                             imageView.setImageBitmap(selectedImageBitmap);
                         }
 
@@ -157,7 +157,6 @@ public class TragusActivity extends AppCompatActivity{
 
     //Stops any ridiculous results being used
     public boolean extremeCaseEliminator() {
-
         if (leftTragular >= 45 || rightTragular >= 45) {
             toastMessage("Image result faulty, reload image again please");
             if (leftTragular >= 45 && rightTragular >= 45) {
@@ -174,14 +173,12 @@ public class TragusActivity extends AppCompatActivity{
                 rightButton.setEnabled(true);
                 rightButton.setBackgroundColor(Color.BLACK);
             }
-
             tragusPoseDetector.close();
             return false;
         }
         else{
             return true;
         }
-
     }
 
 
@@ -189,11 +186,11 @@ public class TragusActivity extends AppCompatActivity{
     public void onClickTragusImageBtnOne(View view) {
         int buttonId = view.getId();
         if(buttonId == R.id.btnRightUploadTragus){
-            Log.d("TRUE","BUTTON RIGHT CLICKED");
+            Log.d("1","BUTTON RIGHT CLICKED");
             btnClicked = 1;
         }
         else if(buttonId == R.id.btnLeftUploadTragus){
-            Log.d("FALSE","BUTTON LEFT CLICKED");
+            Log.d("0","BUTTON LEFT CLICKED");
             btnClicked = 0;
         }
         else{
@@ -207,11 +204,11 @@ public class TragusActivity extends AppCompatActivity{
 
     public void onSubmitClick(View view){
         try{
-            int indexToElbowValue = Integer.parseInt(indexToElbowText.getText().toString());
+            int indexToElbowValue = Integer.parseInt(indexToWristText.getText().toString());
             SharedPreferences.Editor editor = sp.edit();
             editor.putInt("indexToElbow",indexToElbowValue);
             editor.apply();
-            Calculator.indexToElbow = indexToElbowValue;
+            Calculator.indexToWrist = indexToElbowValue;
             toastMessage("Lengths Submitted");
 
         } catch(NumberFormatException e){

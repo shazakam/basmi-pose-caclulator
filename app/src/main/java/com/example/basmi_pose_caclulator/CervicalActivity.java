@@ -52,7 +52,7 @@ public class CervicalActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cervical);
         leftBtn = findViewById(R.id.btnLeftCervicalUpload);
-        neutralBtn = findViewById(R.id.btnNeutralLumbarUpload);
+        neutralBtn = findViewById(R.id.btnNeutralCervicalUpload);
         rightBtn = findViewById(R.id.btnRightCervicalUpload);
         btnClicked = -2;
     }
@@ -68,39 +68,15 @@ public class CervicalActivity extends AppCompatActivity {
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                         //Initialises pose detector with desired options
                         cervicalPoseDetector = PoseDetection.getClient(options);
-                        //Taking Picture (Currently using predefined images)
-                        /*
+
                         Bundle extras = result.getData().getExtras();
                         Bitmap selectedImageBitmap = (Bitmap) extras.get("data");
-                        InputImage inputImage = InputImage.fromBitmap(selectedImageBitmap,0);*/
+                        InputImage inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
+                        ImageView imageView = findViewById(R.id.cervicalNeutralExample);
+                        imageView.setImageBitmap(selectedImageBitmap);
 
-                        //ImageView imageView = findViewById(R.id.imageView);
-                        //imageView.setImageBitmap(selectedImageBitmap);
-                        Bitmap selectedImageBitmap;
-                        InputImage inputImage;
+                        /*NEED TO GET CERVICAL PRE-DEFINED TEST EXAMPLES*/
 
-                        //This if-else statement is just used for pre-loaded images and will be removed for when photos need to be uploaded
-                        //Left Clicked
-                        if(btnClicked == -1){
-                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.sinead_left_flexion);
-                            inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
-                            ImageView imageView = findViewById(R.id.lumbarNeutralExample);
-                            imageView.setImageBitmap(selectedImageBitmap);
-                        }
-                        //Neutral Clicked
-                        else if(btnClicked == 0){
-                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.sinead_neutral);
-                            inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
-                            ImageView imageView = findViewById(R.id.lumbarNeutralExample);
-                            imageView.setImageBitmap(selectedImageBitmap);
-                        }
-                        //Right Clicked
-                        else{
-                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.sinead_right_flexion);
-                            inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
-                            ImageView imageView = findViewById(R.id.lumbarNeutralExample);
-                            imageView.setImageBitmap(selectedImageBitmap);
-                        }
 
                         Task<Pose> poseResult =
                                 cervicalPoseDetector.process(inputImage)
@@ -119,29 +95,27 @@ public class CervicalActivity extends AppCompatActivity {
                                                             leftBtn.setEnabled(false);
                                                             PointF noseCoord = pose.getPoseLandmark(PoseLandmark.NOSE).getPosition();
 
-                                                            leftResult = (float) calculator.getRotation(midPointCoord,neutralNoseCoord,noseCoord);
+                                                            leftResult = (float) calculator.getRotationOne(midPointCoord,neutralNoseCoord,noseCoord);
 
                                                             Log.d("LEFT RESULT",String.valueOf(leftResult));
                                                         }
 
-                                                        else if(btnClicked == 0){
-                                                            Log.d("TRUE","BUTTON NEUTRAL CLICKED");
+                                                        else if(btnClicked == 0) {
+                                                            Log.d("TRUE", "BUTTON NEUTRAL CLICKED");
                                                             neutralBtn.setBackgroundColor(Color.GREEN);
                                                             neutralBtn.setEnabled(false);
                                                             midPointCoord = calculator.getMidPoint(pose.getPoseLandmark(PoseLandmark.LEFT_EAR).getPosition(),
                                                                     pose.getPoseLandmark(PoseLandmark.RIGHT_EAR).getPosition());
                                                             neutralNoseCoord = pose.getPoseLandmark(PoseLandmark.NOSE).getPosition();
+                                                            Log.d("MIDPOINT", String.valueOf(midPointCoord));
                                                         }
-
                                                         else{
                                                             Log.d("TRUE","BUTTON RIGHT CLICKED");
                                                             rightBtn.setBackgroundColor(Color.GREEN);
                                                             rightBtn.setEnabled(false);
                                                             PointF noseCoord = pose.getPoseLandmark(PoseLandmark.NOSE).getPosition();
-
-                                                            rightResult = (float) calculator.getRotation(midPointCoord,neutralNoseCoord,noseCoord);
+                                                            rightResult = (float) calculator.getRotationOne(midPointCoord,neutralNoseCoord,noseCoord);
                                                             Log.d("RIGHT RESULT",String.valueOf(rightResult));
-
                                                         }
 
                                                         if((!leftBtn.isEnabled()) && (!rightBtn.isEnabled()) && (!neutralBtn.isEnabled())){

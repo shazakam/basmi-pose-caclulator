@@ -1,7 +1,5 @@
 package com.example.basmi_pose_caclulator;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.PointF;
 import android.util.Log;
 
@@ -11,7 +9,7 @@ import com.google.mlkit.vision.pose.PoseLandmark;
 
 
 public class Calculator {
-    static int indexToElbow = 0;
+    static int indexToWrist = 0;
     static int ankleToKnee = 0;
     //Final results obtained from each activity
     static int tragusToWallDist = 0;
@@ -46,31 +44,33 @@ public class Calculator {
         //If the left button was clicked
         if(buttonClicked == 0){
             PointF leftIndexPosition =  pose.getPoseLandmark(PoseLandmark.LEFT_INDEX).getPosition();
-            PointF leftElbowPosition = pose.getPoseLandmark(PoseLandmark.LEFT_ELBOW).getPosition();
+            //CHANGED
+            PointF leftWristPosition = pose.getPoseLandmark(PoseLandmark.LEFT_WRIST).getPosition();
             PointF leftEarPosition = pose.getPoseLandmark(PoseLandmark.LEFT_EAR).getPosition();
 
             //double ratio = myLIndexLWrist/euclideanDistance(leftIndexPosition, leftWristPosition,1.0);
-            double ratio = indexToElbow/getDistance(leftIndexPosition, leftElbowPosition,1.0);
+            double ratio = indexToWrist /getDistance(leftIndexPosition, leftWristPosition,1.0);
 
             //Calculate distance between tragus and index (test is for between L.I to R.I)
             finalTragularDist = getDistance(leftEarPosition, leftIndexPosition,ratio);
 
             Log.d("FINAL RESULT",String.valueOf(finalTragularDist));
             Log.d("RATIO",String.valueOf(ratio));
-            Log.d("Distance",String.valueOf(getDistance(leftIndexPosition, leftElbowPosition,1.0)));
+            Log.d("Distance",String.valueOf(getDistance(leftIndexPosition, leftWristPosition,1.0)));
         }
         else {
             PointF rightIndexPosition =  pose.getPoseLandmark(PoseLandmark.RIGHT_INDEX).getPosition();
-            PointF rightElbowPosition = pose.getPoseLandmark(PoseLandmark.RIGHT_ELBOW).getPosition();
+            //CHANEGD
+            PointF rightWristPosition = pose.getPoseLandmark(PoseLandmark.RIGHT_WRIST).getPosition();
             PointF rightEarPosition = pose.getPoseLandmark(PoseLandmark.RIGHT_EAR).getPosition();
 
-            double ratio = indexToElbow/getDistance(rightIndexPosition, rightElbowPosition,1.0);
+            double ratio = indexToWrist /getDistance(rightIndexPosition, rightWristPosition,1.0);
 
             //Calculate distance between tragus and index (test is for between L.I to R.I)
             finalTragularDist = getDistance(rightEarPosition, rightIndexPosition,ratio);
             Log.d("FINAL RESULT RIGHT",String.valueOf(finalTragularDist));
             Log.d("RATIO",String.valueOf(ratio));
-            Log.d("Distance",String.valueOf(getDistance(rightIndexPosition, rightElbowPosition,1.0)));
+            Log.d("Distance",String.valueOf(getDistance(rightIndexPosition, rightWristPosition,1.0)));
         }
         return finalTragularDist;
     }
@@ -203,11 +203,18 @@ public class Calculator {
         return midPoint;
     }
 
-    public double getRotation(PointF midPoint, PointF neutralNoseCoord, PointF noseCoord){
+    public double getRotationOne(PointF midPoint, PointF neutralNoseCoord, PointF noseCoord){
         float radius = getDistance(midPoint,neutralNoseCoord,1);
         float arc = getDistance(neutralNoseCoord,noseCoord,1);
         double angle = Math.acos((2*Math.pow(radius,2)-Math.pow(arc,2))/(2*Math.pow(radius,2)));
         return angle;
+    }
+
+    public double getRotationTwo(PointF midPoint, PointF neutralNoseCoord, PointF noseCoord){
+        float radius = getDistance(midPoint,neutralNoseCoord,1);
+        float arc = getDistance(neutralNoseCoord,noseCoord,1);
+        double angle = (180*arc)/(Math.PI*radius);
+        return  angle;
     }
 
     public float getCervicalRotationScore(float rotationAverage){
