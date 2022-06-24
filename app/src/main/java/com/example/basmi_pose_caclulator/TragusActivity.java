@@ -36,7 +36,7 @@ public class TragusActivity extends AppCompatActivity{
     Button rightButton;
     double leftTragular;
     double rightTragular;
-    EditText indexToWristText;
+    EditText indexToElbowText;
     PoseDetector tragusPoseDetector;
     SharedPreferences sp;
     AccuratePoseDetectorOptions options = new AccuratePoseDetectorOptions.Builder()
@@ -53,7 +53,7 @@ public class TragusActivity extends AppCompatActivity{
         //Initialising all the views, buttons and values
         leftButton = findViewById(R.id.btnLeftUploadTragus);
         rightButton = findViewById(R.id.btnRightUploadTragus);
-        indexToWristText = findViewById(R.id.indexToElbowInput);
+        indexToElbowText = findViewById(R.id.indexToElbowInput);
         leftTragular = 0;
         rightTragular = 0;
         btnClicked = -1;
@@ -63,8 +63,8 @@ public class TragusActivity extends AppCompatActivity{
 
         //Checks to see if user already has data stored
         if(sp.contains("indexToElbow") == true){
-            indexToWristText.setText(String.valueOf(sp.getInt("indexToElbow",-1)));
-            Calculator.indexToWrist = sp.getInt("indexToElbow",-1);
+            indexToElbowText.setText(String.valueOf(sp.getInt("indexToElbow",-1)));
+            Calculator.indexToElbow = sp.getInt("indexToElbow",-1);
         }
     }
 
@@ -91,14 +91,13 @@ public class TragusActivity extends AppCompatActivity{
                         if(btnClicked == 0){
                             selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.sinead_left_tragular);
                             inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
-                            ImageView imageView = findViewById(R.id.wristToIndexView);
+                            ImageView imageView = findViewById(R.id.elbowToIndexView);
                             imageView.setImageBitmap(selectedImageBitmap);
                         }
-
                         else{
                             selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.sinead_right_tragular);
                             inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
-                            ImageView imageView = findViewById(R.id.wristToIndexView);
+                            ImageView imageView = findViewById(R.id.elbowToIndexView);
                             imageView.setImageBitmap(selectedImageBitmap);
                         }
 
@@ -115,10 +114,11 @@ public class TragusActivity extends AppCompatActivity{
                                                             //UI Change, info to see what is being executed
                                                             leftButton.setBackgroundColor(Color.GREEN);
                                                             btnClicked = -1;
-                                                            leftButton.setEnabled(false);
-                                                            calculator.printPoses(pose);
-                                                            //Uses calculator to find distance to tragular with the input pose (0 indicates left input)
                                                             leftTragular = calculator.tragularResult(0,pose);
+                                                            leftButton.setEnabled(false);
+                                                            Log.d("LEFT TRAGULAR RESULT",String.valueOf(leftTragular));
+                                                            calculator.printPoses(pose);
+
                                                         }
 
                                                         else if(btnClicked == 1){
@@ -126,6 +126,7 @@ public class TragusActivity extends AppCompatActivity{
                                                             btnClicked = -1;
                                                             rightTragular = calculator.tragularResult(1,pose);
                                                             rightButton.setEnabled(false);
+                                                            Log.d("RIGHT TRAGULAR RESULT",String.valueOf(rightTragular));
                                                             calculator.printPoses(pose);
                                                         }
                                                         else{
@@ -204,11 +205,11 @@ public class TragusActivity extends AppCompatActivity{
 
     public void onSubmitClick(View view){
         try{
-            int indexToElbowValue = Integer.parseInt(indexToWristText.getText().toString());
+            int indexToElbowValue = Integer.parseInt(indexToElbowText.getText().toString());
             SharedPreferences.Editor editor = sp.edit();
             editor.putInt("indexToElbow",indexToElbowValue);
             editor.apply();
-            Calculator.indexToWrist = indexToElbowValue;
+            Calculator.indexToElbow = indexToElbowValue;
             toastMessage("Lengths Submitted");
 
         } catch(NumberFormatException e){

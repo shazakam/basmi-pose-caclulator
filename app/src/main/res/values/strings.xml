@@ -4,7 +4,7 @@
     <string name="todo">TODO</string>
     <string name="lumbar_explanation">Take the following pictures with your back against the wall, feet 30 cm apart and parallel and your head in a neutral relaxed position.
     Ensure that your entire body is in each image for best results and that the photo is taking from the same position each time. For each extension (right extension and left extension)
-    slide your arm down the side of your leg as far as possible as shown above and upload the picture.</string>
+    slide your arm down the side of your leg as far as possible as shown above and upload the picture with your back to the wall.</string>
     <string name="upload_image">Upload Image</string>
     <string name="welcome_to_the_basmi_calculator">Welcome to the BASMI Calculator</string>
     <string name="calculate_basmi">Calculate BASMI</string>
@@ -14,10 +14,10 @@
     <string name="final_tragular_score">Final Tragular Score:</string>
     <string name="submit_length">Submit Length</string>
     <string name="tragular_explanation">
-        Measure from the end of your index to your wrist as shown in the picture to the left. Enter the found
+        Measure from the end of your index to your elbow as shown in the picture to the left. Enter the found
         value and submit it before proceeding. Once your length has been submitted take the position as shown in the photo to the right. Feet parallel to each other and 30 cm apart.
-        Keep your head in a neutral/relaxed position. Ensure that in the photo that your fist is placed just below your ear (and your ear is visible in the photo and
-        index finger touching the wall as straight as possible.</string>
+        Keep your head in a neutral/relaxed position. Ensure that in the photo that your fist is placed just below your ear (and your ear is visible in the photo,
+        index finger touching the wall as straight as possible and your entire elbow is visible in the photo).</string>
     <string name="elbow_to_index_example">Elbow to index example</string>
     <string name="tragus_to_wall_example">Tragus to wall example</string>
     <string name="next">Next</string>

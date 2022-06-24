@@ -85,21 +85,21 @@ public class LumbarActivity extends AppCompatActivity {
                         //This if-else statement is just used for pre-loaded images and will be removed for when photos need to be uploaded
                         //Left Clicked
                         if(btnClicked == -1){
-                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.sinead_left_flexion);
+                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.george_left_flexion);
                             inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
                             ImageView imageView = findViewById(R.id.lumbarNeutralExample);
                             imageView.setImageBitmap(selectedImageBitmap);
                         }
                         //Neutral Clicked
                         else if(btnClicked == 0){
-                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.sinead_neutral);
+                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.george_neutral);
                             inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
                             ImageView imageView = findViewById(R.id.lumbarNeutralExample);
                             imageView.setImageBitmap(selectedImageBitmap);
                         }
                         //Right Clicked
                         else{
-                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.sinead_right_flexion);
+                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.george_right_flexion);
                             inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
                             ImageView imageView = findViewById(R.id.lumbarNeutralExample);
                             imageView.setImageBitmap(selectedImageBitmap);
@@ -120,11 +120,7 @@ public class LumbarActivity extends AppCompatActivity {
                                                             Log.d("TRUE","BUTTON LEFT CLICKED");
                                                             leftBtn.setBackgroundColor(Color.GREEN);
                                                             leftBtn.setEnabled(false);
-
-                                                            float ratio = calculator.indexToWrist /calculator.getDistance(pose.getPoseLandmark(PoseLandmark.LEFT_INDEX).getPosition(),
-                                                                    pose.getPoseLandmark(PoseLandmark.LEFT_ELBOW).getPosition(),1);
-                                                            leftResult = calculator.getDistance(leftNeutralCoordinate, pose.getPoseLandmark(PoseLandmark.LEFT_INDEX).getPosition(), ratio);
-
+                                                            leftResult = (float) calculator.lumbarResult(-1,pose,leftNeutralCoordinate);
                                                             Log.d("LEFT RESULT",String.valueOf(leftResult));
                                                         }
 
@@ -135,27 +131,21 @@ public class LumbarActivity extends AppCompatActivity {
                                                             leftNeutralCoordinate = pose.getPoseLandmark(PoseLandmark.LEFT_INDEX).getPosition();
                                                             rightNeutralCoordinate = pose.getPoseLandmark(PoseLandmark.RIGHT_INDEX).getPosition();
                                                         }
-
                                                         else{
                                                             Log.d("TRUE","BUTTON RIGHT CLICKED");
                                                             rightBtn.setBackgroundColor(Color.GREEN);
                                                             rightBtn.setEnabled(false);
-
-                                                            float ratio = calculator.indexToWrist /calculator.getDistance(pose.getPoseLandmark(PoseLandmark.RIGHT_INDEX).getPosition(),
-                                                                    pose.getPoseLandmark(PoseLandmark.RIGHT_ELBOW).getPosition(),1);
-
-                                                            rightResult = calculator.getDistance(rightNeutralCoordinate, pose.getPoseLandmark(PoseLandmark.RIGHT_INDEX).getPosition(), ratio);
+                                                            rightResult = (float) calculator.lumbarResult(1,pose,rightNeutralCoordinate);
                                                             Log.d("RIGHT RESULT",String.valueOf(rightResult));
-
                                                         }
 
                                                         if((!leftBtn.isEnabled()) && (!rightBtn.isEnabled()) && (!neutralBtn.isEnabled())){
                                                             float lumbarAverage  = (rightResult+leftResult)/2;
                                                             Log.d("FINAL LUMBAR DISTANCE",String.valueOf(lumbarAverage));
                                                             TextView lumbarScoreValueView = findViewById(R.id.lumbarScoreValue);
-                                                            calculator.lumbarSideFlexionDist = calculator.lumbarScore(lumbarAverage);
-                                                            lumbarScoreValueView.setText(String.valueOf(calculator.lumbarSideFlexionDist));
-                                                            Log.d("FINAL LUMBAR SCORE",String.valueOf(calculator.lumbarSideFlexionDist));
+                                                            calculator.lumbarSideFlexionScore = calculator.lumbarScore(lumbarAverage);
+                                                            lumbarScoreValueView.setText(String.valueOf(calculator.lumbarSideFlexionScore));
+                                                            Log.d("FINAL LUMBAR SCORE",String.valueOf(calculator.lumbarSideFlexionScore));
                                                         }
                                                         btnClicked = -2;
                                                     }
@@ -195,7 +185,6 @@ public class LumbarActivity extends AppCompatActivity {
             toastMessage("ERROR WITH BUTTON CHOSEN: " + String.valueOf(btnId));
             return;
         }
-
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         getImageLumbar.launch(intent);
     }

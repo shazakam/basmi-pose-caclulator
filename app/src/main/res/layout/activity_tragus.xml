@@ -22,7 +22,7 @@
         app:layout_constraintVertical_bias="0.036" />
 
     <ImageView
-        android:id="@+id/wristToIndexView"
+        android:id="@+id/elbowToIndexView"
         android:layout_width="142dp"
         android:layout_height="205dp"
         android:contentDescription="@string/elbow_to_index_example"
@@ -41,9 +41,9 @@
         android:layout_marginStart="20dp"
         android:contentDescription="@string/tragus_to_wall_example"
         android:rotation="0"
-        app:layout_constraintBottom_toBottomOf="@+id/wristToIndexView"
-        app:layout_constraintStart_toEndOf="@+id/wristToIndexView"
-        app:layout_constraintTop_toTopOf="@+id/wristToIndexView"
+        app:layout_constraintBottom_toBottomOf="@+id/elbowToIndexView"
+        app:layout_constraintStart_toEndOf="@+id/elbowToIndexView"
+        app:layout_constraintTop_toTopOf="@+id/elbowToIndexView"
         app:layout_constraintVertical_bias="1.0"
         tools:srcCompat="@tools:sample/avatars" />
 
@@ -78,7 +78,7 @@
         android:layout_width="143dp"
         android:layout_height="26dp"
         android:layout_marginStart="32dp"
-        android:text="Index to Elbow Length:"
+        android:text="Index to elbow Length:"
         app:layout_constraintBottom_toTopOf="@+id/tragularScore"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tragularExplanation"
@@ -103,7 +103,7 @@
         android:text="@string/tragular_explanation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/wristToIndexView" />
+        app:layout_constraintTop_toBottomOf="@+id/elbowToIndexView" />
 
     <Button
         android:id="@+id/btnRightUploadTragus"

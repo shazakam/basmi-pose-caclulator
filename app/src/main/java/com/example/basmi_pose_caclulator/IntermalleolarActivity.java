@@ -50,7 +50,7 @@ public class IntermalleolarActivity extends AppCompatActivity {
         Log.d("DATA STORED", String.valueOf(sp.getInt("ankleToKnee",-1)));
         if(sp.contains("ankleToKnee") == true){
             ankleToKneeText.setText(String.valueOf(sp.getInt("ankleToKnee",-1)));
-            Calculator.indexToWrist = sp.getInt("ankleToKnee",-1);
+            Calculator.indexToElbow = sp.getInt("ankleToKnee",-1);
         }
     }
 

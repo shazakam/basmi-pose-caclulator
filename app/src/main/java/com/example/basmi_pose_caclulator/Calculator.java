@@ -2,77 +2,52 @@ package com.example.basmi_pose_caclulator;
 
 import android.graphics.PointF;
 import android.util.Log;
-
 import com.google.mlkit.vision.pose.Pose;
 import com.google.mlkit.vision.pose.PoseLandmark;
 
 
 
 public class Calculator {
-    static int indexToWrist = 0;
+    static int indexToElbow = 0;
     static int ankleToKnee = 0;
     //Final results obtained from each activity
     static int tragusToWallDist = 0;
-    static int lumbarSideFlexionDist = 0;
+    static int lumbarSideFlexionScore = 0;
     static float getLumbarSideFlexionSchoberDist = 0;
     static float cervicalRotation = 0;
     static float intermalleolarDist = 0;
 
     public Calculator(){
-
     }
-
 
     public static float getDistance(PointF firstPoint, PointF secondPoint, double ratio) {
 
         //Calculate the vector from firstPoint to secondPoint and return its length
         float xCoord= (float) (firstPoint.x - secondPoint.x);
         float yCoord = (float) (firstPoint.y - secondPoint.y);
-
-        Log.d("X Coordinate",String.valueOf(xCoord));
-        Log.d("Y Coordinate",String.valueOf(yCoord));
-
         PointF finalVector = new PointF();
         finalVector.set(xCoord,yCoord);
-        Log.d("VECTOR LENGTH",String.valueOf(finalVector.length()));
-
         return (float) ratio*finalVector.length();
     }
 
     public double tragularResult(int buttonClicked, Pose pose){
-        double finalTragularDist;
+        PointF indexPosition;
+        PointF wristPosition;
+        PointF earPosition;
+
         //If the left button was clicked
         if(buttonClicked == 0){
-            PointF leftIndexPosition =  pose.getPoseLandmark(PoseLandmark.LEFT_INDEX).getPosition();
-            //CHANGED
-            PointF leftWristPosition = pose.getPoseLandmark(PoseLandmark.LEFT_WRIST).getPosition();
-            PointF leftEarPosition = pose.getPoseLandmark(PoseLandmark.LEFT_EAR).getPosition();
-
-            //double ratio = myLIndexLWrist/euclideanDistance(leftIndexPosition, leftWristPosition,1.0);
-            double ratio = indexToWrist /getDistance(leftIndexPosition, leftWristPosition,1.0);
-
-            //Calculate distance between tragus and index (test is for between L.I to R.I)
-            finalTragularDist = getDistance(leftEarPosition, leftIndexPosition,ratio);
-
-            Log.d("FINAL RESULT",String.valueOf(finalTragularDist));
-            Log.d("RATIO",String.valueOf(ratio));
-            Log.d("Distance",String.valueOf(getDistance(leftIndexPosition, leftWristPosition,1.0)));
+            indexPosition = pose.getPoseLandmark(PoseLandmark.LEFT_INDEX).getPosition();
+            wristPosition = pose.getPoseLandmark(PoseLandmark.LEFT_ELBOW).getPosition();
+            earPosition = pose.getPoseLandmark(PoseLandmark.LEFT_EAR).getPosition();
         }
         else {
-            PointF rightIndexPosition =  pose.getPoseLandmark(PoseLandmark.RIGHT_INDEX).getPosition();
-            //CHANEGD
-            PointF rightWristPosition = pose.getPoseLandmark(PoseLandmark.RIGHT_WRIST).getPosition();
-            PointF rightEarPosition = pose.getPoseLandmark(PoseLandmark.RIGHT_EAR).getPosition();
-
-            double ratio = indexToWrist /getDistance(rightIndexPosition, rightWristPosition,1.0);
-
-            //Calculate distance between tragus and index (test is for between L.I to R.I)
-            finalTragularDist = getDistance(rightEarPosition, rightIndexPosition,ratio);
-            Log.d("FINAL RESULT RIGHT",String.valueOf(finalTragularDist));
-            Log.d("RATIO",String.valueOf(ratio));
-            Log.d("Distance",String.valueOf(getDistance(rightIndexPosition, rightWristPosition,1.0)));
+            indexPosition = pose.getPoseLandmark(PoseLandmark.RIGHT_INDEX).getPosition();
+            wristPosition = pose.getPoseLandmark(PoseLandmark.RIGHT_ELBOW).getPosition();
+            earPosition = pose.getPoseLandmark(PoseLandmark.RIGHT_EAR).getPosition();
         }
-        return finalTragularDist;
+        double ratio = indexToElbow /getDistance(indexPosition,wristPosition,1);
+        return getDistance(earPosition,indexPosition,ratio);
     }
 
     public int tragularScore(double tragularAverage){
@@ -109,6 +84,22 @@ public class Calculator {
         else{
             return 10;
         }
+    }
+
+    public double lumbarResult(int buttonClicked, Pose pose, PointF neutralCoord){
+        PointF indexCoord;
+        PointF elbowCoord;
+
+        if(buttonClicked == -1){
+            indexCoord = pose.getPoseLandmark(PoseLandmark.LEFT_INDEX).getPosition();
+            elbowCoord = pose.getPoseLandmark(PoseLandmark.LEFT_WRIST).getPosition();
+        }
+        else{
+            indexCoord = pose.getPoseLandmark(PoseLandmark.RIGHT_INDEX).getPosition();
+            elbowCoord = pose.getPoseLandmark(PoseLandmark.RIGHT_WRIST).getPosition();
+        }
+        float ratio = indexToElbow /getDistance(indexCoord,elbowCoord,1);
+        return getDistance(neutralCoord,indexCoord,ratio);
     }
 
     public int lumbarScore(float lumbarAverage){
