@@ -31,24 +31,29 @@ public class Calculator {
         return (float) ratio*finalVector.length();
     }
 
-    public double tragularResult(int buttonClicked, Pose pose){
+    public double[] tragularResult(int buttonClicked, Pose pose){
         PointF indexPosition;
-        PointF wristPosition;
+        PointF elbowPosition;
         PointF earPosition;
+        PointF wristPosition;
 
         //If the left button was clicked
         if(buttonClicked == 0){
             indexPosition = pose.getPoseLandmark(PoseLandmark.LEFT_INDEX).getPosition();
-            wristPosition = pose.getPoseLandmark(PoseLandmark.LEFT_ELBOW).getPosition();
+            elbowPosition = pose.getPoseLandmark(PoseLandmark.LEFT_ELBOW).getPosition();
             earPosition = pose.getPoseLandmark(PoseLandmark.LEFT_EAR).getPosition();
+            wristPosition = pose.getPoseLandmark(PoseLandmark.LEFT_WRIST).getPosition();
         }
         else {
             indexPosition = pose.getPoseLandmark(PoseLandmark.RIGHT_INDEX).getPosition();
-            wristPosition = pose.getPoseLandmark(PoseLandmark.RIGHT_ELBOW).getPosition();
+            elbowPosition = pose.getPoseLandmark(PoseLandmark.RIGHT_ELBOW).getPosition();
             earPosition = pose.getPoseLandmark(PoseLandmark.RIGHT_EAR).getPosition();
+            wristPosition = pose.getPoseLandmark(PoseLandmark.RIGHT_WRIST).getPosition();
         }
-        double ratio = indexToElbow /getDistance(indexPosition,wristPosition,1);
-        return getDistance(earPosition,indexPosition,ratio);
+        double ratioIndexElbow = indexToElbow/getDistance(indexPosition,elbowPosition,1);
+        double ratioIndexWrist = indexToWrist/getDistance(indexPosition,wristPosition,1);
+
+        return new double[]{getDistance(earPosition, indexPosition, ratioIndexElbow), getDistance(earPosition, indexPosition, ratioIndexWrist)};
     }
 
     public int tragularScore(double tragularAverage){
@@ -87,33 +92,37 @@ public class Calculator {
         }
     }
 
-    public double lumbarResult(int buttonClicked, Pose pose, PointF neutralCoord){
+    public double[] lumbarResult(int buttonClicked, Pose pose, PointF neutralCoord){
         PointF indexCoord;
         PointF elbowCoord;
+        PointF wristCoord;
 
         if(buttonClicked == -1){
             indexCoord = pose.getPoseLandmark(PoseLandmark.LEFT_INDEX).getPosition();
             elbowCoord = pose.getPoseLandmark(PoseLandmark.LEFT_ELBOW).getPosition();
+            wristCoord = pose.getPoseLandmark(PoseLandmark.LEFT_WRIST).getPosition();
         }
         else{
             indexCoord = pose.getPoseLandmark(PoseLandmark.RIGHT_INDEX).getPosition();
             elbowCoord = pose.getPoseLandmark(PoseLandmark.RIGHT_ELBOW).getPosition();
+            wristCoord = pose.getPoseLandmark(PoseLandmark.RIGHT_WRIST).getPosition();
         }
-        float ratio = indexToElbow/getDistance(indexCoord,elbowCoord,1);
-        return getDistance(neutralCoord,indexCoord,ratio);
+        float ratioIndexElbow = indexToElbow/getDistance(indexCoord,elbowCoord,1);
+        float ratioIndexWrist = indexToWrist/getDistance(indexCoord,wristCoord,1);
+        return new double[] {getDistance(neutralCoord,indexCoord,ratioIndexElbow),getDistance(neutralCoord,indexCoord,ratioIndexWrist)};
     }
 
-    public int lumbarScore(float lumbarAverage){
+    public int lumbarScore(double lumbarAverage){
         if(lumbarAverage >= 20){
             return 0;
         }
         else if(lumbarAverage >= 18 && lumbarAverage < 20){
             return 1;
         }
-        else if(lumbarAverage>=15.9 && lumbarAverage < 18){
+        else if(lumbarAverage >= 15.9 && lumbarAverage < 18){
             return 2;
         }
-        else if(lumbarAverage>=13.8 && lumbarAverage < 15.9){
+        else if(lumbarAverage >= 13.8 && lumbarAverage < 15.9){
             return 3;
         }
         else if(lumbarAverage >= 11.7 && lumbarAverage <13.8){
@@ -246,11 +255,9 @@ public class Calculator {
         }
     }
 
-
     public void printPoses(Pose pose){
         for(PoseLandmark p:pose.getAllPoseLandmarks()){
             Log.d("LANDMARK "+String.valueOf(p.getLandmarkType()),"Position: " + String.valueOf(p.getPosition()) + " likelihood: "+String.valueOf(p.getInFrameLikelihood()));
         }
     }
-
 }

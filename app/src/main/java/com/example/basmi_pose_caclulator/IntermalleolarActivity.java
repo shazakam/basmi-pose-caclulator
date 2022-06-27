@@ -30,9 +30,7 @@ import com.google.mlkit.vision.pose.PoseDetector;
 import com.google.mlkit.vision.pose.accurate.AccuratePoseDetectorOptions;
 
 public class IntermalleolarActivity extends AppCompatActivity {
-    EditText ankleToKneeText;
     PoseDetector intermalleolarPoseDetector;
-    SharedPreferences sp;
     AccuratePoseDetectorOptions options = new AccuratePoseDetectorOptions.Builder()
             .setDetectorMode(AccuratePoseDetectorOptions.SINGLE_IMAGE_MODE)
             .build();
@@ -41,7 +39,6 @@ public class IntermalleolarActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intermalleolar);
-
     }
 
     ActivityResultLauncher<Intent> getImageTragular = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),

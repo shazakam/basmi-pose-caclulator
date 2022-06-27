@@ -76,7 +76,6 @@ public class CervicalActivity extends AppCompatActivity {
 
                         /*NEED TO GET CERVICAL PRE-DEFINED TEST EXAMPLES*/
 
-
                         Task<Pose> poseResult =
                                 cervicalPoseDetector.process(inputImage)
                                         .addOnSuccessListener(
@@ -98,7 +97,6 @@ public class CervicalActivity extends AppCompatActivity {
 
                                                             Log.d("LEFT RESULT",String.valueOf(leftResult));
                                                         }
-
                                                         else if(btnClicked == 0) {
                                                             Log.d("TRUE", "BUTTON NEUTRAL CLICKED");
                                                             neutralBtn.setBackgroundColor(Color.GREEN);

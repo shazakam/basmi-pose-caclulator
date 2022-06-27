@@ -7,17 +7,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -29,15 +26,12 @@ import com.google.mlkit.vision.pose.PoseDetection;
 import com.google.mlkit.vision.pose.PoseDetector;
 import com.google.mlkit.vision.pose.accurate.AccuratePoseDetectorOptions;
 
-
 public class TragusActivity extends AppCompatActivity{
     Button leftButton;
     Button rightButton;
-    double leftTragular;
-    double rightTragular;
-    EditText indexToElbowText;
+    double[] leftTragular;
+    double[] rightTragular;
     PoseDetector tragusPoseDetector;
-    SharedPreferences sp;
     AccuratePoseDetectorOptions options = new AccuratePoseDetectorOptions.Builder()
                     .setDetectorMode(AccuratePoseDetectorOptions.SINGLE_IMAGE_MODE)
                     .build();
@@ -52,10 +46,9 @@ public class TragusActivity extends AppCompatActivity{
         //Initialising all the views, buttons and values
         leftButton = findViewById(R.id.btnLeftUploadTragus);
         rightButton = findViewById(R.id.btnRightUploadTragus);
-        leftTragular = 0;
-        rightTragular = 0;
+        leftTragular = null;
+        rightTragular = null;
         btnClicked = -1;
-
     }
 
     //This tells what getImage should do with the result from the intent
@@ -79,13 +72,13 @@ public class TragusActivity extends AppCompatActivity{
 
                         //This if-else statement is just used for pre-loaded images and will be removed for when photos need to be uploaded
                         if(btnClicked == 0){
-                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.anna_left_tragular_4);
+                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.george_left_tragular_3);
                             inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
                             ImageView imageView = findViewById(R.id.elbowToIndexView);
                             imageView.setImageBitmap(selectedImageBitmap);
                         }
                         else{
-                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.anna_right_tragular_1);
+                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.george_right_tragular_1);
                             inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
                             ImageView imageView = findViewById(R.id.elbowToIndexView);
                             imageView.setImageBitmap(selectedImageBitmap);
@@ -97,26 +90,20 @@ public class TragusActivity extends AppCompatActivity{
                                                 new OnSuccessListener<Pose>() {
                                                     @Override
                                                     public void onSuccess(Pose pose) {
-
                                                         Calculator calculator = new Calculator();
-
                                                         if(btnClicked == 0){
                                                             //UI Change, info to see what is being executed
                                                             leftButton.setBackgroundColor(Color.GREEN);
                                                             btnClicked = -1;
                                                             leftTragular = calculator.tragularResult(0,pose);
                                                             leftButton.setEnabled(false);
-                                                            Log.d("LEFT TRAGULAR RESULT",String.valueOf(leftTragular));
                                                             calculator.printPoses(pose);
-
                                                         }
-
                                                         else if(btnClicked == 1){
                                                             rightButton.setBackgroundColor(Color.GREEN);
                                                             btnClicked = -1;
                                                             rightTragular = calculator.tragularResult(1,pose);
                                                             rightButton.setEnabled(false);
-                                                            Log.d("RIGHT TRAGULAR RESULT",String.valueOf(rightTragular));
                                                             calculator.printPoses(pose);
                                                         }
                                                         else{
@@ -125,9 +112,16 @@ public class TragusActivity extends AppCompatActivity{
                                                         }
 
                                                         if(extremeCaseEliminator()){
-                                                            Log.d("FINAL AVERAGE", String.valueOf((leftTragular+rightTragular)/2));
-                                                            Log.d("FINAL TRAGULAR SCORE", String.valueOf(calculator.tragularScore((leftTragular+rightTragular)/2)));
-                                                            Calculator.tragusToWallScore =  calculator.tragularScore((leftTragular+rightTragular)/2);
+                                                            try{
+                                                                Log.d("FINAL ELBOW AVERAGE", String.valueOf((leftTragular[0]+rightTragular[0])/2));
+                                                                Log.d("FINAL WRIST AVERAGE", String.valueOf((leftTragular[1]+rightTragular[1])/2));
+                                                                Log.d("FINAL ELBOW SCORE", String.valueOf(calculator.tragularScore((leftTragular[0]+rightTragular[0])/2)));
+                                                                Log.d("FINAL WRIST SCORE", String.valueOf(calculator.tragularScore((leftTragular[1]+rightTragular[1])/2)));
+                                                                Calculator.tragusToWallScore =  calculator.tragularScore((leftTragular[0]+leftTragular[1]+rightTragular[0]+rightTragular[1])/4);
+                                                                Log.d("FINAL TRAGULAR SCORE", String.valueOf(Calculator.tragusToWallScore));
+                                                            }catch(Exception e){
+
+                                                            }
                                                         }
                                                     }
                                                 })
@@ -146,31 +140,33 @@ public class TragusActivity extends AppCompatActivity{
 
     //Stops any ridiculous results being used
     public boolean extremeCaseEliminator() {
-        if (leftTragular >= 45 || rightTragular >= 45) {
-            toastMessage("Image result faulty, reload image again please");
-            if (leftTragular >= 45 && rightTragular >= 45) {
-                leftButton.setEnabled(true);
-                leftButton.setBackgroundColor(Color.BLACK);
-                rightButton.setEnabled(true);
-                rightButton.setBackgroundColor(Color.BLACK);
-            }
-            else if(leftTragular >= 45){
-                leftButton.setEnabled(true);
-                leftButton.setBackgroundColor(Color.BLACK);
+        try{
+            if (leftTragular[0] >= 45 || leftTragular[1] >= 45 || rightTragular[0] >= 45 || rightTragular[1] >= 45) {
+                toastMessage("Image result faulty, reload image again please");
+                if ((leftTragular[0] >= 45 || leftTragular[1] >= 45) && (rightTragular[0] >= 45 || rightTragular[1] >= 45)) {
+                    leftButton.setEnabled(true);
+                    leftButton.setBackgroundColor(Color.BLACK);
+                    rightButton.setEnabled(true);
+                    rightButton.setBackgroundColor(Color.BLACK);
+                }
+                else if(leftTragular[0] >= 45 || leftTragular[1] >= 45){
+                    leftButton.setEnabled(true);
+                    leftButton.setBackgroundColor(Color.BLACK);
+                }
+                else{
+                    rightButton.setEnabled(true);
+                    rightButton.setBackgroundColor(Color.BLACK);
+                }
+                tragusPoseDetector.close();
+                return false;
             }
             else{
-                rightButton.setEnabled(true);
-                rightButton.setBackgroundColor(Color.BLACK);
+                return true;
             }
-            tragusPoseDetector.close();
-            return false;
-        }
-        else{
+        }catch (Exception e){
             return true;
         }
     }
-
-
     /*BUTTONS*/
     public void onClickTragusImageBtnOne(View view) {
         int buttonId = view.getId();
@@ -185,7 +181,6 @@ public class TragusActivity extends AppCompatActivity{
         else{
             Log.d("ERROR","ON CLICK TRAGUS NOT WORKING");
         }
-
         //Intent to take Photo
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         getImageTragular.launch(intent);
@@ -197,8 +192,8 @@ public class TragusActivity extends AppCompatActivity{
     }
 
     public void onRetakeClick(View view){
-        leftTragular = 0;
-        rightTragular = 0;
+        leftTragular = null;
+        rightTragular = null;
         Calculator.tragusToWallScore = 0;
         leftButton.setEnabled(true);
         leftButton.setBackgroundColor(Color.BLACK);

@@ -1,12 +1,9 @@
 package com.example.basmi_pose_caclulator;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -45,36 +42,26 @@ public class InputLengthsActivity extends AppCompatActivity {
     }
 
     public void onSubmitLengthsClick(View view){
-
             try{
                 int indexToElbowValue = Integer.parseInt(indexToElbowLengthsText.getText().toString());
                 int indexToWristValue = Integer.parseInt(indexToWristLengthsText.getText().toString());
                 int ankleToKneeValue = Integer.parseInt(ankleToKneeLengthstext.getText().toString());
-
                 SharedPreferences.Editor editor = sp.edit();
-
                 editor.putInt("indexToElbow",indexToElbowValue);
                 editor.apply();
                 editor.putInt("indexToWrist",indexToWristValue);
                 editor.apply();
                 editor.putInt("ankleToKnee",ankleToKneeValue);
                 editor.apply();
-
-                Log.d("INDEX TO ELBOW VALUE",String.valueOf(indexToElbowValue));
-                Log.d("INDEX TO WRIST VALUE",String.valueOf(indexToElbowValue));
-                Log.d("ANKLE TO KNEE VALUE",String.valueOf(indexToElbowValue));
-
                 Calculator.indexToElbow = indexToElbowValue;
                 Calculator.indexToWrist = indexToWristValue;
                 Calculator.ankleToKnee = ankleToKneeValue;
                 toastMessage("Lengths Submitted");
-
             } catch(NumberFormatException e){
                 toastMessage("Please input a valid length");
             }
             nextInputLengths.setEnabled(true);
         }
-
 
     public void onNextLengthsClick(View view){
         Intent intent = new Intent(this, TragusActivity.class);

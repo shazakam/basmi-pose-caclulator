@@ -36,8 +36,8 @@ public class LumbarActivity extends AppCompatActivity {
     Button neutralBtn;
     Button rightBtn;
     Button leftBtn;
-    float leftResult;
-    float rightResult;
+    double[] leftResult;
+    double[] rightResult;
     PoseDetector lumbarPoseDetector;
     AccuratePoseDetectorOptions options =
             new AccuratePoseDetectorOptions.Builder()
@@ -46,7 +46,6 @@ public class LumbarActivity extends AppCompatActivity {
     PointF leftNeutralCoordinate;
     PointF rightNeutralCoordinate;
 
-
     //-1=left,0=neutral,1=right, any other number indicates no clicking
     int btnClicked;
 
@@ -54,7 +53,6 @@ public class LumbarActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lumbar);
-
         neutralBtn = findViewById(R.id.btnNeutralLumbarUpload);
         rightBtn = findViewById(R.id.btnRightLumbarUpload);
         leftBtn = findViewById(R.id.btnLeftLumbarUpload);
@@ -120,10 +118,8 @@ public class LumbarActivity extends AppCompatActivity {
                                                             Log.d("TRUE","BUTTON LEFT CLICKED");
                                                             leftBtn.setBackgroundColor(Color.GREEN);
                                                             leftBtn.setEnabled(false);
-                                                            leftResult = (float) calculator.lumbarResult(-1,pose,leftNeutralCoordinate);
-                                                            Log.d("LEFT RESULT",String.valueOf(leftResult));
+                                                            leftResult = calculator.lumbarResult(-1,pose,leftNeutralCoordinate);
                                                         }
-
                                                         else if(btnClicked == 0){
                                                             Log.d("TRUE","BUTTON NEUTRAL CLICKED");
                                                             neutralBtn.setBackgroundColor(Color.GREEN);
@@ -135,14 +131,16 @@ public class LumbarActivity extends AppCompatActivity {
                                                             Log.d("TRUE","BUTTON RIGHT CLICKED");
                                                             rightBtn.setBackgroundColor(Color.GREEN);
                                                             rightBtn.setEnabled(false);
-                                                            rightResult = (float) calculator.lumbarResult(1,pose,rightNeutralCoordinate);
-                                                            Log.d("RIGHT RESULT",String.valueOf(rightResult));
+                                                            rightResult = calculator.lumbarResult(1,pose,rightNeutralCoordinate);
                                                         }
 
                                                         if((!leftBtn.isEnabled()) && (!rightBtn.isEnabled()) && (!neutralBtn.isEnabled())){
-                                                            float lumbarAverage  = (rightResult+leftResult)/2;
-                                                            Log.d("FINAL LUMBAR DISTANCE",String.valueOf(lumbarAverage));
-                                                            calculator.lumbarSideFlexionScore = calculator.lumbarScore(lumbarAverage);
+                                                            double lumbarAverageElbow  = (rightResult[0]+leftResult[0])/2;
+                                                            double lumbarAverageWrist = (rightResult[1]+leftResult[1])/2;
+                                                            Log.d("FINAL LUMBAR ELBOW",String.valueOf(lumbarAverageElbow));
+                                                            Log.d("FINAL LUMBAR WRIST",String.valueOf(lumbarAverageWrist));
+
+                                                            calculator.lumbarSideFlexionScore = calculator.lumbarScore((lumbarAverageElbow+lumbarAverageWrist)/2);
                                                             Log.d("FINAL LUMBAR SCORE",String.valueOf(calculator.lumbarSideFlexionScore));
                                                         }
                                                         btnClicked = -2;
