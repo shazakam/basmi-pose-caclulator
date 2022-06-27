@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.os.Bundle;
@@ -121,10 +120,9 @@ public class CervicalActivity extends AppCompatActivity {
                                                         if((!leftBtn.isEnabled()) && (!rightBtn.isEnabled()) && (!neutralBtn.isEnabled())){
                                                             float cervicalAverage  = (rightResult+leftResult)/2;
                                                             Log.d("FINAL CERVICAL ROTATION",String.valueOf(cervicalAverage));
-                                                            TextView lumbarScoreValueView = findViewById(R.id.cervicalScoreValue);
-                                                            calculator.cervicalRotation = calculator.getCervicalRotationScore(cervicalAverage);
-                                                            lumbarScoreValueView.setText(String.valueOf(calculator.cervicalRotation));
-                                                            Log.d("FINAL LUMBAR SCORE",String.valueOf(calculator.cervicalRotation));
+
+                                                            calculator.cervicalRotationScore = calculator.getCervicalRotationScore(cervicalAverage);
+                                                            Log.d("FINAL LUMBAR SCORE",String.valueOf(calculator.cervicalRotationScore));
                                                         }
                                                         btnClicked = -2;
                                                     }

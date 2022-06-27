@@ -51,37 +51,33 @@
         app:layout_constraintTop_toBottomOf="@+id/cervicalNeutralExample"
         app:layout_constraintVertical_bias="0.059" />
 
-    <TextView
-        android:id="@+id/cervicalScore"
-        android:layout_width="162dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="412dp"
-        android:text="Cervical Rotation Score:"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/cervicalScoreValue"
-        android:layout_width="87dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="4dp"
-        app:layout_constraintBottom_toBottomOf="@+id/cervicalScore"
-        app:layout_constraintStart_toEndOf="@+id/cervicalScore"
-        app:layout_constraintTop_toTopOf="@+id/cervicalScore"
-        app:layout_constraintVertical_bias="0.0" />
-
     <Button
         android:id="@+id/btnNeutralCervicalUpload"
         android:layout_width="115dp"
         android:layout_height="80dp"
         android:layout_marginStart="4dp"
-        android:layout_marginBottom="276dp"
+        android:layout_marginBottom="148dp"
         android:onClick="onClickCervicalUpload"
         android:text="Upload Neutral Position"
         app:backgroundTint="#0E0E0E"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnRightCervicalUpload"
+        android:layout_width="115dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:onClick="onClickCervicalUpload"
+        android:text="Upload Right position"
+        app:backgroundTint="#131313"
+        app:layout_constraintBottom_toBottomOf="@+id/btnNeutralCervicalUpload"
+        app:layout_constraintEnd_toStartOf="@+id/btnLeftCervicalUpload"
+        app:layout_constraintHorizontal_bias="0.441"
+        app:layout_constraintStart_toEndOf="@+id/btnNeutralCervicalUpload"
+        app:layout_constraintTop_toTopOf="@+id/btnNeutralCervicalUpload"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/btnLeftCervicalUpload"
@@ -95,20 +91,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/btnRightCervicalUpload"
         app:layout_constraintVertical_bias="0.0" />
-
-    <Button
-        android:id="@+id/btnRightCervicalUpload"
-        android:layout_width="115dp"
-        android:layout_height="80dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
-        android:onClick="onClickCervicalUpload"
-        android:text="Upload Right position"
-        app:backgroundTint="#131313"
-        app:layout_constraintBottom_toBottomOf="@+id/btnNeutralCervicalUpload"
-        app:layout_constraintEnd_toStartOf="@+id/btnLeftCervicalUpload"
-        app:layout_constraintStart_toEndOf="@+id/btnNeutralCervicalUpload"
-        app:layout_constraintTop_toTopOf="@+id/btnNeutralCervicalUpload" />
 
     <Button
         android:id="@+id/btnCervicalNext"

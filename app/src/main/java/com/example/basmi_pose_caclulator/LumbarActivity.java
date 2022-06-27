@@ -142,9 +142,7 @@ public class LumbarActivity extends AppCompatActivity {
                                                         if((!leftBtn.isEnabled()) && (!rightBtn.isEnabled()) && (!neutralBtn.isEnabled())){
                                                             float lumbarAverage  = (rightResult+leftResult)/2;
                                                             Log.d("FINAL LUMBAR DISTANCE",String.valueOf(lumbarAverage));
-                                                            TextView lumbarScoreValueView = findViewById(R.id.lumbarScoreValue);
                                                             calculator.lumbarSideFlexionScore = calculator.lumbarScore(lumbarAverage);
-                                                            lumbarScoreValueView.setText(String.valueOf(calculator.lumbarSideFlexionScore));
                                                             Log.d("FINAL LUMBAR SCORE",String.valueOf(calculator.lumbarSideFlexionScore));
                                                         }
                                                         btnClicked = -2;

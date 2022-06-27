@@ -11,12 +11,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,17 +41,7 @@ public class IntermalleolarActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intermalleolar);
-        ankleToKneeText = findViewById(R.id.ankleToKneeText);
 
-        //Used to store user data
-        sp = getSharedPreferences("userLengths",Context.MODE_PRIVATE);
-
-        //Checks to see if user already has data stored
-        Log.d("DATA STORED", String.valueOf(sp.getInt("ankleToKnee",-1)));
-        if(sp.contains("ankleToKnee") == true){
-            ankleToKneeText.setText(String.valueOf(sp.getInt("ankleToKnee",-1)));
-            Calculator.indexToElbow = sp.getInt("ankleToKnee",-1);
-        }
     }
 
     ActivityResultLauncher<Intent> getImageTragular = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
@@ -62,14 +52,22 @@ public class IntermalleolarActivity extends AppCompatActivity {
 
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                         //Initialises pose detector with desired options
+                        /*
                         intermalleolarPoseDetector = PoseDetection.getClient(options);
                         Bundle extras = result.getData().getExtras();
                         Bitmap selectedImageBitmap = (Bitmap) extras.get("data");
                         InputImage inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
                         ImageView imageView = findViewById(R.id.ankleToKneeExample);
-                        imageView.setImageBitmap(selectedImageBitmap);
+                        imageView.setImageBitmap(selectedImageBitmap);*/
 
                         /*INTERMALLEOLAR PRE-DEFINED TEST CASES*/
+                        intermalleolarPoseDetector = PoseDetection.getClient(options);
+                        Bitmap selectedImageBitmap;
+                        InputImage inputImage;
+                        selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.anna_intermalleolar_4);
+                        inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
+                        //ImageView imageView = findViewById(R.id.);
+                        //imageView.setImageBitmap(selectedImageBitmap);
 
                         Task<Pose> poseResult =
                                 intermalleolarPoseDetector.process(inputImage)
@@ -79,9 +77,9 @@ public class IntermalleolarActivity extends AppCompatActivity {
                                                     public void onSuccess(Pose pose) {
                                                         Calculator calculator = new Calculator();
                                                         float intermalleolarResult = calculator.getIntermalleolarResult(pose);
-                                                        calculator.intermalleolarDist = calculator.intermalleolarScore(intermalleolarResult);
-                                                        TextView intermalleolarResultView = findViewById(R.id.intermalleolarScore);
-                                                        intermalleolarResultView.setText(String.valueOf(calculator.intermalleolarDist));
+                                                        calculator.intermalleolarScore = calculator.intermalleolarScore(intermalleolarResult);
+                                                        Log.d("INTERMALLEOLAR DISTANCE",String.valueOf(intermalleolarResult));
+                                                        Log.d("INTERMALLEOLAR SCORE",String.valueOf(calculator.intermalleolarScore));
                                                     }
                                                 })
                                         .addOnFailureListener(
@@ -100,19 +98,6 @@ public class IntermalleolarActivity extends AppCompatActivity {
     public void onClickIntermalleolarUpload(View view) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         getImageTragular.launch(intent);
-    }
-
-    public void onSubmitAnkleToKneeClick(View view){
-        try{
-            int ankleToKneeValue = Integer.parseInt(ankleToKneeText.getText().toString());
-            SharedPreferences.Editor editor = sp.edit();
-            editor.putInt("ankleToKnee",ankleToKneeValue);
-            editor.apply();
-            Calculator.ankleToKnee = ankleToKneeValue;
-            toastMessage("Lengths Submitted");
-        } catch(NumberFormatException e){
-            toastMessage("Please input a valid length");
-        }
     }
 
     public void onIntermalleolarNextClick(View view){

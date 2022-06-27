@@ -42,80 +42,21 @@
         app:layout_constraintHorizontal_bias="0.86"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.881" />
-
-    <Button
-        android:id="@+id/btnSubmit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:onClick="onSubmitAnkleToKneeClick"
-        android:text="Submit Length"
-        app:backgroundTint="#0C0C0C"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.78" />
+        app:layout_constraintVertical_bias="0.88" />
 
     <Button
         android:id="@+id/btnIntermalleolarUpload"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="52dp"
+        android:layout_marginBottom="88dp"
         android:onClick="onClickIntermalleolarUpload"
         android:text="@string/upload_picture"
         app:backgroundTint="#090909"
-        app:layout_constraintBottom_toBottomOf="@+id/btnSubmit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btnSubmit"
-        app:layout_constraintTop_toTopOf="@+id/btnSubmit"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <EditText
-        android:id="@+id/ankleToKneeText"
-        android:layout_width="126dp"
-        android:layout_height="44dp"
-        android:ems="10"
-        android:hint="@string/enter_length"
-        android:inputType="numberDecimal"
-        android:minHeight="48dp"
-        android:textColorHint="#757575"
-        app:layout_constraintBottom_toBottomOf="@+id/ankleToKneeLengthText"
-        app:layout_constraintStart_toEndOf="@+id/ankleToKneeLengthText"
-        app:layout_constraintTop_toTopOf="@+id/ankleToKneeLengthText"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <TextView
-        android:id="@+id/intermalleolarScore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Intermalleolar Distance Score:"
-        app:layout_constraintEnd_toEndOf="@+id/ankleToKneeLengthText"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/ankleToKneeLengthText"
-        app:layout_constraintTop_toBottomOf="@+id/ankleToKneeLengthText" />
-
-    <TextView
-        android:id="@+id/intermalleolarScoreValue"
-        android:layout_width="82dp"
-        android:layout_height="19dp"
-        android:layout_marginStart="4dp"
-        app:layout_constraintBottom_toBottomOf="@+id/intermalleolarScore"
-        app:layout_constraintStart_toEndOf="@+id/intermalleolarScore"
-        app:layout_constraintTop_toTopOf="@+id/intermalleolarScore"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/ankleToKneeLengthText"
-        android:layout_width="138dp"
-        android:layout_height="29dp"
-        android:layout_marginStart="16dp"
-        android:text="Ankle to Knee Length:"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.65" />
+        app:layout_constraintEnd_toStartOf="@+id/btnIntermalleolarNext"
+        app:layout_constraintTop_toTopOf="@+id/btnIntermalleolarNext"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
         android:id="@+id/intermalleolarExample"
@@ -127,5 +68,18 @@
         app:layout_constraintTop_toTopOf="@+id/ankleToKneeExample"
         app:layout_constraintVertical_bias="0.0"
         tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/intermalleolarExplanation"
+        android:layout_width="332dp"
+        android:layout_height="282dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/intermalleolar_explanation"
+        app:layout_constraintBottom_toTopOf="@+id/btnIntermalleolarUpload"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ankleToKneeExample"
+        app:layout_constraintVertical_bias="0.395" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

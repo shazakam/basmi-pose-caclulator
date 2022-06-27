@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".InputLengthsActivity">
+
+    <EditText
+        android:id="@+id/ankleToKneeLengthsText"
+        android:layout_width="144dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="12dp"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        app:layout_constraintBottom_toBottomOf="@+id/ankleToKnee"
+        app:layout_constraintStart_toEndOf="@+id/ankleToKnee"
+        app:layout_constraintTop_toTopOf="@+id/ankleToKnee" />
+
+    <EditText
+        android:id="@+id/indexToWristLengthsText"
+        android:layout_width="144dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="12dp"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        app:layout_constraintBottom_toBottomOf="@+id/indexToWrist"
+        app:layout_constraintStart_toEndOf="@+id/indexToWrist"
+        app:layout_constraintTop_toTopOf="@+id/indexToWrist"
+        app:layout_constraintVertical_bias="0.538" />
+
+    <TextView
+        android:id="@+id/inputLengthsTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="104dp"
+        android:text="Input Your Measurements below"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/indexToWrist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="152dp"
+        android:text="Index to Wrist Length"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/indexToElbowLengthsText"
+        android:layout_width="144dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="12dp"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        app:layout_constraintBottom_toBottomOf="@+id/indexToElbow"
+        app:layout_constraintStart_toEndOf="@+id/indexToElbow"
+        app:layout_constraintTop_toTopOf="@+id/indexToElbow" />
+
+    <TextView
+        android:id="@+id/indexToElbow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="64dp"
+        android:text="Index to Elbow Length"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/indexToWrist" />
+
+    <TextView
+        android:id="@+id/ankleToKnee"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="64dp"
+        android:text="Ankle to Knee Length"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/indexToElbow" />
+
+    <Button
+        android:id="@+id/nextInputLengths"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="44dp"
+        android:layout_marginBottom="92dp"
+        android:onClick="onNextLengthsClick"
+        android:text="Next"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/submitLengths"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="92dp"
+        android:onClick="onSubmitLengthsClick"
+        android:text="Submit Lengths"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ankleToKnee" />
+</androidx.constraintlayout.widget.ConstraintLayout>

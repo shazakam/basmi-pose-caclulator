@@ -71,36 +71,13 @@
         android:layout_width="340dp"
         android:layout_height="68dp"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="68dp"
         android:layout_marginEnd="12dp"
-        android:layout_marginBottom="8dp"
         android:text="@string/lumbar_explanation"
-        app:layout_constraintBottom_toTopOf="@+id/lumbarScore"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lumbarNeutralExample"
-        app:layout_constraintVertical_bias="0.792" />
-
-    <TextView
-        android:id="@+id/lumbarScoreValue"
-        android:layout_width="125dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="28dp"
-        app:layout_constraintBottom_toBottomOf="@+id/lumbarScore"
-        app:layout_constraintStart_toEndOf="@+id/lumbarScore"
-        app:layout_constraintTop_toTopOf="@+id/lumbarScore" />
-
-    <TextView
-        android:id="@+id/lumbarScore"
-        android:layout_width="211dp"
-        android:layout_height="24dp"
-        android:layout_marginBottom="24dp"
-        android:text="Final Lumbar Side Flexion Score:"
-        app:layout_constraintBottom_toTopOf="@+id/btnNeutralLumbarUpload"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.08"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/lumbarNeutralExample" />
 
     <Button
         android:id="@+id/btnNeutralLumbarUpload"

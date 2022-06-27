@@ -22,6 +22,8 @@
     <string name="tragus_to_wall_example">Tragus to wall example</string>
     <string name="next">Next</string>
     <string name="intermalleolar_distance">Intermalleolar Distance</string>
+    <string name="intermalleolar_explanation">Lie on a straight surface. Keeping knees and legs straight remaining in contact with the resting surface,
+    spread/take legs as far as possible. Take the photo facing the patient from the centre of their extension. Ensure their legs and upper body are visible in the photo.</string>
     <string name="enter_length">Enter Length</string>
     <string name="upload_picture">Upload Picture</string>
 </resources>

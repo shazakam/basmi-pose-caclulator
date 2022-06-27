@@ -19,7 +19,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -53,19 +52,10 @@ public class TragusActivity extends AppCompatActivity{
         //Initialising all the views, buttons and values
         leftButton = findViewById(R.id.btnLeftUploadTragus);
         rightButton = findViewById(R.id.btnRightUploadTragus);
-        indexToElbowText = findViewById(R.id.indexToElbowInput);
         leftTragular = 0;
         rightTragular = 0;
         btnClicked = -1;
 
-        //Used to store user data
-        sp = getSharedPreferences("userLengths",Context.MODE_PRIVATE);
-
-        //Checks to see if user already has data stored
-        if(sp.contains("indexToElbow") == true){
-            indexToElbowText.setText(String.valueOf(sp.getInt("indexToElbow",-1)));
-            Calculator.indexToElbow = sp.getInt("indexToElbow",-1);
-        }
     }
 
     //This tells what getImage should do with the result from the intent
@@ -89,13 +79,13 @@ public class TragusActivity extends AppCompatActivity{
 
                         //This if-else statement is just used for pre-loaded images and will be removed for when photos need to be uploaded
                         if(btnClicked == 0){
-                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.sinead_left_tragular);
+                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.anna_left_tragular_4);
                             inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
                             ImageView imageView = findViewById(R.id.elbowToIndexView);
                             imageView.setImageBitmap(selectedImageBitmap);
                         }
                         else{
-                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.sinead_right_tragular);
+                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.anna_right_tragular_1);
                             inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
                             ImageView imageView = findViewById(R.id.elbowToIndexView);
                             imageView.setImageBitmap(selectedImageBitmap);
@@ -137,9 +127,7 @@ public class TragusActivity extends AppCompatActivity{
                                                         if(extremeCaseEliminator()){
                                                             Log.d("FINAL AVERAGE", String.valueOf((leftTragular+rightTragular)/2));
                                                             Log.d("FINAL TRAGULAR SCORE", String.valueOf(calculator.tragularScore((leftTragular+rightTragular)/2)));
-                                                            Calculator.tragusToWallDist =  calculator.tragularScore((leftTragular+rightTragular)/2);
-                                                            TextView tragularScoreView = findViewById(R.id.tragularScoreValue);
-                                                            tragularScoreView.setText(String.valueOf(Calculator.tragusToWallDist));
+                                                            Calculator.tragusToWallScore =  calculator.tragularScore((leftTragular+rightTragular)/2);
                                                         }
                                                     }
                                                 })
@@ -203,21 +191,6 @@ public class TragusActivity extends AppCompatActivity{
         getImageTragular.launch(intent);
     }
 
-    public void onSubmitClick(View view){
-        try{
-            int indexToElbowValue = Integer.parseInt(indexToElbowText.getText().toString());
-            SharedPreferences.Editor editor = sp.edit();
-            editor.putInt("indexToElbow",indexToElbowValue);
-            editor.apply();
-            Calculator.indexToElbow = indexToElbowValue;
-            toastMessage("Lengths Submitted");
-
-        } catch(NumberFormatException e){
-            toastMessage("Please input a valid length");
-        }
-
-    }
-
     public void onTragusNextClick(View view){
         Intent intent = new Intent(this, LumbarActivity.class);
         startActivity(intent);
@@ -226,13 +199,11 @@ public class TragusActivity extends AppCompatActivity{
     public void onRetakeClick(View view){
         leftTragular = 0;
         rightTragular = 0;
-        Calculator.tragusToWallDist = 0;
+        Calculator.tragusToWallScore = 0;
         leftButton.setEnabled(true);
         leftButton.setBackgroundColor(Color.BLACK);
         rightButton.setEnabled(true);
         rightButton.setBackgroundColor(Color.BLACK);
-        TextView tragularScoreView = findViewById(R.id.tragularScoreValue);
-        tragularScoreView.setText(String.valueOf(0));
     }
 
     public void toastMessage(String message){
