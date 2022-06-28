@@ -23,7 +23,12 @@
     <string name="next">Next</string>
     <string name="intermalleolar_distance">Intermalleolar Distance</string>
     <string name="intermalleolar_explanation">Lie on a straight surface. Keeping knees and legs straight remaining in contact with the resting surface,
-    spread/take legs as far as possible. Take the photo facing the patient from the centre of their extension. Ensure their legs and upper body are visible in the photo.</string>
+    spread/take legs as far as possible. Take the photo facing the patient from the centre of their extension. Ensure their legs, upper body and
+        feet are visible in the photo.</string>
     <string name="enter_length">Enter Length</string>
     <string name="upload_picture">Upload Picture</string>
+    <string name="cervical_explanation">For the neutral photo look directly into the camera with you body as relaxed as possible. For the right position, turn your head as 
+    far as possible to your right and have you picture taken. For the left position, turn your head as far as possible to your left and have your picture taken. Ensure your ears, shoulders
+    and entire face is visible in all photos and that they are taken from the same distance and position.</string>
+    <string name="thank_you">Thank You for participating! Please give the phone back to the researcher</string>
 </resources>

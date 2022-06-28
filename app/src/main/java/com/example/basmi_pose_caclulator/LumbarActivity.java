@@ -134,7 +134,11 @@ public class LumbarActivity extends AppCompatActivity {
                                                             rightResult = calculator.lumbarResult(1,pose,rightNeutralCoordinate);
                                                         }
 
-                                                        if((!leftBtn.isEnabled()) && (!rightBtn.isEnabled()) && (!neutralBtn.isEnabled())){
+                                                        if(extremeCaseEliminator()){
+                                                            Calculator.lumbarLeftElbow = (float) leftResult[0];
+                                                            Calculator.lumbarRightElbow = (float) rightResult[0];
+                                                            Calculator.lumbarLeftWrist = (float) leftResult[1];
+                                                            Calculator.lumbarRightWrist = (float) rightResult[1];
                                                             double lumbarAverageElbow  = (rightResult[0]+leftResult[0])/2;
                                                             double lumbarAverageWrist = (rightResult[1]+leftResult[1])/2;
                                                             Log.d("FINAL LUMBAR ELBOW",String.valueOf(lumbarAverageElbow));
@@ -159,6 +163,35 @@ public class LumbarActivity extends AppCompatActivity {
             }
     );
 
+    public boolean extremeCaseEliminator(){
+        try{
+            if(leftResult[0] >= 50 || leftResult[1] >= 50 || rightResult[0] >= 50 || rightResult[1] >= 50){
+                toastMessage("Image result faulty, reload image again please");
+
+                if((leftResult[0] >= 50 || leftResult[1] >= 50)&&(rightResult[0] >= 50 || rightResult[1] >= 50)){
+                    leftBtn.setEnabled(true);
+                    leftBtn.setBackgroundColor(Color.BLACK);
+                    rightBtn.setEnabled(true);
+                    rightBtn.setBackgroundColor(Color.BLACK);
+                }
+                else if(leftResult[0] >= 50 || leftResult[1] >= 50){
+                    leftBtn.setEnabled(true);
+                    leftBtn.setBackgroundColor(Color.BLACK);
+                }
+                else{
+                    rightBtn.setEnabled(true);
+                    rightBtn.setBackgroundColor(Color.BLACK);
+                }
+                lumbarPoseDetector.close();
+                return false;
+            }
+            else{
+                return true;
+            }
+        }catch (Exception e){
+            return false;
+        }
+    }
 
 
     /*BUTTONS*/

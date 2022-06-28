@@ -113,6 +113,10 @@ public class TragusActivity extends AppCompatActivity{
 
                                                         if(extremeCaseEliminator()){
                                                             try{
+                                                                Calculator.tragularLeftElbow = (float) leftTragular[0];
+                                                                Calculator.tragularRightElbow = (float) rightTragular[0];
+                                                                Calculator.tragularLeftWrist = (float) leftTragular[1];
+                                                                Calculator.tragularRightWrist = (float) rightTragular[1];
                                                                 Log.d("FINAL ELBOW AVERAGE", String.valueOf((leftTragular[0]+rightTragular[0])/2));
                                                                 Log.d("FINAL WRIST AVERAGE", String.valueOf((leftTragular[1]+rightTragular[1])/2));
                                                                 Log.d("FINAL ELBOW SCORE", String.valueOf(calculator.tragularScore((leftTragular[0]+rightTragular[0])/2)));
@@ -164,7 +168,7 @@ public class TragusActivity extends AppCompatActivity{
                 return true;
             }
         }catch (Exception e){
-            return true;
+            return false;
         }
     }
     /*BUTTONS*/

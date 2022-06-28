@@ -9,15 +9,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -29,7 +28,9 @@ import com.google.mlkit.vision.pose.PoseDetection;
 import com.google.mlkit.vision.pose.PoseDetector;
 import com.google.mlkit.vision.pose.accurate.AccuratePoseDetectorOptions;
 
+
 public class IntermalleolarActivity extends AppCompatActivity {
+    Button intermalleolarUploadBtn;
     PoseDetector intermalleolarPoseDetector;
     AccuratePoseDetectorOptions options = new AccuratePoseDetectorOptions.Builder()
             .setDetectorMode(AccuratePoseDetectorOptions.SINGLE_IMAGE_MODE)
@@ -39,9 +40,10 @@ public class IntermalleolarActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intermalleolar);
+        intermalleolarUploadBtn = findViewById(R.id.btnIntermalleolarUpload);
     }
 
-    ActivityResultLauncher<Intent> getImageTragular = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+    ActivityResultLauncher<Intent> getImageIntermalleolar = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 //What should be done once the result from the intent has been received
@@ -61,7 +63,7 @@ public class IntermalleolarActivity extends AppCompatActivity {
                         intermalleolarPoseDetector = PoseDetection.getClient(options);
                         Bitmap selectedImageBitmap;
                         InputImage inputImage;
-                        selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.anna_intermalleolar_4);
+                        selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.anna_intermalleolar_1);
                         inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
                         //ImageView imageView = findViewById(R.id.);
                         //imageView.setImageBitmap(selectedImageBitmap);
@@ -74,6 +76,7 @@ public class IntermalleolarActivity extends AppCompatActivity {
                                                     public void onSuccess(Pose pose) {
                                                         Calculator calculator = new Calculator();
                                                         float intermalleolarResult = calculator.getIntermalleolarResult(pose);
+                                                        Calculator.intermalleolarDistance = intermalleolarResult;
                                                         calculator.intermalleolarScore = calculator.intermalleolarScore(intermalleolarResult);
                                                         Log.d("INTERMALLEOLAR DISTANCE",String.valueOf(intermalleolarResult));
                                                         Log.d("INTERMALLEOLAR SCORE",String.valueOf(calculator.intermalleolarScore));
@@ -93,8 +96,10 @@ public class IntermalleolarActivity extends AppCompatActivity {
     );
 
     public void onClickIntermalleolarUpload(View view) {
+        intermalleolarUploadBtn.setBackgroundColor(Color.GREEN);
+        intermalleolarUploadBtn.setEnabled(false);
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        getImageTragular.launch(intent);
+        getImageIntermalleolar.launch(intent);
     }
 
     public void onIntermalleolarNextClick(View view){

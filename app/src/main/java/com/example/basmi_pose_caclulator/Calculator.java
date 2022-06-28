@@ -12,6 +12,31 @@ public class Calculator {
     static int ankleToKnee = 0;
     static int indexToWrist = 0;
 
+    //Tragular Measurements
+        //Tragular ELBOW
+        static float tragularLeftElbow = 0;
+        static float tragularRightElbow = 0;
+        //Tragular WRIST
+        static float tragularLeftWrist = 0;
+        static float tragularRightWrist = 0;
+
+    //Lumbar Measurements
+        //Lumbar ELBOW
+        static float lumbarLeftElbow = 0;
+        static float lumbarRightElbow = 0;
+        //Lumbar WRIST
+        static float lumbarLeftWrist = 0;
+        static float lumbarRightWrist = 0;
+
+    //Intermalleolar Measurements
+    static float intermalleolarDistance = 0;
+
+    //Cervical Measurements
+    static float cervicalLeftRotation = 0;
+    static float cervicalRightRotation = 0;
+
+    //Lumbar Side Flexion Measurements
+
     //Final results obtained from each activity
     static int tragusToWallScore = 0;
     static int lumbarSideFlexionScore = 0;
@@ -156,7 +181,7 @@ public class Calculator {
         PointF rightAnkle = pose.getPoseLandmark(PoseLandmark.RIGHT_ANKLE).getPosition();
         PointF rightKnee = pose.getPoseLandmark(PoseLandmark.RIGHT_KNEE).getPosition();
 
-        float ratio = ankleToKnee/((getDistance(leftAnkle,leftKnee,1)+getDistance(rightAnkle,rightKnee,1))/2);
+        float ratio = ankleToKnee/((getDistance(leftAnkle,leftKnee,1)+getDistance(rightAnkle,rightKnee,1))/(float)1.52);
         finalIntermalleolarDist = getDistance(leftAnkle,rightAnkle,ratio);
 
         return finalIntermalleolarDist;
@@ -205,18 +230,30 @@ public class Calculator {
         return midPoint;
     }
 
-    public double getRotationOne(PointF midPoint, PointF neutralNoseCoord, PointF noseCoord){
-        float radius = getDistance(midPoint,neutralNoseCoord,1);
+    public double getRotationOne(float radius, PointF neutralNoseCoord, PointF noseCoord){
         float arc = getDistance(neutralNoseCoord,noseCoord,1);
-        double angle = Math.acos((2*Math.pow(radius,2)-Math.pow(arc,2))/(2*Math.pow(radius,2)));
+        double angle = Math.toDegrees(Math.acos((2*Math.pow(radius,2)-Math.pow(arc,2))/(2*Math.pow(radius,2))));
         return angle;
     }
 
-    public double getRotationTwo(PointF midPoint, PointF neutralNoseCoord, PointF noseCoord){
-        float radius = getDistance(midPoint,neutralNoseCoord,1);
+    /*NOTE TO SELF: ROTATION ONE SEEMS MOST PROMISING MAY UNDERESTIMATE ANGLE*/
+    public double getRotationTwo(float radius, PointF neutralNoseCoord, PointF noseCoord){
         float arc = getDistance(neutralNoseCoord,noseCoord,1);
-        double angle = (180*arc)/(Math.PI*radius);
-        return  angle;
+        double angle = (arc)/(2*Math.PI*radius);
+        return  Math.toDegrees(angle);
+    }
+
+    public double getRotationThree(PointF midPoint, PointF neutralNoseCoord, PointF noseCoord){
+        float xDirection = noseCoord.x - neutralNoseCoord.x;
+        float yDirection = noseCoord.y - neutralNoseCoord.y;
+        PointF newPoint = new PointF();
+        newPoint.set(midPoint.x + xDirection, midPoint.y + yDirection);
+
+        float midToNeutral = getDistance(midPoint,neutralNoseCoord,1);
+        float midToNew = getDistance(midPoint,newPoint,1);
+        float neutralToNew = getDistance(neutralNoseCoord,newPoint,1);
+        double cosineOfAngle = (Math.pow(midToNeutral,2) + Math.pow(midToNew,2) - Math.pow(neutralToNew,2))/(2*midToNeutral*midToNew);
+        return Math.toDegrees(Math.acos(cosineOfAngle));
     }
 
     public float getCervicalRotationScore(float rotationAverage){

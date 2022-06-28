@@ -14,6 +14,12 @@
         android:theme="@style/Theme.Basmiposecaclulator"
         tools:targetApi="31">
         <activity
+            android:name=".EndActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LumbarFlexionActivity"
+            android:exported="false" />
+        <activity
             android:name=".InputLengthsActivity"
             android:exported="false" />
         <activity
