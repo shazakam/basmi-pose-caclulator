@@ -77,9 +77,9 @@ public class IntermalleolarActivity extends AppCompatActivity {
                                                         Calculator calculator = new Calculator();
                                                         float intermalleolarResult = calculator.getIntermalleolarResult(pose);
                                                         Calculator.intermalleolarDistance = intermalleolarResult;
-                                                        calculator.intermalleolarScore = calculator.intermalleolarScore(intermalleolarResult);
+                                                        Calculator.intermalleolarScore = calculator.intermalleolarScore(intermalleolarResult);
                                                         Log.d("INTERMALLEOLAR DISTANCE",String.valueOf(intermalleolarResult));
-                                                        Log.d("INTERMALLEOLAR SCORE",String.valueOf(calculator.intermalleolarScore));
+                                                        Log.d("INTERMALLEOLAR SCORE",String.valueOf(Calculator.intermalleolarScore));
                                                     }
                                                 })
                                         .addOnFailureListener(

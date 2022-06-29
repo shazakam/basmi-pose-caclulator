@@ -20,8 +20,8 @@ public class InputLengthsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input_lengths);
-        sp = getSharedPreferences("userLengths", Context.MODE_PRIVATE);
 
+        sp = getSharedPreferences("userLengths", Context.MODE_PRIVATE);
         indexToElbowLengthsText = findViewById(R.id.indexToElbowLengthsText);
         indexToWristLengthsText = findViewById(R.id.indexToWristLengthsText);
         ankleToKneeLengthstext = findViewById(R.id.ankleToKneeLengthsText);
@@ -41,6 +41,10 @@ public class InputLengthsActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * @param view
+     * Submits users measured lengths or prompts them to enter valid input in case of failure
+     */
     public void onSubmitLengthsClick(View view){
             try{
                 int indexToElbowValue = Integer.parseInt(indexToElbowLengthsText.getText().toString());

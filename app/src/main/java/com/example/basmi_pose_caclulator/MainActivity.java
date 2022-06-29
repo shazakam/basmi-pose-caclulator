@@ -16,7 +16,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
-    //When button is clicked it sends to the application to ImageActivity
     public void onTitleClick(View view){
             Intent intent = new Intent(this, InputLengthsActivity.class);
             startActivity(intent);

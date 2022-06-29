@@ -43,7 +43,6 @@ public class CervicalActivity extends AppCompatActivity {
                     .setDetectorMode(AccuratePoseDetectorOptions.SINGLE_IMAGE_MODE)
                     .build();
     int btnClicked;
-    PointF earCoord;
     PointF neutralNoseCoord;
     float radius;
 
@@ -95,9 +94,7 @@ public class CervicalActivity extends AppCompatActivity {
                                                                 leftBtn.setBackgroundColor(Color.GREEN);
                                                                 leftBtn.setEnabled(false);
                                                                 PointF noseCoord = pose.getPoseLandmark(PoseLandmark.NOSE).getPosition();
-
                                                                 leftResult = (float) calculator.getRotationOne(radius,neutralNoseCoord,noseCoord);
-
                                                                 Log.d("LEFT RESULT",String.valueOf(leftResult));
                                                             }catch(Exception e){
                                                                 toastMessage("ENTER NEUTRAL POSITION");
@@ -110,7 +107,7 @@ public class CervicalActivity extends AppCompatActivity {
                                                             PointF leftEarCoord = pose.getPoseLandmark(PoseLandmark.LEFT_EAR).getPosition();
                                                             PointF rightEarCoord = pose.getPoseLandmark(PoseLandmark.RIGHT_EAR).getPosition();
                                                             neutralNoseCoord = pose.getPoseLandmark(PoseLandmark.NOSE).getPosition();
-                                                            radius = (calculator.getDistance(leftEarCoord,neutralNoseCoord,1)+calculator.getDistance(rightEarCoord,neutralNoseCoord,1))/2;
+                                                            radius = (Calculator.getDistance(leftEarCoord,neutralNoseCoord,1)+Calculator.getDistance(rightEarCoord,neutralNoseCoord,1))/2;
                                                             Log.d("NEUTRAL NOSE",String.valueOf(neutralNoseCoord));
                                                         }
                                                         else{
@@ -125,15 +122,15 @@ public class CervicalActivity extends AppCompatActivity {
                                                                 toastMessage("ENTER NEUTRAL POSITION");
                                                             }
                                                         }
-
+                                                        //NEED TO IMPLEMENT EXTREME CASE ELIMINATOR HERE
                                                         if((!leftBtn.isEnabled()) && (!rightBtn.isEnabled()) && (!neutralBtn.isEnabled())){
                                                             float cervicalAverage  = (rightResult+leftResult)/2;
                                                             Calculator.cervicalLeftRotation = leftResult;
                                                             Calculator.cervicalRightRotation = rightResult;
                                                             Log.d("FINAL CERVICAL ROTATION",String.valueOf(cervicalAverage));
 
-                                                            calculator.cervicalRotationScore = calculator.getCervicalRotationScore(cervicalAverage);
-                                                            Log.d("FINAL CERVICAL SCORE",String.valueOf(calculator.cervicalRotationScore));
+                                                            Calculator.cervicalRotationScore = calculator.getCervicalRotationScore(cervicalAverage);
+                                                            Log.d("FINAL CERVICAL SCORE",String.valueOf(Calculator.cervicalRotationScore));
                                                         }
                                                         btnClicked = -2;
                                                     }
@@ -154,7 +151,6 @@ public class CervicalActivity extends AppCompatActivity {
     /*BUTTONS*/
     public void onClickCervicalUpload(View view){
         int btnId = view.getId();
-
         if(btnId == R.id.btnLeftCervicalUpload){
             btnClicked = -1;
             Log.d("BUTTON CLICKED","-1");

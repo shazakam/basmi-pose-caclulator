@@ -19,7 +19,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -36,8 +35,12 @@ public class LumbarActivity extends AppCompatActivity {
     Button neutralBtn;
     Button rightBtn;
     Button leftBtn;
-    double[] leftResult;
-    double[] rightResult;
+    /*The following two store the measured results for the right side and left side.
+    First the [0] position in both leftLumbar and rightLumbar is the result calculated
+    using the index to elbow length whilst [1] are the results calculated using the
+    index to wrist length as the reference.*/
+    double[] leftLumbar;
+    double[] rightLumbar;
     PoseDetector lumbarPoseDetector;
     AccuratePoseDetectorOptions options =
             new AccuratePoseDetectorOptions.Builder()
@@ -45,8 +48,6 @@ public class LumbarActivity extends AppCompatActivity {
                     .build();
     PointF leftNeutralCoordinate;
     PointF rightNeutralCoordinate;
-
-    //-1=left,0=neutral,1=right, any other number indicates no clicking
     int btnClicked;
 
     @Override
@@ -75,32 +76,24 @@ public class LumbarActivity extends AppCompatActivity {
                         Bitmap selectedImageBitmap = (Bitmap) extras.get("data");
                         InputImage inputImage = InputImage.fromBitmap(selectedImageBitmap,0);*/
 
-                        //ImageView imageView = findViewById(R.id.imageView);
-                        //imageView.setImageBitmap(selectedImageBitmap);
                         Bitmap selectedImageBitmap;
                         InputImage inputImage;
 
-                        //This if-else statement is just used for pre-loaded images and will be removed for when photos need to be uploaded
-                        //Left Clicked
+                        //Used for pre-loaded images and will be removed for when photos need to be uploaded
+                        //-1 means the left lumbar extension, 0 indicates the neutral position and 1 indicates the right lumbar extension
                         if(btnClicked == -1){
                             selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.george_left_flexion);
                             inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
-                            ImageView imageView = findViewById(R.id.lumbarNeutralExample);
-                            imageView.setImageBitmap(selectedImageBitmap);
                         }
                         //Neutral Clicked
                         else if(btnClicked == 0){
                             selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.george_neutral);
                             inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
-                            ImageView imageView = findViewById(R.id.lumbarNeutralExample);
-                            imageView.setImageBitmap(selectedImageBitmap);
                         }
                         //Right Clicked
                         else{
                             selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.george_right_flexion);
                             inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
-                            ImageView imageView = findViewById(R.id.lumbarNeutralExample);
-                            imageView.setImageBitmap(selectedImageBitmap);
                         }
 
                         Task<Pose> poseResult =
@@ -118,7 +111,7 @@ public class LumbarActivity extends AppCompatActivity {
                                                             Log.d("TRUE","BUTTON LEFT CLICKED");
                                                             leftBtn.setBackgroundColor(Color.GREEN);
                                                             leftBtn.setEnabled(false);
-                                                            leftResult = calculator.lumbarResult(-1,pose,leftNeutralCoordinate);
+                                                            leftLumbar = calculator.lumbarResult(-1,pose,leftNeutralCoordinate);
                                                         }
                                                         else if(btnClicked == 0){
                                                             Log.d("TRUE","BUTTON NEUTRAL CLICKED");
@@ -131,16 +124,16 @@ public class LumbarActivity extends AppCompatActivity {
                                                             Log.d("TRUE","BUTTON RIGHT CLICKED");
                                                             rightBtn.setBackgroundColor(Color.GREEN);
                                                             rightBtn.setEnabled(false);
-                                                            rightResult = calculator.lumbarResult(1,pose,rightNeutralCoordinate);
+                                                            rightLumbar = calculator.lumbarResult(1,pose,rightNeutralCoordinate);
                                                         }
 
                                                         if(extremeCaseEliminator()){
-                                                            Calculator.lumbarLeftElbow = (float) leftResult[0];
-                                                            Calculator.lumbarRightElbow = (float) rightResult[0];
-                                                            Calculator.lumbarLeftWrist = (float) leftResult[1];
-                                                            Calculator.lumbarRightWrist = (float) rightResult[1];
-                                                            double lumbarAverageElbow  = (rightResult[0]+leftResult[0])/2;
-                                                            double lumbarAverageWrist = (rightResult[1]+leftResult[1])/2;
+                                                            Calculator.lumbarLeftElbow = (float) leftLumbar[0];
+                                                            Calculator.lumbarRightElbow = (float) rightLumbar[0];
+                                                            Calculator.lumbarLeftWrist = (float) leftLumbar[1];
+                                                            Calculator.lumbarRightWrist = (float) rightLumbar[1];
+                                                            double lumbarAverageElbow  = (rightLumbar[0]+ leftLumbar[0])/2;
+                                                            double lumbarAverageWrist = (rightLumbar[1]+ leftLumbar[1])/2;
                                                             Log.d("FINAL LUMBAR ELBOW",String.valueOf(lumbarAverageElbow));
                                                             Log.d("FINAL LUMBAR WRIST",String.valueOf(lumbarAverageWrist));
 
@@ -163,18 +156,24 @@ public class LumbarActivity extends AppCompatActivity {
             }
     );
 
+    /**
+     * Checks to see if any clearly false/outlier results are being calculated and returns false
+     * if one of the uploaded images is faulty and resets the relevant button for the user to re-upload
+     * a photo.
+     * @return
+     */
     public boolean extremeCaseEliminator(){
+        float limit = 50;
         try{
-            if(leftResult[0] >= 50 || leftResult[1] >= 50 || rightResult[0] >= 50 || rightResult[1] >= 50){
+            if(leftLumbar[0] >= limit || leftLumbar[1] >= limit || rightLumbar[0] >= limit || rightLumbar[1] >= limit){
                 toastMessage("Image result faulty, reload image again please");
-
-                if((leftResult[0] >= 50 || leftResult[1] >= 50)&&(rightResult[0] >= 50 || rightResult[1] >= 50)){
+                if((leftLumbar[0] >= limit || leftLumbar[1] >= limit)&&(rightLumbar[0] >= limit || rightLumbar[1] >= limit)){
                     leftBtn.setEnabled(true);
                     leftBtn.setBackgroundColor(Color.BLACK);
                     rightBtn.setEnabled(true);
                     rightBtn.setBackgroundColor(Color.BLACK);
                 }
-                else if(leftResult[0] >= 50 || leftResult[1] >= 50){
+                else if(leftLumbar[0] >= limit || leftLumbar[1] >= limit){
                     leftBtn.setEnabled(true);
                     leftBtn.setBackgroundColor(Color.BLACK);
                 }

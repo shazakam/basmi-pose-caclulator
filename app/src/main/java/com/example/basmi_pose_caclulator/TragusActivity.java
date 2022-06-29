@@ -29,6 +29,10 @@ import com.google.mlkit.vision.pose.accurate.AccuratePoseDetectorOptions;
 public class TragusActivity extends AppCompatActivity{
     Button leftButton;
     Button rightButton;
+    /*The following two store the measured results for the right side and left side.
+    First the [0] position in both leftTragular and rightTragular is the result calculated
+    using the index to elbow length whilst [1] are the results calculated using the
+    index to wrist length as the reference.*/
     double[] leftTragular;
     double[] rightTragular;
     PoseDetector tragusPoseDetector;
@@ -55,7 +59,7 @@ public class TragusActivity extends AppCompatActivity{
     ActivityResultLauncher<Intent> getImageTragular = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
-                //What should be done once the result from the intent has been received
+
                 public void onActivityResult(ActivityResult result) {
 
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
@@ -70,7 +74,8 @@ public class TragusActivity extends AppCompatActivity{
                         Bitmap selectedImageBitmap;
                         InputImage inputImage;
 
-                        //This if-else statement is just used for pre-loaded images and will be removed for when photos need to be uploaded
+                        //Used for pre-loaded images and will be removed for when photos need to be uploaded
+                        //0 means the left side is being uploaded and 1 indicates the right side is being uploaded
                         if(btnClicked == 0){
                             selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.george_left_tragular_3);
                             inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
@@ -92,7 +97,6 @@ public class TragusActivity extends AppCompatActivity{
                                                     public void onSuccess(Pose pose) {
                                                         Calculator calculator = new Calculator();
                                                         if(btnClicked == 0){
-                                                            //UI Change, info to see what is being executed
                                                             leftButton.setBackgroundColor(Color.GREEN);
                                                             btnClicked = -1;
                                                             leftTragular = calculator.tragularResult(0,pose);
@@ -142,18 +146,24 @@ public class TragusActivity extends AppCompatActivity{
             }
     );
 
-    //Stops any ridiculous results being used
+    /**
+     * Checks to see if any clearly false/outlier results are being calculated and returns false
+     * if one of the uploaded images is faulty and resets the relevant button for the user to re-upload
+     * a photo.
+     * @return
+     */
     public boolean extremeCaseEliminator() {
+        float limit = 45;
         try{
-            if (leftTragular[0] >= 45 || leftTragular[1] >= 45 || rightTragular[0] >= 45 || rightTragular[1] >= 45) {
+            if (leftTragular[0] >= limit || leftTragular[1] >= limit || rightTragular[0] >= limit || rightTragular[1] >= limit) {
                 toastMessage("Image result faulty, reload image again please");
-                if ((leftTragular[0] >= 45 || leftTragular[1] >= 45) && (rightTragular[0] >= 45 || rightTragular[1] >= 45)) {
+                if ((leftTragular[0] >= limit || leftTragular[1] >= limit) && (rightTragular[0] >= limit || rightTragular[1] >= limit)) {
                     leftButton.setEnabled(true);
                     leftButton.setBackgroundColor(Color.BLACK);
                     rightButton.setEnabled(true);
                     rightButton.setBackgroundColor(Color.BLACK);
                 }
-                else if(leftTragular[0] >= 45 || leftTragular[1] >= 45){
+                else if(leftTragular[0] >= limit || leftTragular[1] >= limit){
                     leftButton.setEnabled(true);
                     leftButton.setBackgroundColor(Color.BLACK);
                 }
