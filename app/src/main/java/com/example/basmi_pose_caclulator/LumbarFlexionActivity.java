@@ -18,4 +18,6 @@ public class LumbarFlexionActivity extends AppCompatActivity {
         Intent intent = new Intent(this, EndActivity.class);
         startActivity(intent);
     }
+
+    /*NOT YET COMPLETED*/
 }

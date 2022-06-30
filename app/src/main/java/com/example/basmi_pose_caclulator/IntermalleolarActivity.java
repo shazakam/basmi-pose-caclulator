@@ -51,20 +51,19 @@ public class IntermalleolarActivity extends AppCompatActivity {
 
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                         //Initialises pose detector with desired options
-                        /*
+
                         intermalleolarPoseDetector = PoseDetection.getClient(options);
                         Bundle extras = result.getData().getExtras();
                         Bitmap selectedImageBitmap = (Bitmap) extras.get("data");
                         InputImage inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
-                        ImageView imageView = findViewById(R.id.ankleToKneeExample);
-                        imageView.setImageBitmap(selectedImageBitmap);*/
 
                         /*INTERMALLEOLAR PRE-DEFINED TEST CASES*/
+                        /*
                         intermalleolarPoseDetector = PoseDetection.getClient(options);
                         Bitmap selectedImageBitmap;
                         InputImage inputImage;
-                        selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.anna_intermalleolar_1);
-                        inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
+                        selectedImageBitmap = BitmapFactory.decodeResource(getResources(),ENTER DRAWABLE HERE);
+                        inputImage = InputImage.fromBitmap(selectedImageBitmap,0);*/
                         //ImageView imageView = findViewById(R.id.);
                         //imageView.setImageBitmap(selectedImageBitmap);
 

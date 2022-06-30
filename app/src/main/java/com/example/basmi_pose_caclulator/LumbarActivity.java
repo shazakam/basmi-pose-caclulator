@@ -71,30 +71,30 @@ public class LumbarActivity extends AppCompatActivity {
                         //Initialises pose detector with desired options
                         lumbarPoseDetector = PoseDetection.getClient(options);
                          //Taking Picture (Currently using predefined images)
-                        /*
+
                         Bundle extras = result.getData().getExtras();
                         Bitmap selectedImageBitmap = (Bitmap) extras.get("data");
-                        InputImage inputImage = InputImage.fromBitmap(selectedImageBitmap,0);*/
-
-                        Bitmap selectedImageBitmap;
-                        InputImage inputImage;
+                        InputImage inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
 
                         //Used for pre-loaded images and will be removed for when photos need to be uploaded
                         //-1 means the left lumbar extension, 0 indicates the neutral position and 1 indicates the right lumbar extension
+                        /*
+                        Bitmap selectedImageBitmap;
+                        InputImage inputImage;
                         if(btnClicked == -1){
-                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.george_left_flexion);
+                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),ENTER LEFT EXTENSION DRAWABLE HERE);
                             inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
                         }
                         //Neutral Clicked
                         else if(btnClicked == 0){
-                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.george_neutral);
+                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),ENTER NEUTRAL POSITION DRAWABLE HERE);
                             inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
                         }
                         //Right Clicked
                         else{
-                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.george_right_flexion);
+                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),ENTER RIGHT EXTENSION DRAWABLE HERE);
                             inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
-                        }
+                        }*/
 
                         Task<Pose> poseResult =
                                 lumbarPoseDetector.process(inputImage)
