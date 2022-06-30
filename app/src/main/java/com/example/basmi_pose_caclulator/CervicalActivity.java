@@ -18,7 +18,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -35,8 +34,8 @@ public class CervicalActivity extends AppCompatActivity {
     Button neutralBtn;
     Button rightBtn;
     Button leftBtn;
-    float leftResult;
-    float rightResult;
+    float leftRotation;
+    float rightRotation;
     PoseDetector cervicalPoseDetector;
     AccuratePoseDetectorOptions options =
             new AccuratePoseDetectorOptions.Builder()
@@ -83,9 +82,7 @@ public class CervicalActivity extends AppCompatActivity {
                                                 new OnSuccessListener<Pose>() {
                                                     @Override
                                                     public void onSuccess(Pose pose) {
-
-                                                        Calculator calculator = new Calculator();
-                                                        calculator.printPoses(pose);
+                                                        Calculator.printPoses(pose);
 
                                                         if(btnClicked == -1){
                                                             //UI Change, info to see what is being executed
@@ -94,8 +91,8 @@ public class CervicalActivity extends AppCompatActivity {
                                                                 leftBtn.setBackgroundColor(Color.GREEN);
                                                                 leftBtn.setEnabled(false);
                                                                 PointF noseCoord = pose.getPoseLandmark(PoseLandmark.NOSE).getPosition();
-                                                                leftResult = (float) calculator.getRotationOne(radius,neutralNoseCoord,noseCoord);
-                                                                Log.d("LEFT RESULT",String.valueOf(leftResult));
+                                                                leftRotation = (float) Calculator.getRotationOne(radius,neutralNoseCoord,noseCoord);
+                                                                Log.d("LEFT RESULT",String.valueOf(leftRotation));
                                                             }catch(Exception e){
                                                                 toastMessage("ENTER NEUTRAL POSITION");
                                                             }
@@ -116,20 +113,20 @@ public class CervicalActivity extends AppCompatActivity {
                                                                 rightBtn.setBackgroundColor(Color.GREEN);
                                                                 rightBtn.setEnabled(false);
                                                                 PointF noseCoord = pose.getPoseLandmark(PoseLandmark.NOSE).getPosition();
-                                                                rightResult = (float) calculator.getRotationOne(radius,neutralNoseCoord,noseCoord);
-                                                                Log.d("RIGHT RESULT",String.valueOf(rightResult));
+                                                                rightRotation = (float) Calculator.getRotationOne(radius,neutralNoseCoord,noseCoord);
+                                                                Log.d("RIGHT RESULT",String.valueOf(rightRotation));
                                                             }catch(Exception e){
                                                                 toastMessage("ENTER NEUTRAL POSITION");
                                                             }
                                                         }
                                                         //NEED TO IMPLEMENT EXTREME CASE ELIMINATOR HERE
-                                                        if((!leftBtn.isEnabled()) && (!rightBtn.isEnabled()) && (!neutralBtn.isEnabled())){
-                                                            float cervicalAverage  = (rightResult+leftResult)/2;
-                                                            Calculator.cervicalLeftRotation = leftResult;
-                                                            Calculator.cervicalRightRotation = rightResult;
+                                                        if(extremeCaseEliminator()){
+                                                            float cervicalAverage  = (rightRotation +leftRotation)/2;
+                                                            Calculator.cervicalLeftRotation = leftRotation;
+                                                            Calculator.cervicalRightRotation = rightRotation;
                                                             Log.d("FINAL CERVICAL ROTATION",String.valueOf(cervicalAverage));
 
-                                                            Calculator.cervicalRotationScore = calculator.getCervicalRotationScore(cervicalAverage);
+                                                            Calculator.cervicalRotationScore = Calculator.getCervicalRotationScore(cervicalAverage);
                                                             Log.d("FINAL CERVICAL SCORE",String.valueOf(Calculator.cervicalRotationScore));
                                                         }
                                                         btnClicked = -2;
@@ -148,6 +145,31 @@ public class CervicalActivity extends AppCompatActivity {
             }
     );
 
+    public boolean extremeCaseEliminator(){
+        float limit = 110;
+
+        try{
+            if(rightRotation > limit){
+                toastMessage("image faulty please try again");
+                rightBtn.setEnabled(true);
+                rightBtn.setBackgroundColor(Color.BLACK);
+                return false;
+            }
+            else if(leftRotation > limit){
+                toastMessage("Image faulty please try again");
+                leftBtn.setEnabled(true);
+                leftBtn.setBackgroundColor(Color.BLACK);
+                return false;
+            }
+            else{
+                return true;
+            }
+        }
+        catch(Exception e){
+            return false;
+        }
+    }
+
     /*BUTTONS*/
     public void onClickCervicalUpload(View view){
         int btnId = view.getId();
@@ -164,7 +186,7 @@ public class CervicalActivity extends AppCompatActivity {
             Log.d("BUTTON CLICKED","1");
         }
         else{
-            toastMessage("ERROR WITH BUTTON CHOSEN: " + String.valueOf(btnId));
+            toastMessage("ERROR WITH BUTTON CHOSEN: " + btnId);
             return;
         }
 
@@ -172,7 +194,7 @@ public class CervicalActivity extends AppCompatActivity {
         getImageCervical.launch(intent);
     }
 
-    public void onClickCervicalnext(View view){
+    public void onClickCervicalNext(View view){
         Intent intent = new Intent(this, LumbarFlexionActivity.class);
         startActivity(intent);
     }

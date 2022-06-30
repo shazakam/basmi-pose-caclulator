@@ -97,7 +97,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="72dp"
-        android:onClick="onClickCervicalnext"
+        android:onClick="onClickCervicalNext"
         android:text="Next"
         app:backgroundTint="#100F0F"
         app:layout_constraintBottom_toBottomOf="parent"

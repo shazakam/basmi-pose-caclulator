@@ -40,7 +40,7 @@ public class Calculator {
     //Final results obtained from each activity
     static int tragusToWallScore = 0;
     static int lumbarSideFlexionScore = 0;
-    static float cervicalRotationScore = 0;
+    static int cervicalRotationScore = 0;
     static int intermalleolarScore = 0;
 
     public Calculator(){
@@ -56,7 +56,7 @@ public class Calculator {
         return (float) ratio*finalVector.length();
     }
 
-    public double[] tragularResult(int buttonClicked, Pose pose){
+    public static double[] tragularResult(int buttonClicked, Pose pose){
         PointF indexPosition;
         PointF elbowPosition;
         PointF earPosition;
@@ -81,7 +81,7 @@ public class Calculator {
         return new double[]{getDistance(earPosition, indexPosition, ratioIndexElbow), getDistance(earPosition, indexPosition, ratioIndexWrist)};
     }
 
-    public int tragularScore(double tragularAverage){
+    public static int tragularScore(double tragularAverage){
         if(tragularAverage < 10){
             return 0;
         }
@@ -117,7 +117,7 @@ public class Calculator {
         }
     }
 
-    public double[] lumbarResult(int buttonClicked, Pose pose, PointF neutralCoord){
+    public static double[] lumbarResult(int buttonClicked, Pose pose, PointF neutralCoord){
         PointF indexCoord;
         PointF elbowCoord;
         PointF wristCoord;
@@ -137,7 +137,7 @@ public class Calculator {
         return new double[] {getDistance(neutralCoord,indexCoord,ratioIndexElbow),getDistance(neutralCoord,indexCoord,ratioIndexWrist)};
     }
 
-    public int lumbarScore(double lumbarAverage){
+    public static int lumbarScore(double lumbarAverage){
         if(lumbarAverage >= 20){
             return 0;
         }
@@ -174,7 +174,7 @@ public class Calculator {
     }
 
     //Is this one needed???
-    public float getIntermalleolarResult(Pose pose){
+    public static float getIntermalleolarResult(Pose pose){
         float finalIntermalleolarDist;
         PointF leftAnkle = pose.getPoseLandmark(PoseLandmark.LEFT_ANKLE).getPosition();
         PointF leftKnee = pose.getPoseLandmark(PoseLandmark.LEFT_KNEE).getPosition();
@@ -183,11 +183,10 @@ public class Calculator {
 
         float ratio = ankleToKnee/((getDistance(leftAnkle,leftKnee,1)+getDistance(rightAnkle,rightKnee,1))/(float)1.52);
         finalIntermalleolarDist = getDistance(leftAnkle,rightAnkle,ratio);
-
         return finalIntermalleolarDist;
     }
 
-    public int intermalleolarScore(float intermalleolarResult){
+    public static int intermalleolarScore(float intermalleolarResult){
         if(intermalleolarResult >= 120){
             return 0;
         }
@@ -230,7 +229,7 @@ public class Calculator {
         return midPoint;
     }
 
-    public double getRotationOne(float radius, PointF neutralNoseCoord, PointF noseCoord){
+    public static double getRotationOne(float radius, PointF neutralNoseCoord, PointF noseCoord){
         float arc = getDistance(neutralNoseCoord,noseCoord,1);
         double angle = Math.toDegrees(Math.acos((2*Math.pow(radius,2)-Math.pow(arc,2))/(2*Math.pow(radius,2))));
         return angle;
@@ -256,7 +255,7 @@ public class Calculator {
         return Math.toDegrees(Math.acos(cosineOfAngle));
     }
 
-    public float getCervicalRotationScore(float rotationAverage){
+    public static int getCervicalRotationScore(float rotationAverage){
         if(rotationAverage>= 85){
             return 0;
         }
@@ -292,7 +291,7 @@ public class Calculator {
         }
     }
 
-    public void printPoses(Pose pose){
+    public static void printPoses(Pose pose){
         for(PoseLandmark p:pose.getAllPoseLandmarks()){
             Log.d("LANDMARK "+String.valueOf(p.getLandmarkType()),"Position: " + String.valueOf(p.getPosition()) + " likelihood: "+String.valueOf(p.getInFrameLikelihood()));
         }

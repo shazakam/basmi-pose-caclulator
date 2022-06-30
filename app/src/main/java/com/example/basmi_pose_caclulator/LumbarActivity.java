@@ -102,16 +102,14 @@ public class LumbarActivity extends AppCompatActivity {
                                                 new OnSuccessListener<Pose>() {
                                                     @Override
                                                     public void onSuccess(Pose pose) {
-
-                                                        Calculator calculator = new Calculator();
-                                                        calculator.printPoses(pose);
+                                                        Calculator.printPoses(pose);
 
                                                         if(btnClicked == -1){
                                                             //UI Change, info to see what is being executed
                                                             Log.d("TRUE","BUTTON LEFT CLICKED");
                                                             leftBtn.setBackgroundColor(Color.GREEN);
                                                             leftBtn.setEnabled(false);
-                                                            leftLumbar = calculator.lumbarResult(-1,pose,leftNeutralCoordinate);
+                                                            leftLumbar = Calculator.lumbarResult(-1,pose,leftNeutralCoordinate);
                                                         }
                                                         else if(btnClicked == 0){
                                                             Log.d("TRUE","BUTTON NEUTRAL CLICKED");
@@ -124,7 +122,7 @@ public class LumbarActivity extends AppCompatActivity {
                                                             Log.d("TRUE","BUTTON RIGHT CLICKED");
                                                             rightBtn.setBackgroundColor(Color.GREEN);
                                                             rightBtn.setEnabled(false);
-                                                            rightLumbar = calculator.lumbarResult(1,pose,rightNeutralCoordinate);
+                                                            rightLumbar = Calculator.lumbarResult(1,pose,rightNeutralCoordinate);
                                                         }
 
                                                         if(extremeCaseEliminator()){
@@ -137,8 +135,8 @@ public class LumbarActivity extends AppCompatActivity {
                                                             Log.d("FINAL LUMBAR ELBOW",String.valueOf(lumbarAverageElbow));
                                                             Log.d("FINAL LUMBAR WRIST",String.valueOf(lumbarAverageWrist));
 
-                                                            calculator.lumbarSideFlexionScore = calculator.lumbarScore((lumbarAverageElbow+lumbarAverageWrist)/2);
-                                                            Log.d("FINAL LUMBAR SCORE",String.valueOf(calculator.lumbarSideFlexionScore));
+                                                            Calculator.lumbarSideFlexionScore = Calculator.lumbarScore((lumbarAverageElbow+lumbarAverageWrist)/2);
+                                                            Log.d("FINAL LUMBAR SCORE",String.valueOf(Calculator.lumbarSideFlexionScore));
                                                         }
                                                         btnClicked = -2;
                                                     }

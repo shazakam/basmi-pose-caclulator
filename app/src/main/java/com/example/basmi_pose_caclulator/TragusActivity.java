@@ -94,20 +94,20 @@ public class TragusActivity extends AppCompatActivity{
                                                 new OnSuccessListener<Pose>() {
                                                     @Override
                                                     public void onSuccess(Pose pose) {
-                                                        Calculator calculator = new Calculator();
+
                                                         if(btnClicked == 0){
                                                             leftButton.setBackgroundColor(Color.GREEN);
                                                             btnClicked = -1;
-                                                            leftTragular = calculator.tragularResult(0,pose);
+                                                            leftTragular = Calculator.tragularResult(0,pose);
                                                             leftButton.setEnabled(false);
-                                                            calculator.printPoses(pose);
+                                                            Calculator.printPoses(pose);
                                                         }
                                                         else if(btnClicked == 1){
                                                             rightButton.setBackgroundColor(Color.GREEN);
                                                             btnClicked = -1;
-                                                            rightTragular = calculator.tragularResult(1,pose);
+                                                            rightTragular = Calculator.tragularResult(1,pose);
                                                             rightButton.setEnabled(false);
-                                                            calculator.printPoses(pose);
+                                                            Calculator.printPoses(pose);
                                                         }
                                                         else{
                                                             toastMessage("ERROR");
@@ -122,9 +122,9 @@ public class TragusActivity extends AppCompatActivity{
                                                                 Calculator.tragularRightWrist = (float) rightTragular[1];
                                                                 Log.d("FINAL ELBOW AVERAGE", String.valueOf((leftTragular[0]+rightTragular[0])/2));
                                                                 Log.d("FINAL WRIST AVERAGE", String.valueOf((leftTragular[1]+rightTragular[1])/2));
-                                                                Log.d("FINAL ELBOW SCORE", String.valueOf(calculator.tragularScore((leftTragular[0]+rightTragular[0])/2)));
-                                                                Log.d("FINAL WRIST SCORE", String.valueOf(calculator.tragularScore((leftTragular[1]+rightTragular[1])/2)));
-                                                                Calculator.tragusToWallScore =  calculator.tragularScore((leftTragular[0]+leftTragular[1]+rightTragular[0]+rightTragular[1])/4);
+                                                                Log.d("FINAL ELBOW SCORE", String.valueOf(Calculator.tragularScore((leftTragular[0]+rightTragular[0])/2)));
+                                                                Log.d("FINAL WRIST SCORE", String.valueOf(Calculator.tragularScore((leftTragular[1]+rightTragular[1])/2)));
+                                                                Calculator.tragusToWallScore =  Calculator.tragularScore((leftTragular[0]+leftTragular[1]+rightTragular[0]+rightTragular[1])/4);
                                                                 Log.d("FINAL TRAGULAR SCORE", String.valueOf(Calculator.tragusToWallScore));
                                                             }catch(Exception e){
 
