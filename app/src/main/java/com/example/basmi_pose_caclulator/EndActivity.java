@@ -29,5 +29,8 @@ public class EndActivity extends AppCompatActivity {
 
         Log.d("CERVICAL LEFT",String.valueOf(Calculator.cervicalLeftRotation));
         Log.d("CERVICAL RIGHT",String.valueOf(Calculator.cervicalRightRotation));
+
+        Log.d("FLEXION LEFT",String.valueOf(Calculator.flexionLeft));
+        Log.d("FLEXION RIGHT",String.valueOf(Calculator.flexionRight));
     }
 }

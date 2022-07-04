@@ -1,5 +1,7 @@
 package com.example.basmi_pose_caclulator;
 
+import static java.lang.Math.atan2;
+
 import android.graphics.PointF;
 import android.util.Log;
 import com.google.mlkit.vision.pose.Pose;
@@ -36,6 +38,9 @@ public class Calculator {
     static float cervicalRightRotation = 0;
 
     //Lumbar Side Flexion Measurements
+    static float flexionLeft = 0;
+    static float flexionRight = 0;
+    static int flexionScore = 0;
 
     //Final results obtained from each activity
     static int tragusToWallScore = 0;
@@ -289,6 +294,91 @@ public class Calculator {
         else{
             return 10;
         }
+    }
+
+    public static double getFlexionResult(Pose pose, PointF neutralHip, PointF neutralShoulder, int btnClicked){
+        float segment = 1/20;
+        float ratio;
+        float xCoordVectAOne = segment*(neutralShoulder.x - neutralHip.x);
+        float yCoordVectAOne = segment*(neutralShoulder.y - neutralHip.y);
+        PointF pointAOne = new PointF();
+        pointAOne.set(neutralHip.x + xCoordVectAOne,neutralHip.y + yCoordVectAOne);
+        if(btnClicked == 1){
+            ratio = indexToElbow/getDistance(pose.getPoseLandmark(PoseLandmark.LEFT_INDEX).getPosition(),
+                    pose.getPoseLandmark(PoseLandmark.LEFT_ELBOW).getPosition(),1);
+            float xCoordVectATwo = segment*(pose.getPoseLandmark(PoseLandmark.LEFT_SHOULDER).getPosition().x -
+                    neutralHip.x);
+            float yCoordVectATwo = segment*(pose.getPoseLandmark(PoseLandmark.LEFT_SHOULDER).getPosition().y -
+                    neutralHip.y);
+            PointF pointATwo = new PointF();
+            pointATwo.set(neutralHip.x+xCoordVectATwo,neutralHip.y+yCoordVectATwo);
+            float theta = (float) getAngle(pointAOne,neutralHip,pointATwo);
+            double hipToB = (getDistance(neutralHip,neutralShoulder,1)/Math.cos(theta));
+            double nonConvertedDistance = hipToB - getDistance(neutralHip,pointATwo,1);
+            return ratio*nonConvertedDistance;
+        }
+        else{
+            ratio = indexToElbow/getDistance(pose.getPoseLandmark(PoseLandmark.RIGHT_INDEX).getPosition(),
+                    pose.getPoseLandmark(PoseLandmark.RIGHT_ELBOW).getPosition(),1);
+            float xCoordVectATwo = segment*(pose.getPoseLandmark(PoseLandmark.RIGHT_SHOULDER).getPosition().x -
+                    neutralHip.x);
+            float yCoordVectATwo = segment*(pose.getPoseLandmark(PoseLandmark.RIGHT_SHOULDER).getPosition().y -
+                    neutralHip.y);
+            PointF pointATwo = new PointF();
+            pointATwo.set(neutralHip.x+xCoordVectATwo,neutralHip.y+yCoordVectATwo);
+            float theta = (float) getAngle(pointAOne,neutralHip,pointATwo);
+            double hipToB = (getDistance(neutralHip,neutralShoulder,1)/Math.cos(theta));
+            double nonConvertedDistance = hipToB - getDistance(neutralHip,pointATwo,1);
+            return ratio*nonConvertedDistance;
+        }
+    }
+    public static int getFlexionScore(double flexionResult){
+        if(flexionResult > 7){
+            return 0;
+        }
+        else if(flexionResult <= 7 && flexionResult > 6.4){
+            return 1;
+        }
+        else if(flexionResult <= 6.4 && flexionResult > 5.7){
+            return 2;
+        }
+        else if(flexionResult <= 5.7 && flexionResult > 5){
+            return 3;
+        }
+        else if(flexionResult <= 5 && flexionResult > 4.3){
+            return 4;
+        }
+        else if(flexionResult <= 4.3 && flexionResult > 3.6){
+            return 5;
+        }
+        else if(flexionResult <= 3.6 && flexionResult > 2.9){
+            return 6;
+        }
+        else if(flexionResult <= 2.9 && flexionResult > 2.2){
+            return 7;
+        }
+        else if(flexionResult <= 2.2 && flexionResult > 1.5){
+            return 8;
+        }
+        else if(flexionResult <= 1.5 && flexionResult > 0.8){
+            return 9;
+        }
+        else{
+            return 10;
+        }
+    }
+
+    static double getAngle(PointF firstPoint, PointF midPoint, PointF lastPoint) {
+        double result =
+                Math.toDegrees(
+                        atan2(lastPoint.y - midPoint.y, lastPoint.x - midPoint.x)
+                                - atan2(firstPoint.y - midPoint.y, firstPoint.x - midPoint.x));
+
+        result = Math.abs(result); // Angle should never be negative
+        if (result > 180) {
+            result = (360.0 - result); // Always get the acute representation of the angle
+        }
+        return result;
     }
 
     public static void printPoses(Pose pose){

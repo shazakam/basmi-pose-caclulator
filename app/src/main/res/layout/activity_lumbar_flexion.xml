@@ -16,4 +16,50 @@
         android:text="@string/next"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/btnFlexionRightUpload"
+        android:layout_width="108dp"
+        android:layout_height="67dp"
+        android:layout_marginStart="36dp"
+        android:onClick="onBtnUploadClick"
+        android:text="Right Position"
+        app:layout_constraintBottom_toBottomOf="@+id/btnFlexionRightNeutralUpload"
+        app:layout_constraintStart_toEndOf="@+id/btnFlexionRightNeutralUpload"
+        app:layout_constraintTop_toTopOf="@+id/btnFlexionRightNeutralUpload"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/btnFlexionLeftUpload"
+        android:layout_width="108dp"
+        android:layout_height="67dp"
+        android:layout_marginStart="52dp"
+        android:onClick="onBtnUploadClick"
+        android:text="Left Position"
+        app:layout_constraintBottom_toBottomOf="@+id/btnFlexionLeftNeutralUpload"
+        app:layout_constraintStart_toEndOf="@+id/btnFlexionLeftNeutralUpload"
+        app:layout_constraintTop_toTopOf="@+id/btnFlexionLeftNeutralUpload"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/btnFlexionRightNeutralUpload"
+        android:layout_width="113dp"
+        android:layout_height="72dp"
+        android:layout_marginStart="68dp"
+        android:layout_marginBottom="336dp"
+        android:onClick="onBtnUploadClick"
+        android:text="Right Neutral Position"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnFlexionLeftNeutralUpload"
+        android:layout_width="116dp"
+        android:layout_height="71dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginBottom="144dp"
+        android:onClick="onBtnUploadClick"
+        android:text="Left Neutral Position"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
