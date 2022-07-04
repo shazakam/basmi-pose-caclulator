@@ -10,8 +10,8 @@
         android:id="@+id/onLumbarFlexionNextClick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="52dp"
-        android:layout_marginBottom="84dp"
+        android:layout_marginEnd="44dp"
+        android:layout_marginBottom="56dp"
         android:onClick="onLumbarFlexionNextClick"
         android:text="@string/next"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -19,21 +19,21 @@
 
     <Button
         android:id="@+id/btnFlexionRightUpload"
-        android:layout_width="108dp"
-        android:layout_height="67dp"
-        android:layout_marginStart="36dp"
+        android:layout_width="116dp"
+        android:layout_height="71dp"
+        android:layout_marginStart="56dp"
         android:onClick="onBtnUploadClick"
         android:text="Right Position"
         app:layout_constraintBottom_toBottomOf="@+id/btnFlexionRightNeutralUpload"
         app:layout_constraintStart_toEndOf="@+id/btnFlexionRightNeutralUpload"
         app:layout_constraintTop_toTopOf="@+id/btnFlexionRightNeutralUpload"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/btnFlexionLeftUpload"
-        android:layout_width="108dp"
-        android:layout_height="67dp"
-        android:layout_marginStart="52dp"
+        android:layout_width="116dp"
+        android:layout_height="71dp"
+        android:layout_marginStart="64dp"
         android:onClick="onBtnUploadClick"
         android:text="Left Position"
         app:layout_constraintBottom_toBottomOf="@+id/btnFlexionLeftNeutralUpload"
@@ -43,10 +43,10 @@
 
     <Button
         android:id="@+id/btnFlexionRightNeutralUpload"
-        android:layout_width="113dp"
-        android:layout_height="72dp"
-        android:layout_marginStart="68dp"
-        android:layout_marginBottom="336dp"
+        android:layout_width="116dp"
+        android:layout_height="71dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginBottom="224dp"
         android:onClick="onBtnUploadClick"
         android:text="Right Neutral Position"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -56,10 +56,42 @@
         android:id="@+id/btnFlexionLeftNeutralUpload"
         android:layout_width="116dp"
         android:layout_height="71dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginBottom="144dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginBottom="124dp"
         android:onClick="onBtnUploadClick"
         android:text="Left Neutral Position"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/lumbarFlexionExplanation"
+        android:layout_width="320dp"
+        android:layout_height="162dp"
+        android:layout_marginBottom="324dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/flexionNeutralExample"
+        android:layout_width="147dp"
+        android:layout_height="149dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginBottom="608dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageView
+        android:id="@+id/flexionExtensionExample"
+        android:layout_width="147dp"
+        android:layout_height="149dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/flexionNeutralExample"
+        app:layout_constraintStart_toEndOf="@+id/flexionNeutralExample"
+        app:layout_constraintTop_toTopOf="@+id/flexionNeutralExample"
+        app:layout_constraintVertical_bias="0.0"
+        tools:srcCompat="@tools:sample/avatars" />
 </androidx.constraintlayout.widget.ConstraintLayout>

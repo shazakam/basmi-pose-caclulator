@@ -43,10 +43,10 @@ public class LumbarFlexionActivity extends AppCompatActivity {
 
     PointF neutralLeftHip;
     PointF neutralLeftShoulder;
+    PointF aOneLeft;
     PointF neutralRightHip;
     PointF neutralRightShoulder;
-    double rightFlexionDistance;
-    double leftFlexionDistance;
+    PointF aOneRight;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,6 +111,7 @@ public class LumbarFlexionActivity extends AppCompatActivity {
                                                             Log.d("TRUE","BUTTON LEFT NEUTRAL CLICKED");
                                                             neutralLeftHip = pose.getPoseLandmark(PoseLandmark.LEFT_HIP).getPosition();
                                                             neutralLeftShoulder = pose.getPoseLandmark(PoseLandmark.LEFT_SHOULDER).getPosition();
+                                                            aOneLeft = pose.getPoseLandmark(PoseLandmark.LEFT_INDEX).getPosition();
                                                             neutralLeftBtn.setBackgroundColor(Color.GREEN);
                                                             neutralLeftBtn.setEnabled(false);
                                                         }
@@ -121,6 +122,7 @@ public class LumbarFlexionActivity extends AppCompatActivity {
                                                             neutralRightHip = pose.getPoseLandmark(PoseLandmark.RIGHT_HIP).getPosition();
                                                             neutralRightShoulder = pose.getPoseLandmark(PoseLandmark.RIGHT_SHOULDER).getPosition();
                                                             neutralRightBtn.setBackgroundColor(Color.GREEN);
+                                                            aOneRight = pose.getPoseLandmark(PoseLandmark.RIGHT_INDEX).getPosition();
                                                             neutralRightBtn.setEnabled(false);
                                                         }
                                                         //LEFT FLEXION
@@ -129,6 +131,11 @@ public class LumbarFlexionActivity extends AppCompatActivity {
                                                             leftFlexionBtn.setBackgroundColor(Color.GREEN);
                                                             leftFlexionBtn.setEnabled(false);
                                                             Calculator.flexionLeft = (float) Calculator.getFlexionResult(pose,neutralLeftHip,neutralLeftShoulder,1);
+                                                            Log.d("FlEXION L 1",String.valueOf(Calculator.getFlexionResult(pose,neutralLeftHip,neutralLeftShoulder,1)));
+                                                            Log.d("FLEXION L 2",String.valueOf(Calculator.getFlexionResultTwo(pose,aOneLeft,neutralLeftHip,1)));
+                                                            Log.d("FLEXION L 3",String.valueOf(Calculator.getFlexionResultThree(pose,neutralLeftHip,aOneLeft,1)));
+                                                            Log.d("FLEXION L 4",String.valueOf(Calculator.getFlexionResultFour(pose,neutralLeftHip,neutralLeftShoulder,1)));
+                                                            Log.d("FLEXION L 5",String.valueOf(Calculator.getFlexionResultFive(pose,neutralLeftHip,aOneLeft,1)));
                                                         }
                                                         //RIGHT FLEXION
                                                         else{
@@ -136,6 +143,11 @@ public class LumbarFlexionActivity extends AppCompatActivity {
                                                             rightFlexionBtn.setBackgroundColor(Color.GREEN);
                                                             rightFlexionBtn.setEnabled(false);
                                                             Calculator.flexionRight = (float) Calculator.getFlexionResult(pose,neutralRightHip,neutralRightShoulder,2);
+                                                            Log.d("FlEXION R 1",String.valueOf(Calculator.getFlexionResult(pose,neutralRightHip,neutralRightShoulder,2)));
+                                                            Log.d("FLEXION R 2",String.valueOf(Calculator.getFlexionResultTwo(pose,aOneRight,neutralRightHip,2)));
+                                                            Log.d("FLEXION R 3",String.valueOf(Calculator.getFlexionResultThree(pose,neutralRightHip,aOneRight,2)));
+                                                            Log.d("FLEXION R 4",String.valueOf(Calculator.getFlexionResultFour(pose,neutralRightHip,neutralRightShoulder,2)));
+                                                            Log.d("FLEXION R 5",String.valueOf(Calculator.getFlexionResultFive(pose,neutralRightHip,aOneRight,2)));
                                                         }
 
                                                         if(!(neutralRightBtn.isEnabled()) && !(neutralLeftBtn.isEnabled()) &&
@@ -158,12 +170,10 @@ public class LumbarFlexionActivity extends AppCompatActivity {
             }
     );
 
-
-    /*NOT YET COMPLETED*/
     public void onBtnUploadClick(View view){
         int btnId = view.getId();
 
-        if(btnId == R.id.btnFlexionLeftUpload){
+        if(btnId == R.id.btnFlexionLeftNeutralUpload){
             btnClicked = -1;
             Log.d("BUTTON CLICKED","-1");
         }
@@ -177,7 +187,7 @@ public class LumbarFlexionActivity extends AppCompatActivity {
         }
         else if(btnId == R.id.btnFlexionRightUpload){
             btnClicked = 2;
-            Log.d("BUTTON CLICKED","1");
+            Log.d("BUTTON CLICKED","2");
         }
         else{
             toastMessage("ERROR WITH BUTTON CHOSEN: " + String.valueOf(btnId));
