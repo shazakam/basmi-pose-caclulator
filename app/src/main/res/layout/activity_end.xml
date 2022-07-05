@@ -20,20 +20,12 @@
         android:id="@+id/printResults"
         android:layout_width="124dp"
         android:layout_height="64dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginBottom="84dp"
+        android:layout_marginStart="140dp"
+        android:layout_marginBottom="96dp"
         android:onClick="onClickPrintResults"
         android:text="Print"
+        app:backgroundTint="#0B0A0A"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/startOver"
-        android:layout_width="127dp"
-        android:layout_height="64dp"
-        android:layout_marginStart="16dp"
-        android:text="Next"
-        app:layout_constraintBottom_toBottomOf="@+id/printResults"
-        app:layout_constraintStart_toEndOf="@+id/printResults"
-        app:layout_constraintTop_toTopOf="@+id/printResults" />
 </androidx.constraintlayout.widget.ConstraintLayout>

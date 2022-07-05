@@ -41,6 +41,9 @@ public class LumbarActivity extends AppCompatActivity {
     index to wrist length as the reference.*/
     double[] leftLumbar;
     double[] rightLumbar;
+    ImageView exampleNeutralLumbar;
+    ImageView exampleRightLumbar;
+    ImageView exampleLeftLumbar;
     PoseDetector lumbarPoseDetector;
     AccuratePoseDetectorOptions options =
             new AccuratePoseDetectorOptions.Builder()
@@ -54,6 +57,19 @@ public class LumbarActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lumbar);
+
+        Bitmap neutralLumbarBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.louis_junk);
+        Bitmap rightLumbarBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.louis_junk);
+        Bitmap leftLumbarBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.louis_junk);
+
+        exampleNeutralLumbar = findViewById(R.id.lumbarNeutralExample);
+        exampleRightLumbar = findViewById(R.id.lumbarRightExample);
+        exampleLeftLumbar = findViewById(R.id.lumbarLeftExample);
+
+        exampleNeutralLumbar.setImageBitmap(neutralLumbarBitmap);
+        exampleRightLumbar.setImageBitmap(rightLumbarBitmap);
+        exampleLeftLumbar.setImageBitmap(leftLumbarBitmap);
+
         neutralBtn = findViewById(R.id.btnNeutralLumbarUpload);
         rightBtn = findViewById(R.id.btnRightLumbarUpload);
         leftBtn = findViewById(R.id.btnLeftLumbarUpload);

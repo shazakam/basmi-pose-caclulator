@@ -8,67 +8,68 @@
 
     <ImageView
         android:id="@+id/cervicalNeutralExample"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="80dp"
+        android:layout_width="170dp"
+        android:layout_height="165dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
 
     <ImageView
         android:id="@+id/cervicalRightExample"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="4dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/cervicalLeftExample"
+        android:layout_width="170dp"
+        android:layout_height="165dp"
+        app:layout_constraintBottom_toBottomOf="@+id/cervicalNeutralExample"
         app:layout_constraintStart_toEndOf="@+id/cervicalNeutralExample"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.118"
+        app:layout_constraintTop_toTopOf="@+id/cervicalNeutralExample"
+        app:layout_constraintVertical_bias="1.0"
         tools:srcCompat="@tools:sample/avatars" />
 
     <ImageView
         android:id="@+id/cervicalLeftExample"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="170dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="28dp"
+        app:layout_constraintEnd_toEndOf="@+id/cervicalRightExample"
+        app:layout_constraintHorizontal_bias="0.529"
+        app:layout_constraintStart_toStartOf="@+id/cervicalNeutralExample"
+        app:layout_constraintTop_toBottomOf="@+id/cervicalNeutralExample"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/cervicalDescription"
-        android:layout_width="342dp"
-        android:layout_height="104dp"
+        android:layout_width="345dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         android:text="@string/cervical_explanation"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cervicalNeutralExample"
-        app:layout_constraintVertical_bias="0.059" />
+        app:layout_constraintTop_toBottomOf="@+id/cervicalLeftExample" />
 
     <Button
         android:id="@+id/btnNeutralCervicalUpload"
         android:layout_width="115dp"
         android:layout_height="80dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginBottom="148dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="96dp"
         android:onClick="onClickCervicalUpload"
         android:text="Upload Neutral Position"
         app:backgroundTint="#0E0E0E"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cervicalDescription"
+        app:layout_constraintVertical_bias="0.763" />
 
     <Button
         android:id="@+id/btnRightCervicalUpload"
         android:layout_width="115dp"
         android:layout_height="80dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="10dp"
         android:onClick="onClickCervicalUpload"
         android:text="Upload Right position"
         app:backgroundTint="#131313"
@@ -96,24 +97,41 @@
         android:id="@+id/btnCervicalNext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="72dp"
+        android:layout_marginBottom="32dp"
         android:onClick="onClickCervicalNext"
         android:text="Next"
         app:backgroundTint="#100F0F"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.987"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.953"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnLeftCervicalUpload" />
 
     <TextView
-        android:id="@+id/cervicalTitle"
+        android:id="@+id/cervicalNeutralExampleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Cervical Rotation"
-        android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.04" />
+        android:text="Neutral Position"
+        app:layout_constraintEnd_toEndOf="@+id/cervicalNeutralExample"
+        app:layout_constraintHorizontal_bias="0.473"
+        app:layout_constraintStart_toStartOf="@+id/cervicalNeutralExample"
+        app:layout_constraintTop_toBottomOf="@+id/cervicalNeutralExample" />
+
+    <TextView
+        android:id="@+id/cervicalRightExampleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Right Position"
+        app:layout_constraintEnd_toEndOf="@+id/cervicalRightExample"
+        app:layout_constraintStart_toEndOf="@+id/cervicalNeutralExample"
+        app:layout_constraintTop_toBottomOf="@+id/cervicalRightExample" />
+
+    <TextView
+        android:id="@+id/cervicalLeftPosition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Left Position"
+        app:layout_constraintEnd_toEndOf="@+id/cervicalLeftExample"
+        app:layout_constraintStart_toStartOf="@+id/cervicalLeftExample"
+        app:layout_constraintTop_toBottomOf="@+id/cervicalLeftExample" />
 </androidx.constraintlayout.widget.ConstraintLayout>

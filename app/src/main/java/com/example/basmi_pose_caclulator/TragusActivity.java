@@ -29,6 +29,8 @@ import com.google.mlkit.vision.pose.accurate.AccuratePoseDetectorOptions;
 public class TragusActivity extends AppCompatActivity{
     Button leftButton;
     Button rightButton;
+    ImageView leftTragularExample;
+    ImageView rightTragularExample;
     /*The following two store the measured results for the right side and left side.
     First the [0] position in both leftTragular and rightTragular is the result calculated
     using the index to elbow length whilst [1] are the results calculated using the
@@ -46,6 +48,12 @@ public class TragusActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tragus);
+        leftTragularExample = findViewById(R.id.tragularLeftExample);
+        rightTragularExample = findViewById(R.id.tragularRightExample);
+        Bitmap leftTragularBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.louis_junk);
+        Bitmap rightTragularBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.louis_junk);
+        leftTragularExample.setImageBitmap(leftTragularBitmap);
+        rightTragularExample.setImageBitmap(rightTragularBitmap);
 
         //Initialising all the views, buttons and values
         leftButton = findViewById(R.id.btnLeftUploadTragus);
@@ -202,16 +210,6 @@ public class TragusActivity extends AppCompatActivity{
     public void onTragusNextClick(View view){
         Intent intent = new Intent(this, LumbarActivity.class);
         startActivity(intent);
-    }
-
-    public void onRetakeClick(View view){
-        leftTragular = null;
-        rightTragular = null;
-        Calculator.tragusToWallScore = 0;
-        leftButton.setEnabled(true);
-        leftButton.setBackgroundColor(Color.BLACK);
-        rightButton.setEnabled(true);
-        rightButton.setBackgroundColor(Color.BLACK);
     }
 
     public void toastMessage(String message){

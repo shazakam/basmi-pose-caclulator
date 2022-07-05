@@ -3,10 +3,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 public class InputLengthsActivity extends AppCompatActivity {
@@ -15,6 +19,9 @@ public class InputLengthsActivity extends AppCompatActivity {
     EditText indexToWristLengthsText;
     EditText ankleToKneeLengthstext;
     Button nextInputLengths;
+    ImageView exampleIndexToWrist;
+    ImageView exampleIndexToElbow;
+    ImageView exampleAnkleToKnee;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +32,19 @@ public class InputLengthsActivity extends AppCompatActivity {
         indexToElbowLengthsText = findViewById(R.id.indexToElbowLengthsText);
         indexToWristLengthsText = findViewById(R.id.indexToWristLengthsText);
         ankleToKneeLengthstext = findViewById(R.id.ankleToKneeLengthsText);
+
+        Bitmap indexToElbowBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.louis_junk);
+        Bitmap indexToWristBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.louis_junk);
+        Bitmap ankleToKneeBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.louis_junk);
+
+        exampleIndexToElbow = findViewById(R.id.indexToElbowExample);
+        exampleIndexToWrist = findViewById(R.id.indexToWristExample);
+        exampleAnkleToKnee = findViewById(R.id.ankleToKneeLengthExample);
+
+        exampleIndexToElbow.setImageBitmap(indexToElbowBitmap);
+        exampleIndexToWrist.setImageBitmap(indexToWristBitmap);
+        exampleAnkleToKnee.setImageBitmap(ankleToKneeBitmap);
+
         nextInputLengths = findViewById(R.id.nextInputLengths);
         nextInputLengths.setEnabled(false);
 
@@ -65,6 +85,7 @@ public class InputLengthsActivity extends AppCompatActivity {
                 toastMessage("Please input a valid length");
             }
             nextInputLengths.setEnabled(true);
+            nextInputLengths.setBackgroundColor(Color.BLACK);
         }
 
     public void onNextLengthsClick(View view){

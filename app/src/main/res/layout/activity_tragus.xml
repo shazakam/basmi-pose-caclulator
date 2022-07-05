@@ -22,28 +22,29 @@
         app:layout_constraintVertical_bias="0.036" />
 
     <ImageView
-        android:id="@+id/elbowToIndexView"
-        android:layout_width="142dp"
-        android:layout_height="205dp"
+        android:id="@+id/tragularRightExample"
+        android:layout_width="160dp"
+        android:layout_height="230dp"
+        android:layout_marginTop="44dp"
         android:contentDescription="@string/elbow_to_index_example"
         android:rotation="0"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.219"
+        app:layout_constraintHorizontal_bias="0.031"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tragusToWallTitle"
         tools:ignore="ImageContrastCheck"
         tools:srcCompat="@tools:sample/avatars" />
 
     <ImageView
-        android:id="@+id/tragularPositionExampleview"
-        android:layout_width="142dp"
-        android:layout_height="205dp"
+        android:id="@+id/tragularLeftExample"
+        android:layout_width="160dp"
+        android:layout_height="230dp"
         android:layout_marginStart="20dp"
         android:contentDescription="@string/tragus_to_wall_example"
         android:rotation="0"
-        app:layout_constraintBottom_toBottomOf="@+id/elbowToIndexView"
-        app:layout_constraintStart_toEndOf="@+id/elbowToIndexView"
-        app:layout_constraintTop_toTopOf="@+id/elbowToIndexView"
+        app:layout_constraintBottom_toBottomOf="@+id/tragularRightExample"
+        app:layout_constraintStart_toEndOf="@+id/tragularRightExample"
+        app:layout_constraintTop_toTopOf="@+id/tragularRightExample"
         app:layout_constraintVertical_bias="1.0"
         tools:srcCompat="@tools:sample/avatars" />
 
@@ -51,11 +52,12 @@
         android:id="@+id/tragularExplanation"
         android:layout_width="338dp"
         android:layout_height="167dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="36dp"
         android:text="@string/tragular_explanation"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.219"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/elbowToIndexView" />
+        app:layout_constraintTop_toBottomOf="@+id/tragularRightExample" />
 
     <Button
         android:id="@+id/btnRightUploadTragus"
@@ -104,16 +106,22 @@
         app:layout_constraintTop_toTopOf="@+id/btnRightUploadTragus"
         app:layout_constraintVertical_bias="0.0" />
 
-    <Button
-        android:id="@+id/btnRetake"
-        android:layout_width="0dp"
-        android:layout_height="41dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="20dp"
-        android:onClick="onRetakeClick"
-        android:text="retake "
-        app:backgroundTint="#0C0C0C"
-        app:layout_constraintBottom_toTopOf="@+id/btnRightUploadTragus"
-        app:layout_constraintStart_toStartOf="parent" />
+    <TextView
+        android:id="@+id/rightTragularExampleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Right Tragular "
+        app:layout_constraintEnd_toEndOf="@+id/tragularRightExample"
+        app:layout_constraintStart_toStartOf="@+id/tragularRightExample"
+        app:layout_constraintTop_toBottomOf="@+id/tragularRightExample" />
+
+    <TextView
+        android:id="@+id/leftTragularExampleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Left Tragular"
+        app:layout_constraintEnd_toEndOf="@+id/tragularLeftExample"
+        app:layout_constraintStart_toStartOf="@+id/tragularLeftExample"
+        app:layout_constraintTop_toBottomOf="@+id/tragularLeftExample" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

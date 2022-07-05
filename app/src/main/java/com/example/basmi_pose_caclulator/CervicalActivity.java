@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.os.Bundle;
@@ -54,6 +55,18 @@ public class CervicalActivity extends AppCompatActivity {
         rightBtn = findViewById(R.id.btnRightCervicalUpload);
         btnClicked = -2;
         radius = 0;
+
+        ImageView neutralExample = findViewById(R.id.cervicalNeutralExample);
+        ImageView rightExample = findViewById(R.id.cervicalRightExample);
+        ImageView leftExample = findViewById(R.id.cervicalLeftExample);
+
+        Bitmap neutralBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.louis_junk);
+        Bitmap rightBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.louis_junk);
+        Bitmap leftBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.louis_junk);
+
+        neutralExample.setImageBitmap(neutralBitmap);
+        rightExample.setImageBitmap(rightBitmap);
+        leftExample.setImageBitmap(leftBitmap);
     }
 
 

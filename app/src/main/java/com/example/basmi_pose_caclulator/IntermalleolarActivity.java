@@ -17,6 +17,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -41,6 +42,10 @@ public class IntermalleolarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intermalleolar);
         intermalleolarUploadBtn = findViewById(R.id.btnIntermalleolarUpload);
+
+        ImageView intermalleolarExample = findViewById(R.id.intermalleolarExample);
+        Bitmap intermalleolarBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.louis_junk);
+        intermalleolarExample.setImageBitmap(intermalleolarBitmap);
     }
 
     ActivityResultLauncher<Intent> getImageIntermalleolar = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),

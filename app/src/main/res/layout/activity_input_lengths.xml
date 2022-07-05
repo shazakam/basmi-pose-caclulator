@@ -6,99 +6,170 @@
     android:layout_height="match_parent"
     tools:context=".InputLengthsActivity">
 
-    <EditText
-        android:id="@+id/ankleToKneeLengthsText"
-        android:layout_width="144dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="12dp"
-        android:ems="10"
-        android:inputType="numberDecimal"
-        app:layout_constraintBottom_toBottomOf="@+id/ankleToKnee"
-        app:layout_constraintStart_toEndOf="@+id/ankleToKnee"
-        app:layout_constraintTop_toTopOf="@+id/ankleToKnee" />
-
-    <EditText
-        android:id="@+id/indexToWristLengthsText"
-        android:layout_width="144dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="12dp"
-        android:ems="10"
-        android:inputType="numberDecimal"
-        app:layout_constraintBottom_toBottomOf="@+id/indexToWrist"
-        app:layout_constraintStart_toEndOf="@+id/indexToWrist"
-        app:layout_constraintTop_toTopOf="@+id/indexToWrist"
-        app:layout_constraintVertical_bias="0.538" />
-
     <TextView
         android:id="@+id/inputLengthsTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
-        android:layout_marginEnd="104dp"
+        android:layout_marginTop="24dp"
         android:text="Input Your Measurements below"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/indexToWrist"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="152dp"
-        android:text="Index to Wrist Length"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/indexToElbowLengthsText"
-        android:layout_width="144dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="12dp"
-        android:ems="10"
-        android:inputType="numberDecimal"
-        app:layout_constraintBottom_toBottomOf="@+id/indexToElbow"
-        app:layout_constraintStart_toEndOf="@+id/indexToElbow"
-        app:layout_constraintTop_toTopOf="@+id/indexToElbow" />
-
-    <TextView
-        android:id="@+id/indexToElbow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="64dp"
-        android:text="Index to Elbow Length"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/indexToWrist" />
 
     <TextView
         android:id="@+id/ankleToKnee"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="12dp"
         android:text="Ankle to Knee Length"
+        app:layout_constraintBottom_toTopOf="@+id/submitLengths"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/indexToElbow" />
+        app:layout_constraintTop_toBottomOf="@+id/indexToElbow"
+        app:layout_constraintVertical_bias="0.226" />
 
-    <Button
-        android:id="@+id/nextInputLengths"
+    <EditText
+        android:id="@+id/ankleToKneeLengthsText"
+        android:layout_width="120dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        app:layout_constraintBottom_toBottomOf="@+id/ankleToKnee"
+        app:layout_constraintStart_toEndOf="@+id/ankleToKnee"
+        app:layout_constraintTop_toTopOf="@+id/ankleToKnee"
+        app:layout_constraintVertical_bias="0.571" />
+
+    <TextView
+        android:id="@+id/indexToWrist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="44dp"
-        android:layout_marginBottom="92dp"
-        android:onClick="onNextLengthsClick"
-        android:text="Next"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="24dp"
+        android:text="Index to Wrist Length"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ankleToKneeLengthExample" />
+
+    <EditText
+        android:id="@+id/indexToWristLengthsText"
+        android:layout_width="120dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        app:layout_constraintBottom_toBottomOf="@+id/indexToWrist"
+        app:layout_constraintStart_toEndOf="@+id/indexToWrist"
+        app:layout_constraintTop_toTopOf="@+id/indexToWrist"
+        app:layout_constraintVertical_bias="0.428" />
+
+    <EditText
+        android:id="@+id/indexToElbowLengthsText"
+        android:layout_width="120dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        app:layout_constraintBottom_toBottomOf="@+id/indexToElbow"
+        app:layout_constraintStart_toEndOf="@+id/indexToElbow"
+        app:layout_constraintTop_toTopOf="@+id/indexToElbow"
+        app:layout_constraintVertical_bias="0.38" />
+
+    <TextView
+        android:id="@+id/indexToElbow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="12dp"
+        android:text="Index to Elbow Length"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/indexToWrist" />
 
     <Button
         android:id="@+id/submitLengths"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="92dp"
+        android:layout_marginEnd="52dp"
         android:onClick="onSubmitLengthsClick"
         android:text="Submit Lengths"
+        app:backgroundTint="#0B0A0A"
+        app:layout_constraintBottom_toBottomOf="@+id/nextInputLengths"
+        app:layout_constraintEnd_toStartOf="@+id/nextInputLengths"
+        app:layout_constraintTop_toTopOf="@+id/nextInputLengths"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/nextInputLengths"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="28dp"
+        android:onClick="onNextLengthsClick"
+        android:text="Next"
+        android:textColor="#EADEDE"
+        app:backgroundTint="#ABA8B1"
+        app:iconTint="#F4ECEC"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ImageView
+        android:id="@+id/indexToWristExample"
+        android:layout_width="170dp"
+        android:layout_height="170dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="72dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ankleToKnee" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageView
+        android:id="@+id/indexToElbowExample"
+        android:layout_width="170dp"
+        android:layout_height="170dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/indexToWristExample"
+        app:layout_constraintStart_toEndOf="@+id/indexToWristExample"
+        app:layout_constraintTop_toTopOf="@+id/indexToWristExample"
+        app:layout_constraintVertical_bias="0.0"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageView
+        android:id="@+id/ankleToKneeLengthExample"
+        android:layout_width="170dp"
+        android:layout_height="170dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintEnd_toEndOf="@+id/indexToElbowExample"
+        app:layout_constraintHorizontal_bias="0.539"
+        app:layout_constraintStart_toStartOf="@+id/indexToWristExample"
+        app:layout_constraintTop_toBottomOf="@+id/indexToWristExample"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/indexToWristExampleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Index To Wrist"
+        app:layout_constraintEnd_toEndOf="@+id/indexToWristExample"
+        app:layout_constraintHorizontal_bias="0.464"
+        app:layout_constraintStart_toStartOf="@+id/indexToWristExample"
+        app:layout_constraintTop_toBottomOf="@+id/indexToWristExample" />
+
+    <TextView
+        android:id="@+id/indexToElbowExampleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Index To Elbow"
+        app:layout_constraintEnd_toEndOf="@+id/indexToElbowExample"
+        app:layout_constraintHorizontal_bias="0.455"
+        app:layout_constraintStart_toStartOf="@+id/indexToElbowExample"
+        app:layout_constraintTop_toBottomOf="@+id/indexToElbowExample" />
+
+    <TextView
+        android:id="@+id/ankleToKneeExampleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ankle to Knee"
+        app:layout_constraintEnd_toEndOf="@+id/ankleToKneeLengthExample"
+        app:layout_constraintStart_toStartOf="@+id/ankleToKneeLengthExample"
+        app:layout_constraintTop_toBottomOf="@+id/ankleToKneeLengthExample" />
 </androidx.constraintlayout.widget.ConstraintLayout>

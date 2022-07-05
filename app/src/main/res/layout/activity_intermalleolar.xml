@@ -18,15 +18,15 @@
         app:layout_constraintVertical_bias="0.054" />
 
     <ImageView
-        android:id="@+id/ankleToKneeExample"
-        android:layout_width="178dp"
-        android:layout_height="242dp"
+        android:id="@+id/intermalleolarExample"
+        android:layout_width="297dp"
+        android:layout_height="279dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.068"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.155"
+        app:layout_constraintVertical_bias="0.161"
         tools:ignore="ImageContrastCheck"
         tools:srcCompat="@tools:sample/avatars" />
 
@@ -58,17 +58,6 @@
         app:layout_constraintTop_toTopOf="@+id/btnIntermalleolarNext"
         app:layout_constraintVertical_bias="0.0" />
 
-    <ImageView
-        android:id="@+id/intermalleolarExample"
-        android:layout_width="178dp"
-        android:layout_height="242dp"
-        android:layout_marginStart="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/ankleToKneeExample"
-        app:layout_constraintStart_toEndOf="@+id/ankleToKneeExample"
-        app:layout_constraintTop_toTopOf="@+id/ankleToKneeExample"
-        app:layout_constraintVertical_bias="0.0"
-        tools:srcCompat="@tools:sample/avatars" />
-
     <TextView
         android:id="@+id/intermalleolarExplanation"
         android:layout_width="345dp"
@@ -81,7 +70,17 @@
         app:layout_constraintBottom_toTopOf="@+id/btnIntermalleolarUpload"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ankleToKneeExample"
+        app:layout_constraintTop_toBottomOf="@+id/intermalleolarExample"
         app:layout_constraintVertical_bias="0.236" />
+
+    <TextView
+        android:id="@+id/intermalleolarExampleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Intermalleolar Position"
+        app:layout_constraintEnd_toEndOf="@+id/intermalleolarExample"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="@+id/intermalleolarExample"
+        app:layout_constraintTop_toBottomOf="@+id/intermalleolarExample" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

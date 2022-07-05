@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -55,6 +57,15 @@ public class LumbarFlexionActivity extends AppCompatActivity {
         rightFlexionBtn = findViewById(R.id.btnFlexionRightUpload);
         neutralRightBtn = findViewById(R.id.btnFlexionRightNeutralUpload);
         neutralLeftBtn = findViewById(R.id.btnFlexionLeftNeutralUpload);
+
+        ImageView flexionNeutralExample = findViewById(R.id.flexionNeutralExample);
+        ImageView flexionExtensionExample = findViewById(R.id.flexionExtensionExample);
+
+        Bitmap flexionNeutralBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.louis_junk);
+        Bitmap flexionExtensionBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.louis_junk);
+
+        flexionNeutralExample.setImageBitmap(flexionNeutralBitmap);
+        flexionExtensionExample.setImageBitmap(flexionExtensionBitmap);
 
     }
 

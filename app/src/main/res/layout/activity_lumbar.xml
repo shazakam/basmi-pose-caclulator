@@ -6,103 +6,77 @@
     android:layout_height="match_parent"
     tools:context=".LumbarActivity">
 
-    <TextView
-        android:id="@+id/lumbarTitle"
-        android:layout_width="207dp"
-        android:layout_height="19dp"
-        android:gravity="center"
-        android:text="Lumbar Side Flexion"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.022" />
-
     <ImageView
         android:id="@+id/lumbarNeutralExample"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
         android:layout_marginStart="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.133"
+        app:layout_constraintVertical_bias="0.041"
         tools:srcCompat="@tools:sample/avatars" />
 
     <ImageView
         android:id="@+id/lumbarRightExample"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="4dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/lumbarLeftExample"
-        app:layout_constraintHorizontal_bias="0.466"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        app:layout_constraintBottom_toBottomOf="@+id/lumbarNeutralExample"
         app:layout_constraintStart_toEndOf="@+id/lumbarNeutralExample"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.134"
+        app:layout_constraintTop_toTopOf="@+id/lumbarNeutralExample"
+        app:layout_constraintVertical_bias="1.0"
         tools:srcCompat="@tools:sample/avatars" />
 
     <ImageView
         android:id="@+id/lumbarLeftExample"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="92dp"
-        android:layout_marginEnd="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="180dp"
+        android:layout_height="160dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/lumbarRightExample"
+        app:layout_constraintHorizontal_bias="0.478"
+        app:layout_constraintStart_toStartOf="@+id/lumbarNeutralExample"
+        app:layout_constraintTop_toBottomOf="@+id/lumbarNeutralExample"
         tools:srcCompat="@tools:sample/avatars" />
 
     <Button
         android:id="@+id/btnLumbarNext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="72dp"
+        android:layout_marginBottom="4dp"
         android:onClick="onLumbarNextClick"
         android:text="Next"
         app:backgroundTint="#121111"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintHorizontal_bias="0.987"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/lumbarDescription"
-        android:layout_width="340dp"
-        android:layout_height="68dp"
+        android:layout_width="332dp"
+        android:layout_height="156dp"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="68dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="12dp"
         android:text="@string/lumbar_explanation"
+        app:layout_constraintBottom_toTopOf="@+id/btnNeutralLumbarUpload"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.489"
+        app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lumbarNeutralExample" />
+        app:layout_constraintTop_toBottomOf="@+id/lumbarLeftExample"
+        app:layout_constraintVertical_bias="0.914" />
 
     <Button
         android:id="@+id/btnNeutralLumbarUpload"
         android:layout_width="115dp"
         android:layout_height="80dp"
         android:layout_marginStart="4dp"
-        android:layout_marginBottom="176dp"
+        android:layout_marginBottom="52dp"
         android:onClick="onClickLumbarUpload"
         android:text="Upload Neutral Position"
         app:backgroundTint="#100F0F"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/btnLeftLumbarUpload"
-        android:layout_width="115dp"
-        android:layout_height="80dp"
-        android:layout_marginEnd="4dp"
-        android:onClick="onClickLumbarUpload"
-        android:text="Upload Left Position"
-        app:backgroundTint="#121111"
-        app:layout_constraintBottom_toBottomOf="@+id/btnRightLumbarUpload"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/btnRightLumbarUpload"
-        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/btnRightLumbarUpload"
@@ -118,5 +92,47 @@
         app:layout_constraintStart_toEndOf="@+id/btnNeutralLumbarUpload"
         app:layout_constraintTop_toTopOf="@+id/btnNeutralLumbarUpload"
         app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/btnLeftLumbarUpload"
+        android:layout_width="115dp"
+        android:layout_height="80dp"
+        android:layout_marginEnd="4dp"
+        android:onClick="onClickLumbarUpload"
+        android:text="Upload Left Position"
+        app:backgroundTint="#121111"
+        app:layout_constraintBottom_toBottomOf="@+id/btnRightLumbarUpload"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btnRightLumbarUpload"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/lumbarNeutralExampleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Neutral Position"
+        app:layout_constraintEnd_toEndOf="@+id/lumbarNeutralExample"
+        app:layout_constraintHorizontal_bias="0.48"
+        app:layout_constraintStart_toStartOf="@+id/lumbarNeutralExample"
+        app:layout_constraintTop_toBottomOf="@+id/lumbarNeutralExample" />
+
+    <TextView
+        android:id="@+id/lumbarRightExampleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Right Position"
+        app:layout_constraintEnd_toEndOf="@+id/lumbarRightExample"
+        app:layout_constraintHorizontal_bias="0.568"
+        app:layout_constraintStart_toEndOf="@+id/lumbarNeutralExample"
+        app:layout_constraintTop_toBottomOf="@+id/lumbarRightExample" />
+
+    <TextView
+        android:id="@+id/lumbarLeftExampleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Left Position"
+        app:layout_constraintEnd_toEndOf="@+id/lumbarLeftExample"
+        app:layout_constraintStart_toStartOf="@+id/lumbarLeftExample"
+        app:layout_constraintTop_toBottomOf="@+id/lumbarLeftExample" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
