@@ -42,10 +42,6 @@ public class IntermalleolarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intermalleolar);
         intermalleolarUploadBtn = findViewById(R.id.btnIntermalleolarUpload);
-
-        ImageView intermalleolarExample = findViewById(R.id.intermalleolarExample);
-        Bitmap intermalleolarBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.louis_junk);
-        intermalleolarExample.setImageBitmap(intermalleolarBitmap);
     }
 
     ActivityResultLauncher<Intent> getImageIntermalleolar = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
@@ -58,19 +54,17 @@ public class IntermalleolarActivity extends AppCompatActivity {
                         //Initialises pose detector with desired options
 
                         intermalleolarPoseDetector = PoseDetection.getClient(options);
+                        /*
                         Bundle extras = result.getData().getExtras();
                         Bitmap selectedImageBitmap = (Bitmap) extras.get("data");
-                        InputImage inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
+                        InputImage inputImage = InputImage.fromBitmap(selectedImageBitmap,0);*/
 
                         /*INTERMALLEOLAR PRE-DEFINED TEST CASES*/
-                        /*
                         intermalleolarPoseDetector = PoseDetection.getClient(options);
                         Bitmap selectedImageBitmap;
                         InputImage inputImage;
-                        selectedImageBitmap = BitmapFactory.decodeResource(getResources(),ENTER DRAWABLE HERE);
-                        inputImage = InputImage.fromBitmap(selectedImageBitmap,0);*/
-                        //ImageView imageView = findViewById(R.id.);
-                        //imageView.setImageBitmap(selectedImageBitmap);
+                        selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.intermalleolar_2);
+                        inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
 
                         Task<Pose> poseResult =
                                 intermalleolarPoseDetector.process(inputImage)

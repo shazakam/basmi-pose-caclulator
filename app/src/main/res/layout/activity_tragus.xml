@@ -23,22 +23,22 @@
 
     <ImageView
         android:id="@+id/tragularRightExample"
-        android:layout_width="160dp"
-        android:layout_height="230dp"
-        android:layout_marginTop="44dp"
+        android:layout_width="158dp"
+        android:layout_height="215dp"
+        android:layout_marginTop="20dp"
         android:contentDescription="@string/elbow_to_index_example"
         android:rotation="0"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.031"
+        app:layout_constraintHorizontal_bias="0.063"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tragusToWallTitle"
-        tools:ignore="ImageContrastCheck"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:srcCompat="@drawable/right_tragular_8"
+        tools:ignore="ImageContrastCheck" />
 
     <ImageView
         android:id="@+id/tragularLeftExample"
-        android:layout_width="160dp"
-        android:layout_height="230dp"
+        android:layout_width="158dp"
+        android:layout_height="215dp"
         android:layout_marginStart="20dp"
         android:contentDescription="@string/tragus_to_wall_example"
         android:rotation="0"
@@ -46,7 +46,7 @@
         app:layout_constraintStart_toEndOf="@+id/tragularRightExample"
         app:layout_constraintTop_toTopOf="@+id/tragularRightExample"
         app:layout_constraintVertical_bias="1.0"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:srcCompat="@drawable/left_tragular_2" />
 
     <TextView
         android:id="@+id/tragularExplanation"

@@ -41,9 +41,6 @@ public class LumbarActivity extends AppCompatActivity {
     index to wrist length as the reference.*/
     double[] leftLumbar;
     double[] rightLumbar;
-    ImageView exampleNeutralLumbar;
-    ImageView exampleRightLumbar;
-    ImageView exampleLeftLumbar;
     PoseDetector lumbarPoseDetector;
     AccuratePoseDetectorOptions options =
             new AccuratePoseDetectorOptions.Builder()
@@ -57,18 +54,6 @@ public class LumbarActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lumbar);
-
-        Bitmap neutralLumbarBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.louis_junk);
-        Bitmap rightLumbarBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.louis_junk);
-        Bitmap leftLumbarBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.louis_junk);
-
-        exampleNeutralLumbar = findViewById(R.id.lumbarNeutralExample);
-        exampleRightLumbar = findViewById(R.id.lumbarRightExample);
-        exampleLeftLumbar = findViewById(R.id.lumbarLeftExample);
-
-        exampleNeutralLumbar.setImageBitmap(neutralLumbarBitmap);
-        exampleRightLumbar.setImageBitmap(rightLumbarBitmap);
-        exampleLeftLumbar.setImageBitmap(leftLumbarBitmap);
 
         neutralBtn = findViewById(R.id.btnNeutralLumbarUpload);
         rightBtn = findViewById(R.id.btnRightLumbarUpload);
@@ -87,30 +72,30 @@ public class LumbarActivity extends AppCompatActivity {
                         //Initialises pose detector with desired options
                         lumbarPoseDetector = PoseDetection.getClient(options);
                          //Taking Picture (Currently using predefined images)
-
+                        /*
                         Bundle extras = result.getData().getExtras();
                         Bitmap selectedImageBitmap = (Bitmap) extras.get("data");
-                        InputImage inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
+                        InputImage inputImage = InputImage.fromBitmap(selectedImageBitmap,0);*/
 
                         //Used for pre-loaded images and will be removed for when photos need to be uploaded
                         //-1 means the left lumbar extension, 0 indicates the neutral position and 1 indicates the right lumbar extension
-                        /*
+
                         Bitmap selectedImageBitmap;
                         InputImage inputImage;
                         if(btnClicked == -1){
-                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),ENTER LEFT EXTENSION DRAWABLE HERE);
+                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.lumbar_left_1);
                             inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
                         }
                         //Neutral Clicked
                         else if(btnClicked == 0){
-                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),ENTER NEUTRAL POSITION DRAWABLE HERE);
+                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.lumbar_neutral_1);
                             inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
                         }
                         //Right Clicked
                         else{
-                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),ENTER RIGHT EXTENSION DRAWABLE HERE);
+                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.lumbar_right_1);
                             inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
-                        }*/
+                        }
 
                         Task<Pose> poseResult =
                                 lumbarPoseDetector.process(inputImage)

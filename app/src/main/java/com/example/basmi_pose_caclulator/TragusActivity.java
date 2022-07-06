@@ -48,12 +48,6 @@ public class TragusActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tragus);
-        leftTragularExample = findViewById(R.id.tragularLeftExample);
-        rightTragularExample = findViewById(R.id.tragularRightExample);
-        Bitmap leftTragularBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.louis_junk);
-        Bitmap rightTragularBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.louis_junk);
-        leftTragularExample.setImageBitmap(leftTragularBitmap);
-        rightTragularExample.setImageBitmap(rightTragularBitmap);
 
         //Initialising all the views, buttons and values
         leftButton = findViewById(R.id.btnLeftUploadTragus);
@@ -74,27 +68,24 @@ public class TragusActivity extends AppCompatActivity{
                         //Initialises pose detector with desired options
                         tragusPoseDetector = PoseDetection.getClient(options);
                         /* Taking Picture */
+                        /*
                         Bundle extras = result.getData().getExtras();
                         Bitmap selectedImageBitmap = (Bitmap) extras.get("data");
-                        InputImage inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
+                        InputImage inputImage = InputImage.fromBitmap(selectedImageBitmap,0);*/
 
                         //Used for pre-loaded images and will be removed for when photos need to be uploaded
                         //0 means the left side is being uploaded and 1 indicates the right side is being uploaded
-                        /*
+
                         Bitmap selectedImageBitmap;
                         InputImage inputImage;
                         if(btnClicked == 0){
-                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(), ENTER LEFT POSITION HERE);
+                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.left_tragular_2);
                             inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
-                            ImageView imageView = findViewById(R.id.elbowToIndexView);
-                            imageView.setImageBitmap(selectedImageBitmap);
                         }
                         else{
-                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),ENTER RIGHT POSITION HERE);
+                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.right_tragular_2);
                             inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
-                            ImageView imageView = findViewById(R.id.elbowToIndexView);
-                            imageView.setImageBitmap(selectedImageBitmap);
-                        }*/
+                        }
 
                         Task<Pose> poseResult =
                                 tragusPoseDetector.process(inputImage)

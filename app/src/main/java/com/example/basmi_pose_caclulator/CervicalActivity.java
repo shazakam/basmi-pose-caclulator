@@ -55,18 +55,6 @@ public class CervicalActivity extends AppCompatActivity {
         rightBtn = findViewById(R.id.btnRightCervicalUpload);
         btnClicked = -2;
         radius = 0;
-
-        ImageView neutralExample = findViewById(R.id.cervicalNeutralExample);
-        ImageView rightExample = findViewById(R.id.cervicalRightExample);
-        ImageView leftExample = findViewById(R.id.cervicalLeftExample);
-
-        Bitmap neutralBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.louis_junk);
-        Bitmap rightBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.louis_junk);
-        Bitmap leftBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.louis_junk);
-
-        neutralExample.setImageBitmap(neutralBitmap);
-        rightExample.setImageBitmap(rightBitmap);
-        leftExample.setImageBitmap(leftBitmap);
     }
 
 
@@ -81,13 +69,27 @@ public class CervicalActivity extends AppCompatActivity {
                         //Initialises pose detector with desired options
                         cervicalPoseDetector = PoseDetection.getClient(options);
 
+                        /*
                         Bundle extras = result.getData().getExtras();
                         Bitmap selectedImageBitmap = (Bitmap) extras.get("data");
-                        InputImage inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
-                        ImageView imageView = findViewById(R.id.cervicalNeutralExample);
-                        imageView.setImageBitmap(selectedImageBitmap);
+                        InputImage inputImage = InputImage.fromBitmap(selectedImageBitmap,0);*/
 
                         /*NEED TO GET CERVICAL PRE-DEFINED TEST EXAMPLES*/
+
+                        Bitmap selectedImageBitmap;
+                        InputImage inputImage;
+                        if(btnClicked == -1){
+                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.cervical_left_4);
+                            inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
+                        }
+                        else if(btnClicked == 0){
+                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.cervical_neutral_3);
+                            inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
+                        }
+                        else{
+                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.cervical_right_4);
+                            inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
+                        }
 
                         Task<Pose> poseResult =
                                 cervicalPoseDetector.process(inputImage)
@@ -104,7 +106,7 @@ public class CervicalActivity extends AppCompatActivity {
                                                                 leftBtn.setBackgroundColor(Color.GREEN);
                                                                 leftBtn.setEnabled(false);
                                                                 PointF noseCoord = pose.getPoseLandmark(PoseLandmark.NOSE).getPosition();
-                                                                leftRotation = (float) Calculator.getRotationOne(radius,neutralNoseCoord,noseCoord);
+                                                                leftRotation = (float) Calculator.getRotationTwo(Math.abs(radius),neutralNoseCoord,noseCoord);
                                                                 Log.d("LEFT RESULT",String.valueOf(leftRotation));
                                                             }catch(Exception e){
                                                                 toastMessage("ENTER NEUTRAL POSITION");
@@ -117,7 +119,7 @@ public class CervicalActivity extends AppCompatActivity {
                                                             PointF leftEarCoord = pose.getPoseLandmark(PoseLandmark.LEFT_EAR).getPosition();
                                                             PointF rightEarCoord = pose.getPoseLandmark(PoseLandmark.RIGHT_EAR).getPosition();
                                                             neutralNoseCoord = pose.getPoseLandmark(PoseLandmark.NOSE).getPosition();
-                                                            radius = (Calculator.getDistance(leftEarCoord,neutralNoseCoord,1)+Calculator.getDistance(rightEarCoord,neutralNoseCoord,1))/2;
+                                                            radius = (Calculator.getDistance(leftEarCoord,rightEarCoord,1))/2;
                                                             Log.d("NEUTRAL NOSE",String.valueOf(neutralNoseCoord));
                                                         }
                                                         else{
@@ -126,7 +128,7 @@ public class CervicalActivity extends AppCompatActivity {
                                                                 rightBtn.setBackgroundColor(Color.GREEN);
                                                                 rightBtn.setEnabled(false);
                                                                 PointF noseCoord = pose.getPoseLandmark(PoseLandmark.NOSE).getPosition();
-                                                                rightRotation = (float) Calculator.getRotationOne(radius,neutralNoseCoord,noseCoord);
+                                                                rightRotation = (float) Calculator.getRotationTwo(Math.abs(radius),neutralNoseCoord,noseCoord);
                                                                 Log.d("RIGHT RESULT",String.valueOf(rightRotation));
                                                             }catch(Exception e){
                                                                 toastMessage("ENTER NEUTRAL POSITION");
@@ -138,7 +140,6 @@ public class CervicalActivity extends AppCompatActivity {
                                                             Calculator.cervicalLeftRotation = leftRotation;
                                                             Calculator.cervicalRightRotation = rightRotation;
                                                             Log.d("FINAL CERVICAL ROTATION",String.valueOf(cervicalAverage));
-
                                                             Calculator.cervicalRotationScore = Calculator.getCervicalRotationScore(cervicalAverage);
                                                             Log.d("FINAL CERVICAL SCORE",String.valueOf(Calculator.cervicalRotationScore));
                                                         }
@@ -162,16 +163,24 @@ public class CervicalActivity extends AppCompatActivity {
         float limit = 110;
 
         try{
-            if(rightRotation > limit){
-                toastMessage("image faulty please try again");
+            if(rightRotation > limit && leftRotation > limit){
+                toastMessage("Both Images faulty please try again");
                 rightBtn.setEnabled(true);
                 rightBtn.setBackgroundColor(Color.BLACK);
-                return false;
-            }
-            else if(leftRotation > limit){
-                toastMessage("Image faulty please try again");
                 leftBtn.setEnabled(true);
                 leftBtn.setBackgroundColor(Color.BLACK);
+                return false;
+            }
+            else if(leftRotation > limit && rightRotation < limit){
+                toastMessage("Left image faulty please try again");
+                leftBtn.setEnabled(true);
+                leftBtn.setBackgroundColor(Color.BLACK);
+                return false;
+            }
+            else if(rightRotation > limit && leftRotation < limit){
+                toastMessage("Right image faulty please try again");
+                rightBtn.setEnabled(true);
+                rightBtn.setBackgroundColor(Color.BLACK);
                 return false;
             }
             else{

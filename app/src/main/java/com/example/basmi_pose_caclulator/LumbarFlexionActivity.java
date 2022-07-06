@@ -66,7 +66,6 @@ public class LumbarFlexionActivity extends AppCompatActivity {
 
         flexionNeutralExample.setImageBitmap(flexionNeutralBitmap);
         flexionExtensionExample.setImageBitmap(flexionExtensionBitmap);
-
     }
 
     public void onLumbarFlexionNextClick(View view){
@@ -84,30 +83,35 @@ public class LumbarFlexionActivity extends AppCompatActivity {
                         //Initialises pose detector with desired options
                         flexionPoseDetector = PoseDetection.getClient(options);
                         //Taking Picture (Currently using predefined images)
-
+                        /*
                         Bundle extras = result.getData().getExtras();
                         Bitmap selectedImageBitmap = (Bitmap) extras.get("data");
-                        InputImage inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
+                        InputImage inputImage = InputImage.fromBitmap(selectedImageBitmap,0);*/
 
                         //Used for pre-loaded images and will be removed for when photos need to be uploaded
                         //-1 means the left lumbar extension, 0 indicates the neutral position and 1 indicates the right lumbar extension
-                        /*
+
                         Bitmap selectedImageBitmap;
                         InputImage inputImage;
                         if(btnClicked == -1){
-                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),ENTER LEFT EXTENSION DRAWABLE HERE);
+                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.flexionl_neutral_index_3);
                             inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
                         }
                         //Neutral Clicked
                         else if(btnClicked == 0){
-                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),ENTER NEUTRAL POSITION DRAWABLE HERE);
+                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.flexionr_neutral_index_4);
                             inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
                         }
-                        //Right Clicked
-                        else{
-                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),ENTER RIGHT EXTENSION DRAWABLE HERE);
+                        //LEFT UPLOAD
+                        else if(btnClicked == 1){
+                         selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.flexionl_extension_index_1);
                             inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
-                        }*/
+                        }
+                        //Right UPLOAD
+                        else{
+                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.flexionr_extension_index_3);
+                            inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
+                        }
 
                         Task<Pose> poseResult =
                                 flexionPoseDetector.process(inputImage)
@@ -141,8 +145,7 @@ public class LumbarFlexionActivity extends AppCompatActivity {
                                                             Log.d("TRUE","BUTTON LEFT FLEXION CLICKED");
                                                             leftFlexionBtn.setBackgroundColor(Color.GREEN);
                                                             leftFlexionBtn.setEnabled(false);
-                                                            Calculator.flexionLeft = (float) Calculator.getFlexionResult(pose,neutralLeftHip,neutralLeftShoulder,1);
-                                                            Log.d("FlEXION L 1",String.valueOf(Calculator.getFlexionResult(pose,neutralLeftHip,neutralLeftShoulder,1)));
+
                                                             Log.d("FLEXION L 2",String.valueOf(Calculator.getFlexionResultTwo(pose,aOneLeft,neutralLeftHip,1)));
                                                             Log.d("FLEXION L 3",String.valueOf(Calculator.getFlexionResultThree(pose,neutralLeftHip,aOneLeft,1)));
                                                             Log.d("FLEXION L 4",String.valueOf(Calculator.getFlexionResultFour(pose,neutralLeftHip,neutralLeftShoulder,1)));
@@ -153,8 +156,6 @@ public class LumbarFlexionActivity extends AppCompatActivity {
                                                             Log.d("TRUE","BUTTON RIGHT FLEXION CLICKED");
                                                             rightFlexionBtn.setBackgroundColor(Color.GREEN);
                                                             rightFlexionBtn.setEnabled(false);
-                                                            Calculator.flexionRight = (float) Calculator.getFlexionResult(pose,neutralRightHip,neutralRightShoulder,2);
-                                                            Log.d("FlEXION R 1",String.valueOf(Calculator.getFlexionResult(pose,neutralRightHip,neutralRightShoulder,2)));
                                                             Log.d("FLEXION R 2",String.valueOf(Calculator.getFlexionResultTwo(pose,aOneRight,neutralRightHip,2)));
                                                             Log.d("FLEXION R 3",String.valueOf(Calculator.getFlexionResultThree(pose,neutralRightHip,aOneRight,2)));
                                                             Log.d("FLEXION R 4",String.valueOf(Calculator.getFlexionResultFour(pose,neutralRightHip,neutralRightShoulder,2)));
@@ -186,19 +187,19 @@ public class LumbarFlexionActivity extends AppCompatActivity {
 
         if(btnId == R.id.btnFlexionLeftNeutralUpload){
             btnClicked = -1;
-            Log.d("BUTTON CLICKED","-1");
+            Log.d("BUTTON CLICKED","LEFT NEUTRAL");
         }
         else if(btnId == R.id.btnFlexionRightNeutralUpload){
             btnClicked = 0;
-            Log.d("BUTTON CLICKED","0");
+            Log.d("BUTTON CLICKED","RIGHT NEUTRAL");
         }
         else if(btnId == R.id.btnFlexionLeftUpload){
             btnClicked = 1;
-            Log.d("BUTTON CLICKED","1");
+            Log.d("BUTTON CLICKED","LEFT UPLOAD");
         }
         else if(btnId == R.id.btnFlexionRightUpload){
             btnClicked = 2;
-            Log.d("BUTTON CLICKED","2");
+            Log.d("BUTTON CLICKED","RIGHT UPLOAD");
         }
         else{
             toastMessage("ERROR WITH BUTTON CHOSEN: " + String.valueOf(btnId));

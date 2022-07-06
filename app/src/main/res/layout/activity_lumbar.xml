@@ -15,7 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.041"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:srcCompat="@drawable/lumbar_neutral_1" />
 
     <ImageView
         android:id="@+id/lumbarRightExample"
@@ -25,7 +25,7 @@
         app:layout_constraintStart_toEndOf="@+id/lumbarNeutralExample"
         app:layout_constraintTop_toTopOf="@+id/lumbarNeutralExample"
         app:layout_constraintVertical_bias="1.0"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:srcCompat="@drawable/lumbar_right_1" />
 
     <ImageView
         android:id="@+id/lumbarLeftExample"
@@ -36,7 +36,7 @@
         app:layout_constraintHorizontal_bias="0.478"
         app:layout_constraintStart_toStartOf="@+id/lumbarNeutralExample"
         app:layout_constraintTop_toBottomOf="@+id/lumbarNeutralExample"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:srcCompat="@drawable/lumbar_left_1" />
 
     <Button
         android:id="@+id/btnLumbarNext"

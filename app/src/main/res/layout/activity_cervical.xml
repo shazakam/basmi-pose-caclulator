@@ -14,7 +14,7 @@
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:srcCompat="@drawable/cervical_neutral_1" />
 
     <ImageView
         android:id="@+id/cervicalRightExample"
@@ -24,7 +24,7 @@
         app:layout_constraintStart_toEndOf="@+id/cervicalNeutralExample"
         app:layout_constraintTop_toTopOf="@+id/cervicalNeutralExample"
         app:layout_constraintVertical_bias="1.0"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:srcCompat="@drawable/cervical_right_1" />
 
     <ImageView
         android:id="@+id/cervicalLeftExample"
@@ -35,7 +35,7 @@
         app:layout_constraintHorizontal_bias="0.529"
         app:layout_constraintStart_toStartOf="@+id/cervicalNeutralExample"
         app:layout_constraintTop_toBottomOf="@+id/cervicalNeutralExample"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:srcCompat="@drawable/cervical_left_1" />
 
     <TextView
         android:id="@+id/cervicalDescription"
