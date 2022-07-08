@@ -1,18 +1,26 @@
 package com.example.basmi_pose_caclulator;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,29 +28,35 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.odml.image.BitmapMlImageBuilder;
+import com.google.android.odml.image.MlImage;
 import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.pose.Pose;
 import com.google.mlkit.vision.pose.PoseDetection;
 import com.google.mlkit.vision.pose.PoseDetector;
 import com.google.mlkit.vision.pose.accurate.AccuratePoseDetectorOptions;
 
+import java.io.IOException;
+
 public class TragusActivity extends AppCompatActivity{
     Button leftButton;
     Button rightButton;
-    ImageView leftTragularExample;
-    ImageView rightTragularExample;
     /*The following two store the measured results for the right side and left side.
     First the [0] position in both leftTragular and rightTragular is the result calculated
     using the index to elbow length whilst [1] are the results calculated using the
     index to wrist length as the reference.*/
     double[] leftTragular;
     double[] rightTragular;
+    private GraphicOverlay graphicOverlayRight;
+    private GraphicOverlay graphicOverlayLeft;
     PoseDetector tragusPoseDetector;
     AccuratePoseDetectorOptions options = new AccuratePoseDetectorOptions.Builder()
                     .setDetectorMode(AccuratePoseDetectorOptions.SINGLE_IMAGE_MODE)
                     .build();
     //0=left,1=right, any other number indicates no clicking
     int btnClicked;
+    ImageView leftPicture;
+    ImageView rightPicture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +64,12 @@ public class TragusActivity extends AppCompatActivity{
         setContentView(R.layout.activity_tragus);
 
         //Initialising all the views, buttons and values
+        graphicOverlayRight = findViewById(R.id.graphicOverlayRight);
+        graphicOverlayLeft = findViewById(R.id.graphicOverlayLeft);
         leftButton = findViewById(R.id.btnLeftUploadTragus);
         rightButton = findViewById(R.id.btnRightUploadTragus);
+        leftPicture = findViewById(R.id.tragularLeftExample);
+        rightPicture = findViewById(R.id.tragularRightExample);
         leftTragular = null;
         rightTragular = null;
         btnClicked = -1;
@@ -79,7 +97,7 @@ public class TragusActivity extends AppCompatActivity{
                         Bitmap selectedImageBitmap;
                         InputImage inputImage;
                         if(btnClicked == 0){
-                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.left_tragular_2);
+                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.left_tragular_6);
                             inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
                         }
                         else{
@@ -96,14 +114,12 @@ public class TragusActivity extends AppCompatActivity{
 
                                                         if(btnClicked == 0){
                                                             leftButton.setBackgroundColor(Color.GREEN);
-                                                            btnClicked = -1;
                                                             leftTragular = Calculator.tragularResult(0,pose);
                                                             leftButton.setEnabled(false);
                                                             Calculator.printPoses(pose);
                                                         }
                                                         else if(btnClicked == 1){
                                                             rightButton.setBackgroundColor(Color.GREEN);
-                                                            btnClicked = -1;
                                                             rightTragular = Calculator.tragularResult(1,pose);
                                                             rightButton.setEnabled(false);
                                                             Calculator.printPoses(pose);
@@ -138,11 +154,76 @@ public class TragusActivity extends AppCompatActivity{
                                                         toastMessage("Upload Image Again");
                                                     }
                                                 });
+                        if(btnClicked == 0){
+                            tryReloadAndDetectInImage(selectedImageBitmap,poseResult);
+                        }
+                        else if(btnClicked == 1){
+                            tryReloadAndDetectInImage(selectedImageBitmap,poseResult);
+                        }
+                        else{
+                            Log.d("ERROR","ERROR WITH BUTTON CLICKED");
+                        }
+
                         toastMessage("Upload Successful");
                     }
                 }
             }
     );
+
+
+    public void processBitmap(Bitmap bitmap, final GraphicOverlay graphicOverlay) {
+        graphicOverlay.add(new CameraImageGraphic(graphicOverlay, bitmap));
+    }
+
+    public Bitmap resizeBitmap(Bitmap inputBitmap,ImageView view){
+        if (inputBitmap.getWidth() == view.getWidth()
+                && inputBitmap.getHeight() == view.getHeight()) {
+            return inputBitmap;
+        } else {
+
+            // Determine how much to scale down the image
+            float scaleFactor =
+                    max((float) inputBitmap.getWidth() / (float) view.getWidth(),
+                            (float) inputBitmap.getHeight() / (float) view.getHeight());
+
+            Bitmap resizedBitmap =
+                    Bitmap.createScaledBitmap(inputBitmap,
+                            (int) (inputBitmap.getWidth() / scaleFactor),
+                            (int) (inputBitmap.getHeight() / scaleFactor),
+                            true);
+            return resizedBitmap;
+        }
+    }
+
+
+    private void tryReloadAndDetectInImage(Bitmap imageBitmap, Task poseProcessor) {
+        ImageView imageFrame;
+        GraphicOverlay theOverlay;
+        try {
+            if(btnClicked == 0){
+                imageFrame = findViewById(R.id.tragularLeftExample);
+                graphicOverlayLeft.clear();
+                theOverlay = findViewById(R.id.graphicOverlayLeft);
+            }
+            else{
+                imageFrame = findViewById(R.id.tragularRightExample);
+                graphicOverlayRight.clear();
+                theOverlay = findViewById(R.id.graphicOverlayRight);
+            }
+            Bitmap resizedBitmap = resizeBitmap(imageBitmap,imageFrame);
+            imageFrame.setImageBitmap(resizedBitmap);
+
+            if (poseProcessor != null) {
+                theOverlay.setImageSourceInfo(
+                        resizedBitmap.getWidth(), resizedBitmap.getHeight(),false);
+                processBitmap(resizedBitmap, theOverlay);
+            } else {
+                Log.e("ERROR", "Null imageProcessor, please check adb logs for imageProcessor creation error");
+            }
+        } catch (Exception e) {
+            Log.e("ERROR", "Error retrieving saved image");
+        }
+    }
 
     /**
      * Checks to see if any clearly false/outlier results are being calculated and returns false

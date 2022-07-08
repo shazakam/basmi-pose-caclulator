@@ -53,6 +53,7 @@ public class LumbarFlexionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lumbar_flexion);
+        //All the Buttons for the activity
         leftFlexionBtn = findViewById(R.id.btnFlexionLeftUpload);
         rightFlexionBtn = findViewById(R.id.btnFlexionRightUpload);
         neutralRightBtn = findViewById(R.id.btnFlexionRightNeutralUpload);
