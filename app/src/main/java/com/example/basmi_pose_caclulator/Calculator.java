@@ -3,6 +3,9 @@ package com.example.basmi_pose_caclulator;
 import static java.lang.Math.atan2;
 import android.graphics.PointF;
 import android.util.Log;
+
+import com.google.mlkit.vision.face.Face;
+import com.google.mlkit.vision.face.FaceLandmark;
 import com.google.mlkit.vision.pose.Pose;
 import com.google.mlkit.vision.pose.PoseLandmark;
 
@@ -15,6 +18,8 @@ public class Calculator {
     static int indexToWrist = 0;
 
     //Tragular Measurements
+        static Pose tragularLeftPose;
+        static Pose tragularRightPose;
         //Tragular ELBOW
         static float tragularLeftElbow = 0;
         static float tragularRightElbow = 0;
@@ -23,6 +28,9 @@ public class Calculator {
         static float tragularRightWrist = 0;
 
     //Lumbar Measurements
+        static Pose lumbarNeutralPose;
+        static Pose lumbarLeftPose;
+        static Pose lumbarRightPose;
         //Lumbar ELBOW
         static float lumbarLeftElbow = 0;
         static float lumbarRightElbow = 0;
@@ -31,16 +39,15 @@ public class Calculator {
         static float lumbarRightWrist = 0;
 
     //Intermalleolar Measurements
+    static Pose intermalleolarPose;
     static float intermalleolarDistance = 0;
 
     //Cervical Measurements
+    static Face cervicalNeutralFace;
+    static Face cervicalLeftFace;
+    static Face cervicalRightFace;
     static float cervicalLeftRotation = 0;
     static float cervicalRightRotation = 0;
-
-    //Lumbar Side Flexion Measurements
-    static float flexionLeft = 0;
-    static float flexionRight = 0;
-    static int flexionScore = 0;
 
     //Final results obtained from each activity
     static int tragusToWallScore = 0;
@@ -82,6 +89,8 @@ public class Calculator {
         }
         double ratioIndexElbow = indexToElbow/getDistance(indexPosition,elbowPosition,1);
         double ratioIndexWrist = indexToWrist/getDistance(indexPosition,wristPosition,1);
+        Log.d("Ratio I.E",String.valueOf(ratioIndexElbow));
+        Log.d("RATIO I.W",String.valueOf(ratioIndexWrist));
 
         return new double[]{getDistance(earPosition, indexPosition, ratioIndexElbow), getDistance(earPosition, indexPosition, ratioIndexWrist)};
     }
@@ -298,145 +307,6 @@ public class Calculator {
         }
     }
 
-    //Creates polynomial coefficients from three given points
-    public static double[] generatePolyCoeff(PointF one, PointF two, PointF three){
-        double a = (one.x*(three.y-two.y)+two.x*(one.y - three.y)+three.x*(two.y-one.y))/
-                ((one.x-two.x)*(one.x-three.x)*(two.x-three.x));
-        double b = ((two.y-one.y)/(two.x-one.x))-a*(one.x+two.x);
-        double c = (one.y-a*Math.pow(one.x,2)-b*one.x);
-        return new double[] {a,b,c};
-    }
-
-    public static double integratePoly(double a, double b, double[] coeff){
-        double area = 0;
-        double increment = Math.abs(a-b)/1000;
-        for(double i = a;i <=b; i+=increment){
-            area += 0.1*Math.sqrt(Math.abs(1+Math.pow(2*coeff[0]*i+coeff[1],2)));
-        }
-        return area;
-    }
-
-    //Patient keeps their finger on their back
-    public static double getFlexionResultTwo(Pose pose, PointF aOne, PointF neutralHip, int btnClicked){
-        float ratio;
-        if(btnClicked == 1){
-            ratio = ankleToKnee/getDistance(pose.getPoseLandmark(PoseLandmark.LEFT_ANKLE).getPosition(),
-                    pose.getPoseLandmark(PoseLandmark.LEFT_KNEE).getPosition(),1);
-            PointF aTwo = pose.getPoseLandmark(PoseLandmark.LEFT_INDEX).getPosition();
-            float originalDistance =  getDistance(aOne,neutralHip,1);
-            float newDistance = getDistance(aTwo,neutralHip,1);
-            return ratio*(Math.abs(newDistance-originalDistance));
-        }
-        else{
-            ratio = ankleToKnee/getDistance(pose.getPoseLandmark(PoseLandmark.RIGHT_ANKLE).getPosition(),
-                    pose.getPoseLandmark(PoseLandmark.RIGHT_KNEE).getPosition(),1);
-            PointF aTwo = pose.getPoseLandmark(PoseLandmark.RIGHT_INDEX).getPosition();
-            float originalDistance = getDistance(aOne,neutralHip,1);
-            float newDistance = getDistance(aTwo,neutralHip,1);
-            return ratio*(Math.abs(newDistance-originalDistance));
-        }
-    }
-
-    //Mixture of one and two, pass in either left hip or right hip, and also neutral index (left or right)
-    //coordinate and button clicked
-    public static double getFlexionResultThree(Pose pose, PointF neutralHip, PointF aOne, int btnClicked){
-        float ratio;
-        if(btnClicked == 1){
-            ratio = ankleToKnee/getDistance(pose.getPoseLandmark(PoseLandmark.LEFT_ANKLE).getPosition(),
-                    pose.getPoseLandmark(PoseLandmark.LEFT_KNEE).getPosition(),1);
-            PointF aTwo = pose.getPoseLandmark(PoseLandmark.LEFT_INDEX).getPosition();
-            float theta = (float) getAngle(aOne,neutralHip,aTwo);
-            double hipToB = (getDistance(neutralHip,aOne,1)/Math.cos(theta));
-            double nonConvertedDistance = hipToB - getDistance(neutralHip,aTwo,1);
-            return ratio*nonConvertedDistance;
-        }
-        else{
-            ratio = ankleToKnee/getDistance(pose.getPoseLandmark(PoseLandmark.RIGHT_ANKLE).getPosition(),
-                    pose.getPoseLandmark(PoseLandmark.RIGHT_KNEE).getPosition(),1);
-            PointF aTwo = pose.getPoseLandmark(PoseLandmark.RIGHT_INDEX).getPosition();
-            float theta = (float) getAngle(aOne,neutralHip,aTwo);
-            double hipToB = (getDistance(neutralHip,aOne,1)/Math.cos(theta));
-            double nonConvertedDistance = hipToB - getDistance(neutralHip,aTwo,1);
-            return ratio*nonConvertedDistance;
-        }
-    }
-
-    public static double getFlexionResultFour(Pose pose, PointF neutralHip, PointF neutralShoulder, int btnClicked){
-        double originalDist = getDistance(neutralHip,neutralShoulder,1);
-        double newDist;
-        double ratio;
-        if(btnClicked == 1){
-            PointF atwo = pose.getPoseLandmark(PoseLandmark.LEFT_INDEX).getPosition();
-            ratio = ankleToKnee/getDistance(pose.getPoseLandmark(PoseLandmark.LEFT_ANKLE).getPosition(),
-                    pose.getPoseLandmark(PoseLandmark.LEFT_KNEE).getPosition(),1);
-            newDist = getDistance(neutralHip,atwo,1)+getDistance(atwo,pose.getPoseLandmark(PoseLandmark.LEFT_SHOULDER).getPosition(),1);
-        }
-        else{
-            PointF atwo = pose.getPoseLandmark(PoseLandmark.RIGHT_INDEX).getPosition();
-            ratio = ankleToKnee/getDistance(pose.getPoseLandmark(PoseLandmark.RIGHT_ANKLE).getPosition(),
-                    pose.getPoseLandmark(PoseLandmark.RIGHT_KNEE).getPosition(),1);
-            newDist = getDistance(neutralHip,atwo,1)+getDistance(atwo,pose.getPoseLandmark(PoseLandmark.RIGHT_SHOULDER).getPosition(),1);
-        }
-        return ratio*Math.abs(newDist-originalDist);
-    }
-
-    public static double getFlexionResultFive(Pose pose, PointF neutralHip, PointF aOne, int btnClicked){
-        double originalDist = getDistance(neutralHip,aOne,1);
-        double newDist;
-        double ratio;
-        if(btnClicked==1){
-            PointF aTwo = pose.getPoseLandmark(PoseLandmark.LEFT_INDEX).getPosition();
-            ratio = ankleToKnee/getDistance(pose.getPoseLandmark(PoseLandmark.LEFT_ANKLE).getPosition(),
-                    pose.getPoseLandmark(PoseLandmark.LEFT_KNEE).getPosition(),1);
-            double[] coeff = generatePolyCoeff(neutralHip,aTwo, pose.getPoseLandmark(PoseLandmark.LEFT_SHOULDER).getPosition());
-            newDist = integratePoly(neutralHip.x,aTwo.x,coeff);
-        }
-        else{
-            PointF aTwo = pose.getPoseLandmark(PoseLandmark.RIGHT_INDEX).getPosition();
-            ratio = ankleToKnee/getDistance(pose.getPoseLandmark(PoseLandmark.RIGHT_ANKLE).getPosition(),
-                    pose.getPoseLandmark(PoseLandmark.RIGHT_KNEE).getPosition(),1);
-            double[] coeff = generatePolyCoeff(neutralHip,aTwo, pose.getPoseLandmark(PoseLandmark.RIGHT_SHOULDER).getPosition());
-            newDist = integratePoly(neutralHip.x,aTwo.x,coeff);
-        }
-        return ratio*Math.abs(originalDist-newDist);
-    }
-
-    public static int getFlexionScore(double flexionResult){
-        if(flexionResult > 7){
-            return 0;
-        }
-        else if(flexionResult <= 7 && flexionResult > 6.4){
-            return 1;
-        }
-        else if(flexionResult <= 6.4 && flexionResult > 5.7){
-            return 2;
-        }
-        else if(flexionResult <= 5.7 && flexionResult > 5){
-            return 3;
-        }
-        else if(flexionResult <= 5 && flexionResult > 4.3){
-            return 4;
-        }
-        else if(flexionResult <= 4.3 && flexionResult > 3.6){
-            return 5;
-        }
-        else if(flexionResult <= 3.6 && flexionResult > 2.9){
-            return 6;
-        }
-        else if(flexionResult <= 2.9 && flexionResult > 2.2){
-            return 7;
-        }
-        else if(flexionResult <= 2.2 && flexionResult > 1.5){
-            return 8;
-        }
-        else if(flexionResult <= 1.5 && flexionResult > 0.8){
-            return 9;
-        }
-        else{
-            return 10;
-        }
-    }
-
     static double getAngle(PointF firstPoint, PointF midPoint, PointF lastPoint) {
         double result =
                 Math.toDegrees(
@@ -453,6 +323,20 @@ public class Calculator {
     public static void printPoses(Pose pose){
         for(PoseLandmark p:pose.getAllPoseLandmarks()){
             Log.d("LANDMARK "+String.valueOf(p.getLandmarkType()),"Position: " + String.valueOf(p.getPosition()) + " likelihood: "+String.valueOf(p.getInFrameLikelihood()));
+        }
+    }
+
+    public static void printPoses(Pose pose, String message){
+        Log.d("MEASUREMENT",message);
+        for(PoseLandmark p:pose.getAllPoseLandmarks()){
+            Log.d("LANDMARK "+String.valueOf(p.getLandmarkType()),"Position: " + String.valueOf(p.getPosition()) + " likelihood: "+String.valueOf(p.getInFrameLikelihood()));
+        }
+    }
+
+    public static void printPoses(Face face, String message){
+        Log.d("MEASUREMENT",message);
+        for(FaceLandmark p:face.getAllLandmarks()){
+            Log.d("LANDMARK "+String.valueOf(p.getLandmarkType()),"Position: " + String.valueOf(p.getPosition()));
         }
     }
 }

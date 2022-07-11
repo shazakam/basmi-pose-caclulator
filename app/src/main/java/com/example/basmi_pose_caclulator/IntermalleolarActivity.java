@@ -66,20 +66,22 @@ public class IntermalleolarActivity extends AppCompatActivity {
                         selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.intermalleolar_2);
                         inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
 
-                        Task<Pose> poseResult =
-                                intermalleolarPoseDetector.process(inputImage)
-                                        .addOnSuccessListener(
-                                                new OnSuccessListener<Pose>() {
-                                                    @Override
-                                                    public void onSuccess(Pose pose) {
-                                                        Calculator calculator = new Calculator();
-                                                        float intermalleolarResult = calculator.getIntermalleolarResult(pose);
-                                                        Calculator.intermalleolarDistance = intermalleolarResult;
-                                                        Calculator.intermalleolarScore = calculator.intermalleolarScore(intermalleolarResult);
-                                                        Log.d("INTERMALLEOLAR DISTANCE",String.valueOf(intermalleolarResult));
-                                                        Log.d("INTERMALLEOLAR SCORE",String.valueOf(Calculator.intermalleolarScore));
-                                                    }
-                                                })
+                        OnSuccessListener<Pose> intermalleolarOnSuccess = new OnSuccessListener<Pose>() {
+                            @Override
+                            public void onSuccess(Pose pose) {
+                                Calculator calculator = new Calculator();
+                                float intermalleolarResult = calculator.getIntermalleolarResult(pose);
+                                Calculator.intermalleolarPose = pose;
+                                Calculator.intermalleolarDistance = intermalleolarResult;
+                                Calculator.intermalleolarScore = calculator.intermalleolarScore(intermalleolarResult);
+                                Log.d("INTERMALLEOLAR DISTANCE",String.valueOf(intermalleolarResult));
+                                Log.d("INTERMALLEOLAR SCORE",String.valueOf(Calculator.intermalleolarScore));
+                                toastMessage("Upload Successful");
+                            }
+                        };
+
+                        Task<Pose> poseResult = intermalleolarPoseDetector.process(inputImage)
+                                        .addOnSuccessListener(intermalleolarOnSuccess)
                                         .addOnFailureListener(
                                                 new OnFailureListener() {
                                                     @Override
@@ -87,7 +89,8 @@ public class IntermalleolarActivity extends AppCompatActivity {
                                                         toastMessage("Upload Image Again");
                                                     }
                                                 });
-                        toastMessage("Upload Successful");
+
+
                     }
                 }
             }

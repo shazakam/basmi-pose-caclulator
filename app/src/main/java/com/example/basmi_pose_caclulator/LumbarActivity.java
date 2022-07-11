@@ -97,51 +97,59 @@ public class LumbarActivity extends AppCompatActivity {
                             inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
                         }
 
+                        OnSuccessListener<Pose> lumbarOnSuccess = new OnSuccessListener<Pose>() {
+                            @Override
+                            public void onSuccess(Pose pose) {
+                                Calculator.printPoses(pose);
+
+                                if(btnClicked == -1){
+                                    //UI Change, info to see what is being executed
+                                    Log.d("TRUE","BUTTON LEFT CLICKED");
+                                    leftBtn.setBackgroundColor(Color.GREEN);
+                                    leftBtn.setEnabled(false);
+                                    Calculator.lumbarLeftPose = pose;
+                                    leftLumbar = Calculator.lumbarResult(-1,pose,leftNeutralCoordinate);
+                                    toastMessage("Upload Successful");
+                                }
+                                else if(btnClicked == 0){
+                                    Log.d("TRUE","BUTTON NEUTRAL CLICKED");
+                                    neutralBtn.setBackgroundColor(Color.GREEN);
+                                    neutralBtn.setEnabled(false);
+                                    Calculator.lumbarNeutralPose = pose;
+                                    leftNeutralCoordinate = pose.getPoseLandmark(PoseLandmark.LEFT_INDEX).getPosition();
+                                    rightNeutralCoordinate = pose.getPoseLandmark(PoseLandmark.RIGHT_INDEX).getPosition();
+                                    toastMessage("Upload Successful");
+                                }
+                                else{
+                                    Log.d("TRUE","BUTTON RIGHT CLICKED");
+                                    rightBtn.setBackgroundColor(Color.GREEN);
+                                    rightBtn.setEnabled(false);
+                                    Calculator.lumbarRightPose = pose;
+                                    rightLumbar = Calculator.lumbarResult(1,pose,rightNeutralCoordinate);
+                                    toastMessage("Upload Successful");
+                                }
+
+                                if(extremeCaseEliminator()){
+                                    Calculator.lumbarLeftElbow = (float) leftLumbar[0];
+                                    Calculator.lumbarRightElbow = (float) rightLumbar[0];
+                                    Calculator.lumbarLeftWrist = (float) leftLumbar[1];
+                                    Calculator.lumbarRightWrist = (float) rightLumbar[1];
+                                    double lumbarAverageElbow  = (rightLumbar[0]+ leftLumbar[0])/2;
+                                    double lumbarAverageWrist = (rightLumbar[1]+ leftLumbar[1])/2;
+                                    Log.d("FINAL LUMBAR ELBOW",String.valueOf(lumbarAverageElbow));
+                                    Log.d("FINAL LUMBAR WRIST",String.valueOf(lumbarAverageWrist));
+
+                                    Calculator.lumbarSideFlexionScore = Calculator.lumbarScore((lumbarAverageElbow+lumbarAverageWrist)/2);
+                                    Log.d("FINAL LUMBAR SCORE",String.valueOf(Calculator.lumbarSideFlexionScore));
+                                }
+                                btnClicked = -2;
+
+                            }
+                        };
+
                         Task<Pose> poseResult =
                                 lumbarPoseDetector.process(inputImage)
-                                        .addOnSuccessListener(
-                                                new OnSuccessListener<Pose>() {
-                                                    @Override
-                                                    public void onSuccess(Pose pose) {
-                                                        Calculator.printPoses(pose);
-
-                                                        if(btnClicked == -1){
-                                                            //UI Change, info to see what is being executed
-                                                            Log.d("TRUE","BUTTON LEFT CLICKED");
-                                                            leftBtn.setBackgroundColor(Color.GREEN);
-                                                            leftBtn.setEnabled(false);
-                                                            leftLumbar = Calculator.lumbarResult(-1,pose,leftNeutralCoordinate);
-                                                        }
-                                                        else if(btnClicked == 0){
-                                                            Log.d("TRUE","BUTTON NEUTRAL CLICKED");
-                                                            neutralBtn.setBackgroundColor(Color.GREEN);
-                                                            neutralBtn.setEnabled(false);
-                                                            leftNeutralCoordinate = pose.getPoseLandmark(PoseLandmark.LEFT_INDEX).getPosition();
-                                                            rightNeutralCoordinate = pose.getPoseLandmark(PoseLandmark.RIGHT_INDEX).getPosition();
-                                                        }
-                                                        else{
-                                                            Log.d("TRUE","BUTTON RIGHT CLICKED");
-                                                            rightBtn.setBackgroundColor(Color.GREEN);
-                                                            rightBtn.setEnabled(false);
-                                                            rightLumbar = Calculator.lumbarResult(1,pose,rightNeutralCoordinate);
-                                                        }
-
-                                                        if(extremeCaseEliminator()){
-                                                            Calculator.lumbarLeftElbow = (float) leftLumbar[0];
-                                                            Calculator.lumbarRightElbow = (float) rightLumbar[0];
-                                                            Calculator.lumbarLeftWrist = (float) leftLumbar[1];
-                                                            Calculator.lumbarRightWrist = (float) rightLumbar[1];
-                                                            double lumbarAverageElbow  = (rightLumbar[0]+ leftLumbar[0])/2;
-                                                            double lumbarAverageWrist = (rightLumbar[1]+ leftLumbar[1])/2;
-                                                            Log.d("FINAL LUMBAR ELBOW",String.valueOf(lumbarAverageElbow));
-                                                            Log.d("FINAL LUMBAR WRIST",String.valueOf(lumbarAverageWrist));
-
-                                                            Calculator.lumbarSideFlexionScore = Calculator.lumbarScore((lumbarAverageElbow+lumbarAverageWrist)/2);
-                                                            Log.d("FINAL LUMBAR SCORE",String.valueOf(Calculator.lumbarSideFlexionScore));
-                                                        }
-                                                        btnClicked = -2;
-                                                    }
-                                                })
+                                        .addOnSuccessListener(lumbarOnSuccess)
                                         .addOnFailureListener(
                                                 new OnFailureListener() {
                                                     @Override
@@ -149,7 +157,9 @@ public class LumbarActivity extends AppCompatActivity {
                                                         toastMessage("Upload Image Again");
                                                     }
                                                 });
-                        toastMessage("Upload Successful");
+
+
+
                     }
                 }
             }

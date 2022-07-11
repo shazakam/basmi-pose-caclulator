@@ -105,66 +105,60 @@ public class TragusActivity extends AppCompatActivity{
                             inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
                         }
 
-                        Task<Pose> poseResult =
-                                tragusPoseDetector.process(inputImage)
-                                        .addOnSuccessListener(
-                                                new OnSuccessListener<Pose>() {
-                                                    @Override
-                                                    public void onSuccess(Pose pose) {
+                        //If the pose detector is successful it executes onSuccess
+                        OnSuccessListener<Pose> tragusOnSuccess = new OnSuccessListener<Pose>() {
+                            @Override
+                            public void onSuccess(Pose pose) {
+                                if(btnClicked == 0){
+                                    leftButton.setBackgroundColor(Color.GREEN);
+                                    leftTragular = Calculator.tragularResult(0,pose);
+                                    leftButton.setEnabled(false);
+                                    Calculator.tragularLeftPose = pose;
+                                    Calculator.printPoses(pose);
+                                    toastMessage("Upload Successful");
+                                }
+                                else if(btnClicked == 1){
+                                    rightButton.setBackgroundColor(Color.GREEN);
+                                    rightTragular = Calculator.tragularResult(1,pose);
+                                    rightButton.setEnabled(false);
+                                    Calculator.tragularRightPose = pose;
+                                    Calculator.printPoses(pose);
+                                    toastMessage("Upload Successful");
+                                }
+                                else{
+                                    toastMessage("ERROR");
+                                    return;
+                                }
+                                tryReloadAndDetectInImage(selectedImageBitmap,pose);
+                                if(extremeCaseEliminator()){
+                                    try{
 
-                                                        if(btnClicked == 0){
-                                                            leftButton.setBackgroundColor(Color.GREEN);
-                                                            leftTragular = Calculator.tragularResult(0,pose);
-                                                            leftButton.setEnabled(false);
-                                                            Calculator.printPoses(pose);
-                                                        }
-                                                        else if(btnClicked == 1){
-                                                            rightButton.setBackgroundColor(Color.GREEN);
-                                                            rightTragular = Calculator.tragularResult(1,pose);
-                                                            rightButton.setEnabled(false);
-                                                            Calculator.printPoses(pose);
-                                                        }
-                                                        else{
-                                                            toastMessage("ERROR");
-                                                            return;
-                                                        }
+                                        Calculator.tragularLeftElbow = (float) leftTragular[0];
+                                        Calculator.tragularRightElbow = (float) rightTragular[0];
+                                        Calculator.tragularLeftWrist = (float) leftTragular[1];
+                                        Calculator.tragularRightWrist = (float) rightTragular[1];
+                                        Log.d("FINAL ELBOW AVERAGE", String.valueOf((leftTragular[0]+rightTragular[0])/2));
+                                        Log.d("FINAL WRIST AVERAGE", String.valueOf((leftTragular[1]+rightTragular[1])/2));
+                                        Log.d("FINAL ELBOW SCORE", String.valueOf(Calculator.tragularScore((leftTragular[0]+rightTragular[0])/2)));
+                                        Log.d("FINAL WRIST SCORE", String.valueOf(Calculator.tragularScore((leftTragular[1]+rightTragular[1])/2)));
+                                        Calculator.tragusToWallScore =  Calculator.tragularScore((leftTragular[0]+leftTragular[1]+rightTragular[0]+rightTragular[1])/4);
+                                        Log.d("FINAL TRAGULAR SCORE", String.valueOf(Calculator.tragusToWallScore));
+                                    }catch(Exception e){
 
-                                                        if(extremeCaseEliminator()){
-                                                            try{
-                                                                Calculator.tragularLeftElbow = (float) leftTragular[0];
-                                                                Calculator.tragularRightElbow = (float) rightTragular[0];
-                                                                Calculator.tragularLeftWrist = (float) leftTragular[1];
-                                                                Calculator.tragularRightWrist = (float) rightTragular[1];
-                                                                Log.d("FINAL ELBOW AVERAGE", String.valueOf((leftTragular[0]+rightTragular[0])/2));
-                                                                Log.d("FINAL WRIST AVERAGE", String.valueOf((leftTragular[1]+rightTragular[1])/2));
-                                                                Log.d("FINAL ELBOW SCORE", String.valueOf(Calculator.tragularScore((leftTragular[0]+rightTragular[0])/2)));
-                                                                Log.d("FINAL WRIST SCORE", String.valueOf(Calculator.tragularScore((leftTragular[1]+rightTragular[1])/2)));
-                                                                Calculator.tragusToWallScore =  Calculator.tragularScore((leftTragular[0]+leftTragular[1]+rightTragular[0]+rightTragular[1])/4);
-                                                                Log.d("FINAL TRAGULAR SCORE", String.valueOf(Calculator.tragusToWallScore));
-                                                            }catch(Exception e){
+                                    }
+                                }
+                            }
+                        };
 
-                                                            }
-                                                        }
-                                                    }
-                                                })
-                                        .addOnFailureListener(
+                        Task<Pose> poseResult = tragusPoseDetector.process(inputImage).addOnSuccessListener(tragusOnSuccess).addOnFailureListener(
                                                 new OnFailureListener() {
                                                     @Override
                                                     public void onFailure(@NonNull Exception e) {
                                                         toastMessage("Upload Image Again");
                                                     }
                                                 });
-                        if(btnClicked == 0){
-                            tryReloadAndDetectInImage(selectedImageBitmap,poseResult);
-                        }
-                        else if(btnClicked == 1){
-                            tryReloadAndDetectInImage(selectedImageBitmap,poseResult);
-                        }
-                        else{
-                            Log.d("ERROR","ERROR WITH BUTTON CLICKED");
-                        }
 
-                        toastMessage("Upload Successful");
+
                     }
                 }
             }
@@ -180,7 +174,6 @@ public class TragusActivity extends AppCompatActivity{
                 && inputBitmap.getHeight() == view.getHeight()) {
             return inputBitmap;
         } else {
-
             // Determine how much to scale down the image
             float scaleFactor =
                     max((float) inputBitmap.getWidth() / (float) view.getWidth(),
@@ -196,7 +189,7 @@ public class TragusActivity extends AppCompatActivity{
     }
 
 
-    private void tryReloadAndDetectInImage(Bitmap imageBitmap, Task poseProcessor) {
+    private void tryReloadAndDetectInImage(Bitmap imageBitmap, Pose pose) {
         ImageView imageFrame;
         GraphicOverlay theOverlay;
         try {
@@ -213,7 +206,7 @@ public class TragusActivity extends AppCompatActivity{
             Bitmap resizedBitmap = resizeBitmap(imageBitmap,imageFrame);
             imageFrame.setImageBitmap(resizedBitmap);
 
-            if (poseProcessor != null) {
+            if (pose != null) {
                 theOverlay.setImageSourceInfo(
                         resizedBitmap.getWidth(), resizedBitmap.getHeight(),false);
                 processBitmap(resizedBitmap, theOverlay);
