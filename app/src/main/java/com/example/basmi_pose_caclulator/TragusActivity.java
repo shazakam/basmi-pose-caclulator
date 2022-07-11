@@ -88,7 +88,7 @@ public class TragusActivity extends AppCompatActivity{
         } catch (Exception e) {
             Log.d("WTF NO SERVER","WTF");
             e.printStackTrace();
-        }
+         }
 
         //Initialising all the views, buttons and values
         graphicOverlayRight = findViewById(R.id.graphicOverlayRight);
