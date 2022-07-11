@@ -1,7 +1,13 @@
 package com.example.basmi_pose_caclulator;
 import static java.lang.Math.max;
-import static java.lang.Math.min;
-
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -9,7 +15,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
@@ -17,10 +22,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -28,13 +31,13 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.odml.image.BitmapMlImageBuilder;
-import com.google.android.odml.image.MlImage;
 import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.pose.Pose;
 import com.google.mlkit.vision.pose.PoseDetection;
 import com.google.mlkit.vision.pose.PoseDetector;
 import com.google.mlkit.vision.pose.accurate.AccuratePoseDetectorOptions;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
@@ -58,10 +61,34 @@ public class TragusActivity extends AppCompatActivity{
     ImageView leftPicture;
     ImageView rightPicture;
 
+    public static final MediaType JSON
+            = MediaType.get("application/json; charset=utf-8");
+
+    OkHttpClient client = new OkHttpClient();
+
+
+    String post(String url, String json) throws IOException {
+        RequestBody body = RequestBody.create(json, JSON);
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
+        try (Response response = client.newCall(request).execute()) {
+            return response.body().string();
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tragus);
+        try {
+            Log.d("RUNNING","RUNNING");
+            post("http://138.38.102.31:5000/debug","HIHIHIHI");
+        } catch (Exception e) {
+            Log.d("WTF NO SERVER","WTF");
+            e.printStackTrace();
+        }
 
         //Initialising all the views, buttons and values
         graphicOverlayRight = findViewById(R.id.graphicOverlayRight);
@@ -73,7 +100,9 @@ public class TragusActivity extends AppCompatActivity{
         leftTragular = null;
         rightTragular = null;
         btnClicked = -1;
+
     }
+
 
     //This tells what getImage should do with the result from the intent
     ActivityResultLauncher<Intent> getImageTragular = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
@@ -267,6 +296,9 @@ public class TragusActivity extends AppCompatActivity{
         else{
             Log.d("ERROR","ON CLICK TRAGUS NOT WORKING");
         }
+
+
+
         //Intent to take Photo
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         getImageTragular.launch(intent);
