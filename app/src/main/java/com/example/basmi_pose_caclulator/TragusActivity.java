@@ -61,30 +61,32 @@ public class TragusActivity extends AppCompatActivity{
     ImageView leftPicture;
     ImageView rightPicture;
 
-    public static final MediaType JSON
-            = MediaType.get("application/json; charset=utf-8");
-
-    OkHttpClient client = new OkHttpClient();
-
-
-    String post(String url, String json) throws IOException {
-        RequestBody body = RequestBody.create(json, JSON);
-        Request request = new Request.Builder()
-                .url(url)
-                .post(body)
-                .build();
-        try (Response response = client.newCall(request).execute()) {
-            return response.body().string();
-        }
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tragus);
+        OkHttpClient okHttpClient = new OkHttpClient();
         try {
+            String Text = "HELLLLOOOO FIUCKER";
+
+            RequestBody formbody = new FormBody.Builder().add("sample",Text).build();
+
+            Request request = new Request.Builder().url("http://138.38.166.67:5000/debug")
+                            .post(formbody).build();
+
+            okHttpClient.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                    Log.d("SERVER FAILURE","NO CONNECTION LINE 88");
+                }
+
+                @Override
+                public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                     Log.d("OH BABY","OH YEAH");
+                }
+            });
             Log.d("RUNNING","RUNNING");
-            post("http://138.38.102.31:5000/debug","HIHIHIHI");
+
         } catch (Exception e) {
             Log.d("WTF NO SERVER","WTF");
             e.printStackTrace();
