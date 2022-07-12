@@ -24,8 +24,6 @@ import okhttp3.Response;
 
 
 public class MainActivity extends AppCompatActivity {
-
-    OkHttpClient okHttpClient;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

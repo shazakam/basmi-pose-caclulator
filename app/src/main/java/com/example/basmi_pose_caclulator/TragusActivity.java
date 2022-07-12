@@ -4,6 +4,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -39,6 +40,7 @@ import com.google.mlkit.vision.pose.accurate.AccuratePoseDetectorOptions;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class TragusActivity extends AppCompatActivity{
@@ -60,17 +62,15 @@ public class TragusActivity extends AppCompatActivity{
     int btnClicked;
     ImageView leftPicture;
     ImageView rightPicture;
+    OkHttpClient okHttpClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tragus);
-        OkHttpClient okHttpClient = new OkHttpClient();
+        okHttpClient = new OkHttpClient();
         try {
-            String Text = "HELLLLOOOO FIUCKER";
-
-            RequestBody formbody = new FormBody.Builder().add("sample",Text).build();
-
+            RequestBody formbody = new FormBody.Builder().add("sample","CONNECTED").build();
             Request request = new Request.Builder().url("http://138.38.166.67:5000/debug")
                             .post(formbody).build();
 
@@ -82,7 +82,6 @@ public class TragusActivity extends AppCompatActivity{
 
                 @Override
                 public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                     Log.d("OH BABY","OH YEAH");
                 }
             });
             Log.d("RUNNING","RUNNING");
@@ -117,26 +116,32 @@ public class TragusActivity extends AppCompatActivity{
                         //Initialises pose detector with desired options
                         tragusPoseDetector = PoseDetection.getClient(options);
                         /* Taking Picture */
-                        /*
+
                         Bundle extras = result.getData().getExtras();
                         Bitmap selectedImageBitmap = (Bitmap) extras.get("data");
-                        InputImage inputImage = InputImage.fromBitmap(selectedImageBitmap,0);*/
+                        InputImage inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
 
                         //Used for pre-loaded images and will be removed for when photos need to be uploaded
                         //0 means the left side is being uploaded and 1 indicates the right side is being uploaded
 
-                        Bitmap selectedImageBitmap;
-                        InputImage inputImage;
+                        //Bitmap selectedImageBitmap;
+                        //InputImage inputImage;
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
                         if(btnClicked == 0){
-                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.left_tragular_6);
-                            inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
+                            //selectedImageBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.left_tragular_6);
+                            //inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
+                            selectedImageBitmap.compress(Bitmap.CompressFormat.JPEG,100,stream);
+                            ServerHandler.tragularPostImage(0,selectedImageBitmap,okHttpClient,stream);
                         }
                         else{
-                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.right_tragular_2);
-                            inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
+                            //selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.right_tragular_2);
+                            //inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
+                            selectedImageBitmap.compress(Bitmap.CompressFormat.JPEG,100,stream);
+                            ServerHandler.tragularPostImage(1,selectedImageBitmap,okHttpClient,stream);
                         }
 
                         //If the pose detector is successful it executes onSuccess
+                        Bitmap finalSelectedImageBitmap = selectedImageBitmap;
                         OnSuccessListener<Pose> tragusOnSuccess = new OnSuccessListener<Pose>() {
                             @Override
                             public void onSuccess(Pose pose) {
