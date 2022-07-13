@@ -69,27 +69,7 @@ public class TragusActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tragus);
         okHttpClient = new OkHttpClient();
-        try {
-            RequestBody formbody = new FormBody.Builder().add("sample","CONNECTED").build();
-            Request request = new Request.Builder().url("http://138.38.166.67:5000/debug")
-                            .post(formbody).build();
-
-            okHttpClient.newCall(request).enqueue(new Callback() {
-                @Override
-                public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                    Log.d("SERVER FAILURE","NO CONNECTION LINE 88");
-                }
-
-                @Override
-                public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                }
-            });
-            Log.d("RUNNING","RUNNING");
-
-        } catch (Exception e) {
-            Log.d("WTF NO SERVER","WTF");
-            e.printStackTrace();
-         }
+        ServerHandler.checkConnection(okHttpClient,"TRAGULAR CONNECTED");
 
         //Initialising all the views, buttons and values
         graphicOverlayRight = findViewById(R.id.graphicOverlayRight);
@@ -117,31 +97,28 @@ public class TragusActivity extends AppCompatActivity{
                         tragusPoseDetector = PoseDetection.getClient(options);
                         /* Taking Picture */
 
-                        Bundle extras = result.getData().getExtras();
-                        Bitmap selectedImageBitmap = (Bitmap) extras.get("data");
-                        InputImage inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
+                        //Bundle extras = result.getData().getExtras();
+                        //Bitmap selectedImageBitmap = (Bitmap) extras.get("data");
+                        //InputImage inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
 
                         //Used for pre-loaded images and will be removed for when photos need to be uploaded
                         //0 means the left side is being uploaded and 1 indicates the right side is being uploaded
 
-                        //Bitmap selectedImageBitmap;
-                        //InputImage inputImage;
+                        Bitmap selectedImageBitmap;
+                        InputImage inputImage;
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
                         if(btnClicked == 0){
-                            //selectedImageBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.left_tragular_6);
-                            //inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
-                            selectedImageBitmap.compress(Bitmap.CompressFormat.JPEG,100,stream);
+                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.left_tragular_6);
+                            inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
                             ServerHandler.tragularPostImage(0,selectedImageBitmap,okHttpClient,stream);
                         }
                         else{
-                            //selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.right_tragular_2);
-                            //inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
-                            selectedImageBitmap.compress(Bitmap.CompressFormat.JPEG,100,stream);
+                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.right_tragular_2);
+                            inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
                             ServerHandler.tragularPostImage(1,selectedImageBitmap,okHttpClient,stream);
                         }
 
                         //If the pose detector is successful it executes onSuccess
-                        Bitmap finalSelectedImageBitmap = selectedImageBitmap;
                         OnSuccessListener<Pose> tragusOnSuccess = new OnSuccessListener<Pose>() {
                             @Override
                             public void onSuccess(Pose pose) {

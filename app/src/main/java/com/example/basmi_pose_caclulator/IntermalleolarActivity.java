@@ -29,6 +29,10 @@ import com.google.mlkit.vision.pose.PoseDetection;
 import com.google.mlkit.vision.pose.PoseDetector;
 import com.google.mlkit.vision.pose.accurate.AccuratePoseDetectorOptions;
 
+import java.io.ByteArrayOutputStream;
+
+import okhttp3.OkHttpClient;
+
 
 public class IntermalleolarActivity extends AppCompatActivity {
     Button intermalleolarUploadBtn;
@@ -37,11 +41,15 @@ public class IntermalleolarActivity extends AppCompatActivity {
             .setDetectorMode(AccuratePoseDetectorOptions.SINGLE_IMAGE_MODE)
             .build();
 
+    OkHttpClient okHttpClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intermalleolar);
         intermalleolarUploadBtn = findViewById(R.id.btnIntermalleolarUpload);
+        okHttpClient = new OkHttpClient();
+        ServerHandler.checkConnection(okHttpClient,"INTERMALLEOLAR CONNECTED");
     }
 
     ActivityResultLauncher<Intent> getImageIntermalleolar = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
@@ -65,6 +73,10 @@ public class IntermalleolarActivity extends AppCompatActivity {
                         InputImage inputImage;
                         selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.intermalleolar_2);
                         inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+                        ServerHandler.intermalleolarPostImage(selectedImageBitmap,okHttpClient,stream);
+
 
                         OnSuccessListener<Pose> intermalleolarOnSuccess = new OnSuccessListener<Pose>() {
                             @Override

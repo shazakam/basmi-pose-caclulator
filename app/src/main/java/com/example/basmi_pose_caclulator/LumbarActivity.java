@@ -31,6 +31,10 @@ import com.google.mlkit.vision.pose.PoseDetector;
 import com.google.mlkit.vision.pose.PoseLandmark;
 import com.google.mlkit.vision.pose.accurate.AccuratePoseDetectorOptions;
 
+import java.io.ByteArrayOutputStream;
+
+import okhttp3.OkHttpClient;
+
 public class LumbarActivity extends AppCompatActivity {
     Button neutralBtn;
     Button rightBtn;
@@ -49,6 +53,7 @@ public class LumbarActivity extends AppCompatActivity {
     PointF leftNeutralCoordinate;
     PointF rightNeutralCoordinate;
     int btnClicked;
+    OkHttpClient okHttpClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +64,8 @@ public class LumbarActivity extends AppCompatActivity {
         rightBtn = findViewById(R.id.btnRightLumbarUpload);
         leftBtn = findViewById(R.id.btnLeftLumbarUpload);
         btnClicked = -2;
+        okHttpClient = new OkHttpClient();
+        ServerHandler.checkConnection(okHttpClient,"LUMBAR CONNECTED");
     }
 
     //This tells what getImage should do with the result from the intent
@@ -82,19 +89,26 @@ public class LumbarActivity extends AppCompatActivity {
 
                         Bitmap selectedImageBitmap;
                         InputImage inputImage;
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
                         if(btnClicked == -1){
                             selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.lumbar_left_1);
                             inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
+                            //LumbarPostImage
+                            ServerHandler.lumbarPostImage(-1,selectedImageBitmap,okHttpClient,stream);
                         }
                         //Neutral Clicked
                         else if(btnClicked == 0){
                             selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.lumbar_neutral_1);
                             inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
+                            //LumbarPostImage
+                            ServerHandler.lumbarPostImage(0,selectedImageBitmap,okHttpClient,stream);
                         }
                         //Right Clicked
                         else{
                             selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.lumbar_right_1);
                             inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
+                            //LumbarPostImage
+                            ServerHandler.lumbarPostImage(1,selectedImageBitmap,okHttpClient,stream);
                         }
 
                         OnSuccessListener<Pose> lumbarOnSuccess = new OnSuccessListener<Pose>() {
