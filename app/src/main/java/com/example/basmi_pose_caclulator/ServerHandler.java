@@ -148,4 +148,44 @@ public class ServerHandler {
             }
         });
     }
+
+    public static void cervicalPostImage(int btnClicked,Bitmap image,OkHttpClient okHttpClient,ByteArrayOutputStream stream){
+        MultipartBody.Builder multipartBodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        image.compress(Bitmap.CompressFormat.JPEG,100,stream);
+        byte[] byteArray = stream.toByteArray();
+        RequestBody postBodyImage;
+        String cervicalRoute = null;
+
+        if(btnClicked == -1){
+            multipartBodyBuilder.addFormDataPart("leftCervical","left_cervical.jpg",RequestBody.create(byteArray,MediaType.parse("image/*jpg")));
+            cervicalRoute = "cervicalLeft";
+        }
+        else if(btnClicked == 0){
+            multipartBodyBuilder.addFormDataPart("neutralCervical","neutral_cervical.jpg",RequestBody.create(byteArray,MediaType.parse("image/*jpg")));
+            cervicalRoute = "cervicalNeutral";
+        }
+        else{
+            multipartBodyBuilder.addFormDataPart("rightCervical","Right_cervical.jpg",RequestBody.create(byteArray,MediaType.parse("image/*jpg")));
+            cervicalRoute = "cervicalRight";
+        }
+
+        postBodyImage = multipartBodyBuilder.build();
+        Request request = new Request.Builder()
+                .url("http://138.38.166.67:5000/"+cervicalRoute)
+                .post(postBodyImage)
+                .build();
+
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                call.cancel();
+                Log.d("FAILURE TO CONNECT","ERROR L151");
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                Log.d("Server Connection","HUZZAH");
+            }
+        });
+    }
 }

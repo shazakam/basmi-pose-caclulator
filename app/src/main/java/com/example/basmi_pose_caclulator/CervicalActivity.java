@@ -37,7 +37,10 @@ import com.google.mlkit.vision.pose.PoseDetector;
 import com.google.mlkit.vision.pose.PoseLandmark;
 import com.google.mlkit.vision.pose.accurate.AccuratePoseDetectorOptions;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
+
+import okhttp3.OkHttpClient;
 
 public class CervicalActivity extends AppCompatActivity {
     Button neutralBtn;
@@ -56,6 +59,7 @@ public class CervicalActivity extends AppCompatActivity {
     int btnClicked;
     PointF neutralNoseCoord;
     float radius;
+    OkHttpClient okHttpClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +70,8 @@ public class CervicalActivity extends AppCompatActivity {
         rightBtn = findViewById(R.id.btnRightCervicalUpload);
         btnClicked = -2;
         radius = 0;
+        okHttpClient = new OkHttpClient();
+        ServerHandler.checkConnection(okHttpClient,"CERVICAL CONNECTED");
     }
 
 
@@ -78,28 +84,32 @@ public class CervicalActivity extends AppCompatActivity {
 
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                         FaceDetector detector = FaceDetection.getClient(highAccuracyOpts);
-
+                        /*
                         Bundle extras = result.getData().getExtras();
                         Bitmap selectedImageBitmap = (Bitmap) extras.get("data");
-                        InputImage inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
+                        InputImage inputImage = InputImage.fromBitmap(selectedImageBitmap,0);*/
 
                         /*NEED TO GET CERVICAL PRE-DEFINED TEST EXAMPLES*/
 
-                        /*
+
                         Bitmap selectedImageBitmap;
                         InputImage inputImage;
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
                         if(btnClicked == -1){
                             selectedImageBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.cervical_left_4);
                             inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
+                            ServerHandler.cervicalPostImage(-1,selectedImageBitmap,okHttpClient,stream);
                         }
                         else if(btnClicked == 0){
                             selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.cervical_neutral_3);
                             inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
+                            ServerHandler.cervicalPostImage(0,selectedImageBitmap,okHttpClient,stream);
                         }
                         else{
                             selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.cervical_right_4);
                             inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
-                        }*/
+                            ServerHandler.cervicalPostImage(1,selectedImageBitmap,okHttpClient,stream);
+                        }
 
                         /*THIS IS USING FACE ESTIMATION*/
                         /*Thought process:
