@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -96,81 +97,91 @@ public class TragusActivity extends AppCompatActivity{
                         //Initialises pose detector with desired options
                         tragusPoseDetector = PoseDetection.getClient(options);
                         /* Taking Picture */
-
+                        Uri imageUri = result.getData().getData();
                         //Bundle extras = result.getData().getExtras();
-                        //Bitmap selectedImageBitmap = (Bitmap) extras.get("data");
-                        //InputImage inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
+                        //Uri imageUri = (Uri) extras.get("data");
 
-                        //Used for pre-loaded images and will be removed for when photos need to be uploaded
-                        //0 means the left side is being uploaded and 1 indicates the right side is being uploaded
+                        try {
 
-                        Bitmap selectedImageBitmap;
-                        InputImage inputImage;
-                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                        if(btnClicked == 0){
-                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.left_tragular_6);
-                            inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
-                            ServerHandler.tragularPostImage(0,selectedImageBitmap,okHttpClient,stream);
-                        }
-                        else{
-                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.right_tragular_2);
-                            inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
-                            ServerHandler.tragularPostImage(1,selectedImageBitmap,okHttpClient,stream);
-                        }
+                            Bitmap selectedImageBitmap = Calculator.getBitmapFromUri(getContentResolver(),imageUri);
 
-                        //If the pose detector is successful it executes onSuccess
-                        OnSuccessListener<Pose> tragusOnSuccess = new OnSuccessListener<Pose>() {
-                            @Override
-                            public void onSuccess(Pose pose) {
-                                if(btnClicked == 0){
-                                    leftButton.setBackgroundColor(Color.GREEN);
-                                    leftTragular = Calculator.tragularResult(0,pose);
-                                    leftButton.setEnabled(false);
-                                    Calculator.tragularLeftPose = pose;
-                                    Calculator.printPoses(pose);
-                                    toastMessage("Upload Successful");
-                                }
-                                else if(btnClicked == 1){
-                                    rightButton.setBackgroundColor(Color.GREEN);
-                                    rightTragular = Calculator.tragularResult(1,pose);
-                                    rightButton.setEnabled(false);
-                                    Calculator.tragularRightPose = pose;
-                                    Calculator.printPoses(pose);
-                                    toastMessage("Upload Successful");
-                                }
-                                else{
-                                    toastMessage("ERROR");
-                                    return;
-                                }
-                                tryReloadAndDetectInImage(selectedImageBitmap,pose);
-                                if(extremeCaseEliminator()){
-                                    try{
+                            InputImage inputImage;
 
-                                        Calculator.tragularLeftElbow = (float) leftTragular[0];
-                                        Calculator.tragularRightElbow = (float) rightTragular[0];
-                                        Calculator.tragularLeftWrist = (float) leftTragular[1];
-                                        Calculator.tragularRightWrist = (float) rightTragular[1];
-                                        Log.d("FINAL ELBOW AVERAGE", String.valueOf((leftTragular[0]+rightTragular[0])/2));
-                                        Log.d("FINAL WRIST AVERAGE", String.valueOf((leftTragular[1]+rightTragular[1])/2));
-                                        Log.d("FINAL ELBOW SCORE", String.valueOf(Calculator.tragularScore((leftTragular[0]+rightTragular[0])/2)));
-                                        Log.d("FINAL WRIST SCORE", String.valueOf(Calculator.tragularScore((leftTragular[1]+rightTragular[1])/2)));
-                                        Calculator.tragusToWallScore =  Calculator.tragularScore((leftTragular[0]+leftTragular[1]+rightTragular[0]+rightTragular[1])/4);
-                                        Log.d("FINAL TRAGULAR SCORE", String.valueOf(Calculator.tragusToWallScore));
-                                    }catch(Exception e){
+                            //Used for pre-loaded images and will be removed for when photos need to be uploaded
+                            //0 means the left side is being uploaded and 1 indicates the right side is being uploaded
 
+                            //Bitmap selectedImageBitmap;
+                            //InputImage inputImage;
+                            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                            if(btnClicked == 0){
+                                //selectedImageBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.left_tragular_6);
+                                inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
+                                ServerHandler.tragularPostImage(0,selectedImageBitmap,okHttpClient,stream);
+                            }
+                            else{
+                                //selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.right_tragular_2);
+                                inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
+                                ServerHandler.tragularPostImage(1,selectedImageBitmap,okHttpClient,stream);
+                            }
+
+                            //If the pose detector is successful it executes onSuccess
+                            OnSuccessListener<Pose> tragusOnSuccess = new OnSuccessListener<Pose>() {
+                                @Override
+                                public void onSuccess(Pose pose) {
+                                    if(btnClicked == 0){
+                                        leftButton.setBackgroundColor(Color.GREEN);
+                                        leftTragular = Calculator.tragularResult(0,pose);
+                                        leftButton.setEnabled(false);
+                                        Calculator.tragularLeftPose = pose;
+                                        Calculator.printPoses(pose);
+                                        toastMessage("Upload Successful");
+                                    }
+                                    else if(btnClicked == 1){
+                                        rightButton.setBackgroundColor(Color.GREEN);
+                                        rightTragular = Calculator.tragularResult(1,pose);
+                                        rightButton.setEnabled(false);
+                                        Calculator.tragularRightPose = pose;
+                                        Calculator.printPoses(pose);
+                                        toastMessage("Upload Successful");
+                                    }
+                                    else{
+                                        toastMessage("ERROR");
+                                        return;
+                                    }
+                                    tryReloadAndDetectInImage(selectedImageBitmap,pose);
+                                    if(extremeCaseEliminator()){
+                                        try{
+
+                                            Calculator.tragularLeftElbow = (float) leftTragular[0];
+                                            Calculator.tragularRightElbow = (float) rightTragular[0];
+                                            Calculator.tragularLeftWrist = (float) leftTragular[1];
+                                            Calculator.tragularRightWrist = (float) rightTragular[1];
+                                            Log.d("FINAL ELBOW AVERAGE", String.valueOf((leftTragular[0]+rightTragular[0])/2));
+                                            Log.d("FINAL WRIST AVERAGE", String.valueOf((leftTragular[1]+rightTragular[1])/2));
+                                            Log.d("FINAL ELBOW SCORE", String.valueOf(Calculator.tragularScore((leftTragular[0]+rightTragular[0])/2)));
+                                            Log.d("FINAL WRIST SCORE", String.valueOf(Calculator.tragularScore((leftTragular[1]+rightTragular[1])/2)));
+                                            Calculator.tragusToWallScore =  Calculator.tragularScore((leftTragular[0]+leftTragular[1]+rightTragular[0]+rightTragular[1])/4);
+                                            Log.d("FINAL TRAGULAR SCORE", String.valueOf(Calculator.tragusToWallScore));
+                                        }catch(Exception e){
+
+                                        }
                                     }
                                 }
-                            }
-                        };
 
-                        Task<Pose> poseResult = tragusPoseDetector.process(inputImage).addOnSuccessListener(tragusOnSuccess).addOnFailureListener(
-                                                new OnFailureListener() {
-                                                    @Override
-                                                    public void onFailure(@NonNull Exception e) {
-                                                        toastMessage("Upload Image Again");
-                                                    }
-                                                });
+                            };
 
+                            Task<Pose> poseResult = tragusPoseDetector.process(inputImage).addOnSuccessListener(tragusOnSuccess).addOnFailureListener(
+                                    new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            toastMessage("Upload Image Again");
+                                        }
+                                    });
+
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
 
                     }
                 }
@@ -284,8 +295,10 @@ public class TragusActivity extends AppCompatActivity{
 
 
         //Intent to take Photo
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
         getImageTragular.launch(intent);
+
     }
 
     public void onTragusNextClick(View view){

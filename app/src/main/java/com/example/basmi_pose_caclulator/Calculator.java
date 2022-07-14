@@ -1,7 +1,12 @@
 package com.example.basmi_pose_caclulator;
 
 import static java.lang.Math.atan2;
+
+import android.content.ContentResolver;
+import android.graphics.Bitmap;
 import android.graphics.PointF;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.util.Log;
 
 import com.google.mlkit.vision.face.Face;
@@ -9,7 +14,7 @@ import com.google.mlkit.vision.face.FaceLandmark;
 import com.google.mlkit.vision.pose.Pose;
 import com.google.mlkit.vision.pose.PoseLandmark;
 
-
+import java.io.IOException;
 
 
 public class Calculator {
@@ -338,5 +343,10 @@ public class Calculator {
         for(FaceLandmark p:face.getAllLandmarks()){
             Log.d("LANDMARK "+String.valueOf(p.getLandmarkType()),"Position: " + String.valueOf(p.getPosition()));
         }
+    }
+
+    public static Bitmap getBitmapFromUri(ContentResolver contentResolver, Uri imageUri) throws IOException {
+        Bitmap decodedBitmap = MediaStore.Images.Media.getBitmap(contentResolver,imageUri);
+        return decodedBitmap;
     }
 }
