@@ -53,8 +53,6 @@ public class TragusActivity extends AppCompatActivity{
     index to wrist length as the reference.*/
     double[] leftTragular;
     double[] rightTragular;
-    private GraphicOverlay graphicOverlayRight;
-    private GraphicOverlay graphicOverlayLeft;
     PoseDetector tragusPoseDetector;
     AccuratePoseDetectorOptions options = new AccuratePoseDetectorOptions.Builder()
                     .setDetectorMode(AccuratePoseDetectorOptions.SINGLE_IMAGE_MODE)
@@ -73,8 +71,6 @@ public class TragusActivity extends AppCompatActivity{
         ServerHandler.checkConnection(okHttpClient,"TRAGULAR CONNECTED");
 
         //Initialising all the views, buttons and values
-        graphicOverlayRight = findViewById(R.id.graphicOverlayRight);
-        graphicOverlayLeft = findViewById(R.id.graphicOverlayLeft);
         leftButton = findViewById(R.id.btnLeftUploadTragus);
         rightButton = findViewById(R.id.btnRightUploadTragus);
         leftPicture = findViewById(R.id.tragularLeftExample);
@@ -94,32 +90,19 @@ public class TragusActivity extends AppCompatActivity{
                 public void onActivityResult(ActivityResult result) {
 
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                        //Initialises pose detector with desired options
+
                         tragusPoseDetector = PoseDetection.getClient(options);
-                        /* Taking Picture */
                         Uri imageUri = result.getData().getData();
-                        //Bundle extras = result.getData().getExtras();
-                        //Uri imageUri = (Uri) extras.get("data");
 
                         try {
-
                             Bitmap selectedImageBitmap = Calculator.getBitmapFromUri(getContentResolver(),imageUri);
-
                             InputImage inputImage;
-
-                            //Used for pre-loaded images and will be removed for when photos need to be uploaded
-                            //0 means the left side is being uploaded and 1 indicates the right side is being uploaded
-
-                            //Bitmap selectedImageBitmap;
-                            //InputImage inputImage;
                             ByteArrayOutputStream stream = new ByteArrayOutputStream();
                             if(btnClicked == 0){
-                                //selectedImageBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.left_tragular_6);
                                 inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
                                 ServerHandler.tragularPostImage(0,selectedImageBitmap,okHttpClient,stream);
                             }
                             else{
-                                //selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.right_tragular_2);
                                 inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
                                 ServerHandler.tragularPostImage(1,selectedImageBitmap,okHttpClient,stream);
                             }
@@ -148,7 +131,7 @@ public class TragusActivity extends AppCompatActivity{
                                         toastMessage("ERROR");
                                         return;
                                     }
-                                    tryReloadAndDetectInImage(selectedImageBitmap,pose);
+
                                     if(extremeCaseEliminator()){
                                         try{
 
@@ -167,7 +150,6 @@ public class TragusActivity extends AppCompatActivity{
                                         }
                                     }
                                 }
-
                             };
 
                             Task<Pose> poseResult = tragusPoseDetector.process(inputImage).addOnSuccessListener(tragusOnSuccess).addOnFailureListener(
@@ -177,8 +159,6 @@ public class TragusActivity extends AppCompatActivity{
                                             toastMessage("Upload Image Again");
                                         }
                                     });
-
-
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -188,10 +168,6 @@ public class TragusActivity extends AppCompatActivity{
             }
     );
 
-
-    public void processBitmap(Bitmap bitmap, final GraphicOverlay graphicOverlay) {
-        graphicOverlay.add(new CameraImageGraphic(graphicOverlay, bitmap));
-    }
 
     public Bitmap resizeBitmap(Bitmap inputBitmap,ImageView view){
         if (inputBitmap.getWidth() == view.getWidth()
@@ -209,36 +185,6 @@ public class TragusActivity extends AppCompatActivity{
                             (int) (inputBitmap.getHeight() / scaleFactor),
                             true);
             return resizedBitmap;
-        }
-    }
-
-
-    private void tryReloadAndDetectInImage(Bitmap imageBitmap, Pose pose) {
-        ImageView imageFrame;
-        GraphicOverlay theOverlay;
-        try {
-            if(btnClicked == 0){
-                imageFrame = findViewById(R.id.tragularLeftExample);
-                graphicOverlayLeft.clear();
-                theOverlay = findViewById(R.id.graphicOverlayLeft);
-            }
-            else{
-                imageFrame = findViewById(R.id.tragularRightExample);
-                graphicOverlayRight.clear();
-                theOverlay = findViewById(R.id.graphicOverlayRight);
-            }
-            Bitmap resizedBitmap = resizeBitmap(imageBitmap,imageFrame);
-            imageFrame.setImageBitmap(resizedBitmap);
-
-            if (pose != null) {
-                theOverlay.setImageSourceInfo(
-                        resizedBitmap.getWidth(), resizedBitmap.getHeight(),false);
-                processBitmap(resizedBitmap, theOverlay);
-            } else {
-                Log.e("ERROR", "Null imageProcessor, please check adb logs for imageProcessor creation error");
-            }
-        } catch (Exception e) {
-            Log.e("ERROR", "Error retrieving saved image");
         }
     }
 
@@ -292,9 +238,7 @@ public class TragusActivity extends AppCompatActivity{
             Log.d("ERROR","ON CLICK TRAGUS NOT WORKING");
         }
 
-
-
-        //Intent to take Photo
+        //Intent to choose photo from gallery
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
         getImageTragular.launch(intent);

@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -30,6 +31,7 @@ import com.google.mlkit.vision.pose.PoseDetector;
 import com.google.mlkit.vision.pose.accurate.AccuratePoseDetectorOptions;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 import okhttp3.OkHttpClient;
 
@@ -59,50 +61,43 @@ public class IntermalleolarActivity extends AppCompatActivity {
                 public void onActivityResult(ActivityResult result) {
 
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                        //Initialises pose detector with desired options
 
                         intermalleolarPoseDetector = PoseDetection.getClient(options);
-                        /*
-                        Bundle extras = result.getData().getExtras();
-                        Bitmap selectedImageBitmap = (Bitmap) extras.get("data");
-                        InputImage inputImage = InputImage.fromBitmap(selectedImageBitmap,0);*/
+                        Uri imageUri = result.getData().getData();
 
-                        /*INTERMALLEOLAR PRE-DEFINED TEST CASES*/
-                        intermalleolarPoseDetector = PoseDetection.getClient(options);
-                        Bitmap selectedImageBitmap;
-                        InputImage inputImage;
-                        selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.intermalleolar_2);
-                        inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
-                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        try {
+                            Bitmap selectedImageBitmap = Calculator.getBitmapFromUri(getContentResolver(),imageUri);
+                            intermalleolarPoseDetector = PoseDetection.getClient(options);
+                            InputImage inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
+                            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                            ServerHandler.intermalleolarPostImage(selectedImageBitmap,okHttpClient,stream);
 
-                        ServerHandler.intermalleolarPostImage(selectedImageBitmap,okHttpClient,stream);
+                            OnSuccessListener<Pose> intermalleolarOnSuccess = new OnSuccessListener<Pose>() {
+                                @Override
+                                public void onSuccess(Pose pose) {
+                                    Calculator calculator = new Calculator();
+                                    float intermalleolarResult = calculator.getIntermalleolarResult(pose);
+                                    Calculator.intermalleolarPose = pose;
+                                    Calculator.intermalleolarDistance = intermalleolarResult;
+                                    Calculator.intermalleolarScore = calculator.intermalleolarScore(intermalleolarResult);
+                                    Log.d("INTERMALLEOLAR DISTANCE",String.valueOf(intermalleolarResult));
+                                    Log.d("INTERMALLEOLAR SCORE",String.valueOf(Calculator.intermalleolarScore));
+                                    toastMessage("Upload Successful");
+                                }
+                            };
 
-
-                        OnSuccessListener<Pose> intermalleolarOnSuccess = new OnSuccessListener<Pose>() {
-                            @Override
-                            public void onSuccess(Pose pose) {
-                                Calculator calculator = new Calculator();
-                                float intermalleolarResult = calculator.getIntermalleolarResult(pose);
-                                Calculator.intermalleolarPose = pose;
-                                Calculator.intermalleolarDistance = intermalleolarResult;
-                                Calculator.intermalleolarScore = calculator.intermalleolarScore(intermalleolarResult);
-                                Log.d("INTERMALLEOLAR DISTANCE",String.valueOf(intermalleolarResult));
-                                Log.d("INTERMALLEOLAR SCORE",String.valueOf(Calculator.intermalleolarScore));
-                                toastMessage("Upload Successful");
-                            }
-                        };
-
-                        Task<Pose> poseResult = intermalleolarPoseDetector.process(inputImage)
-                                        .addOnSuccessListener(intermalleolarOnSuccess)
-                                        .addOnFailureListener(
-                                                new OnFailureListener() {
-                                                    @Override
-                                                    public void onFailure(@NonNull Exception e) {
-                                                        toastMessage("Upload Image Again");
-                                                    }
-                                                });
-
-
+                            Task<Pose> poseResult = intermalleolarPoseDetector.process(inputImage)
+                                    .addOnSuccessListener(intermalleolarOnSuccess)
+                                    .addOnFailureListener(
+                                            new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    toastMessage("Upload Image Again");
+                                                }
+                                            });
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
@@ -111,7 +106,8 @@ public class IntermalleolarActivity extends AppCompatActivity {
     public void onClickIntermalleolarUpload(View view) {
         intermalleolarUploadBtn.setBackgroundColor(Color.GREEN);
         intermalleolarUploadBtn.setEnabled(false);
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
         getImageIntermalleolar.launch(intent);
     }
 

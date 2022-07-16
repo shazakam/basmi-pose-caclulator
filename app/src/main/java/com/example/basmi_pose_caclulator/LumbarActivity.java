@@ -13,6 +13,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PointF;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -32,6 +33,7 @@ import com.google.mlkit.vision.pose.PoseLandmark;
 import com.google.mlkit.vision.pose.accurate.AccuratePoseDetectorOptions;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 import okhttp3.OkHttpClient;
 
@@ -78,102 +80,92 @@ public class LumbarActivity extends AppCompatActivity {
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                         //Initialises pose detector with desired options
                         lumbarPoseDetector = PoseDetection.getClient(options);
-                         //Taking Picture (Currently using predefined images)
-                        /*
-                        Bundle extras = result.getData().getExtras();
-                        Bitmap selectedImageBitmap = (Bitmap) extras.get("data");
-                        InputImage inputImage = InputImage.fromBitmap(selectedImageBitmap,0);*/
+                        Uri imageUri = result.getData().getData();
 
-                        //Used for pre-loaded images and will be removed for when photos need to be uploaded
                         //-1 means the left lumbar extension, 0 indicates the neutral position and 1 indicates the right lumbar extension
 
-                        Bitmap selectedImageBitmap;
-                        InputImage inputImage;
-                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                        if(btnClicked == -1){
-                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.lumbar_left_1);
-                            inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
-                            //LumbarPostImage
-                            ServerHandler.lumbarPostImage(-1,selectedImageBitmap,okHttpClient,stream);
-                        }
-                        //Neutral Clicked
-                        else if(btnClicked == 0){
-                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.lumbar_neutral_1);
-                            inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
-                            //LumbarPostImage
-                            ServerHandler.lumbarPostImage(0,selectedImageBitmap,okHttpClient,stream);
-                        }
-                        //Right Clicked
-                        else{
-                            selectedImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.lumbar_right_1);
-                            inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
-                            //LumbarPostImage
-                            ServerHandler.lumbarPostImage(1,selectedImageBitmap,okHttpClient,stream);
-                        }
-
-                        OnSuccessListener<Pose> lumbarOnSuccess = new OnSuccessListener<Pose>() {
-                            @Override
-                            public void onSuccess(Pose pose) {
-                                Calculator.printPoses(pose);
-
-                                if(btnClicked == -1){
-                                    //UI Change, info to see what is being executed
-                                    Log.d("TRUE","BUTTON LEFT CLICKED");
-                                    leftBtn.setBackgroundColor(Color.GREEN);
-                                    leftBtn.setEnabled(false);
-                                    Calculator.lumbarLeftPose = pose;
-                                    leftLumbar = Calculator.lumbarResult(-1,pose,leftNeutralCoordinate);
-                                    toastMessage("Upload Successful");
-                                }
-                                else if(btnClicked == 0){
-                                    Log.d("TRUE","BUTTON NEUTRAL CLICKED");
-                                    neutralBtn.setBackgroundColor(Color.GREEN);
-                                    neutralBtn.setEnabled(false);
-                                    Calculator.lumbarNeutralPose = pose;
-                                    leftNeutralCoordinate = pose.getPoseLandmark(PoseLandmark.LEFT_INDEX).getPosition();
-                                    rightNeutralCoordinate = pose.getPoseLandmark(PoseLandmark.RIGHT_INDEX).getPosition();
-                                    toastMessage("Upload Successful");
-                                }
-                                else{
-                                    Log.d("TRUE","BUTTON RIGHT CLICKED");
-                                    rightBtn.setBackgroundColor(Color.GREEN);
-                                    rightBtn.setEnabled(false);
-                                    Calculator.lumbarRightPose = pose;
-                                    rightLumbar = Calculator.lumbarResult(1,pose,rightNeutralCoordinate);
-                                    toastMessage("Upload Successful");
-                                }
-
-                                if(extremeCaseEliminator()){
-                                    Calculator.lumbarLeftElbow = (float) leftLumbar[0];
-                                    Calculator.lumbarRightElbow = (float) rightLumbar[0];
-                                    Calculator.lumbarLeftWrist = (float) leftLumbar[1];
-                                    Calculator.lumbarRightWrist = (float) rightLumbar[1];
-                                    double lumbarAverageElbow  = (rightLumbar[0]+ leftLumbar[0])/2;
-                                    double lumbarAverageWrist = (rightLumbar[1]+ leftLumbar[1])/2;
-                                    Log.d("FINAL LUMBAR ELBOW",String.valueOf(lumbarAverageElbow));
-                                    Log.d("FINAL LUMBAR WRIST",String.valueOf(lumbarAverageWrist));
-
-                                    Calculator.lumbarSideFlexionScore = Calculator.lumbarScore((lumbarAverageElbow+lumbarAverageWrist)/2);
-                                    Log.d("FINAL LUMBAR SCORE",String.valueOf(Calculator.lumbarSideFlexionScore));
-                                }
-                                btnClicked = -2;
-
+                        try {
+                            Bitmap selectedImageBitmap = Calculator.getBitmapFromUri(getContentResolver(),imageUri);
+                            InputImage inputImage = InputImage.fromBitmap(selectedImageBitmap,0);
+                            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                            if(btnClicked == -1){
+                                ServerHandler.lumbarPostImage(-1,selectedImageBitmap,okHttpClient,stream);
                             }
-                        };
+                            //Neutral Clicked
+                            else if(btnClicked == 0){
+                                ServerHandler.lumbarPostImage(0,selectedImageBitmap,okHttpClient,stream);
+                            }
+                            //Right Clicked
+                            else{
+                                ServerHandler.lumbarPostImage(1,selectedImageBitmap,okHttpClient,stream);
+                            }
 
-                        Task<Pose> poseResult =
-                                lumbarPoseDetector.process(inputImage)
-                                        .addOnSuccessListener(lumbarOnSuccess)
-                                        .addOnFailureListener(
-                                                new OnFailureListener() {
-                                                    @Override
-                                                    public void onFailure(@NonNull Exception e) {
-                                                        toastMessage("Upload Image Again");
-                                                    }
-                                                });
+                            OnSuccessListener<Pose> lumbarOnSuccess = new OnSuccessListener<Pose>() {
+                                @Override
+                                public void onSuccess(Pose pose) {
+                                    Calculator.printPoses(pose);
 
+                                    if(btnClicked == -1){
+                                        //UI Change, info to see what is being executed
+                                        Log.d("TRUE","BUTTON LEFT CLICKED");
+                                        leftBtn.setBackgroundColor(Color.GREEN);
+                                        leftBtn.setEnabled(false);
+                                        Calculator.lumbarLeftPose = pose;
+                                        leftLumbar = Calculator.lumbarResult(-1,pose,leftNeutralCoordinate);
+                                        Log.d("LEFT LUMBAR 0",String.valueOf(leftLumbar[0]));
+                                        Log.d("LEFT LUMBAR 1",String.valueOf(leftLumbar[1]));
+                                    }
+                                    else if(btnClicked == 0){
+                                        Log.d("TRUE","BUTTON NEUTRAL CLICKED");
+                                        neutralBtn.setBackgroundColor(Color.GREEN);
+                                        neutralBtn.setEnabled(false);
+                                        Calculator.lumbarNeutralPose = pose;
+                                        leftNeutralCoordinate = pose.getPoseLandmark(PoseLandmark.LEFT_INDEX).getPosition();
+                                        rightNeutralCoordinate = pose.getPoseLandmark(PoseLandmark.RIGHT_INDEX).getPosition();
 
+                                    }
+                                    else{
+                                        Log.d("TRUE","BUTTON RIGHT CLICKED");
+                                        rightBtn.setBackgroundColor(Color.GREEN);
+                                        rightBtn.setEnabled(false);
+                                        Calculator.lumbarRightPose = pose;
+                                        rightLumbar = Calculator.lumbarResult(1,pose,rightNeutralCoordinate);
+                                        Log.d("RIGHT LUMBAR 0",String.valueOf(rightLumbar[0]));
+                                        Log.d("RIGHT LUMBAR 1",String.valueOf(rightLumbar[1]));
+                                    }
 
+                                    if(extremeCaseEliminator()){
+                                        Calculator.lumbarLeftElbow = (float) leftLumbar[0];
+                                        Calculator.lumbarRightElbow = (float) rightLumbar[0];
+                                        Calculator.lumbarLeftWrist = (float) leftLumbar[1];
+                                        Calculator.lumbarRightWrist = (float) rightLumbar[1];
+                                        double lumbarAverageElbow  = (rightLumbar[0]+ leftLumbar[0])/2;
+                                        double lumbarAverageWrist = (rightLumbar[1]+ leftLumbar[1])/2;
+                                        Log.d("FINAL LUMBAR ELBOW",String.valueOf(lumbarAverageElbow));
+                                        Log.d("FINAL LUMBAR WRIST",String.valueOf(lumbarAverageWrist));
+
+                                        Calculator.lumbarSideFlexionScore = Calculator.lumbarScore((lumbarAverageElbow+lumbarAverageWrist)/2);
+                                        Log.d("FINAL LUMBAR SCORE",String.valueOf(Calculator.lumbarSideFlexionScore));
+                                        toastMessage("Upload Successful");
+                                    }
+                                    btnClicked = -2;
+
+                                }
+                            };
+
+                            Task<Pose> poseResult =
+                                    lumbarPoseDetector.process(inputImage)
+                                            .addOnSuccessListener(lumbarOnSuccess)
+                                            .addOnFailureListener(
+                                                    new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            toastMessage("Upload Image Again");
+                                                        }
+                                                    });
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
@@ -236,7 +228,8 @@ public class LumbarActivity extends AppCompatActivity {
             toastMessage("ERROR WITH BUTTON CHOSEN: " + String.valueOf(btnId));
             return;
         }
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
         getImageLumbar.launch(intent);
     }
 

@@ -23,10 +23,12 @@ import okhttp3.Response;
 
 public class ServerHandler {
 
+    static String url = "http://138.38.187.62:5000/";
+
     public static void checkConnection(OkHttpClient okHttpClient,String text){
         try {
             RequestBody formbody = new FormBody.Builder().add("sample",text).build();
-            Request request = new Request.Builder().url("http://138.38.166.67:5000/debug")
+            Request request = new Request.Builder().url(url+"debug")
                     .post(formbody).build();
 
             okHttpClient.newCall(request).enqueue(new Callback() {
@@ -48,6 +50,7 @@ public class ServerHandler {
     }
 
     public static void tragularPostImage(int btnClicked, Bitmap image, OkHttpClient okHttpClient, ByteArrayOutputStream stream){
+
         MultipartBody.Builder multipartBodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         image.compress(Bitmap.CompressFormat.JPEG,100,stream);
         byte[] byteArray = stream.toByteArray();
@@ -64,7 +67,7 @@ public class ServerHandler {
         }
         postBodyImage = multipartBodyBuilder.build();
         Request request = new Request.Builder()
-                .url("http://138.38.166.67:5000/"+tragularRoute)
+                .url(url+tragularRoute)
                 .post(postBodyImage)
                 .build();
 
@@ -104,7 +107,7 @@ public class ServerHandler {
 
         postBodyImage = multipartBodyBuilder.build();
         Request request = new Request.Builder()
-                .url("http://138.38.166.67:5000/"+lumbarRoute)
+                .url(url+lumbarRoute)
                 .post(postBodyImage)
                 .build();
 
@@ -131,7 +134,7 @@ public class ServerHandler {
 
         postBodyImage = multipartBodyBuilder.build();
         Request request = new Request.Builder()
-                .url("http://138.38.166.67:5000/intermalleolar")
+                .url(url+"intermalleolar")
                 .post(postBodyImage)
                 .build();
 
@@ -171,7 +174,7 @@ public class ServerHandler {
 
         postBodyImage = multipartBodyBuilder.build();
         Request request = new Request.Builder()
-                .url("http://138.38.166.67:5000/"+cervicalRoute)
+                .url(url+cervicalRoute)
                 .post(postBodyImage)
                 .build();
 

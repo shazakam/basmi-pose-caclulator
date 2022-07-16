@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/btnTwoUploadTragus"
@@ -123,23 +124,5 @@
         app:layout_constraintEnd_toEndOf="@+id/tragularLeftExample"
         app:layout_constraintStart_toStartOf="@+id/tragularLeftExample"
         app:layout_constraintTop_toBottomOf="@+id/tragularLeftExample" />
-
-    <com.example.basmi_pose_caclulator.GraphicOverlay
-        android:id="@+id/graphicOverlayRight"
-        android:layout_width="156dp"
-        android:layout_height="215dp"
-        app:layout_constraintBottom_toTopOf="@+id/rightTragularExampleText"
-        app:layout_constraintEnd_toEndOf="@+id/tragularRightExample"
-        app:layout_constraintStart_toStartOf="@+id/tragularRightExample"
-        app:layout_constraintTop_toTopOf="@+id/tragularRightExample" />
-
-    <com.example.basmi_pose_caclulator.GraphicOverlay
-        android:id="@+id/graphicOverlayLeft"
-        android:layout_width="142dp"
-        android:layout_height="178dp"
-        app:layout_constraintBottom_toTopOf="@+id/leftTragularExampleText"
-        app:layout_constraintEnd_toEndOf="@+id/tragularLeftExample"
-        app:layout_constraintStart_toStartOf="@+id/tragularLeftExample"
-        app:layout_constraintTop_toTopOf="@+id/tragularLeftExample" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

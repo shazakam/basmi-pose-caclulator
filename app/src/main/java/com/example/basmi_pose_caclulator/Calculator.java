@@ -51,6 +51,9 @@ public class Calculator {
     static Face cervicalNeutralFace;
     static Face cervicalLeftFace;
     static Face cervicalRightFace;
+    static float cervicalYLeftEuler;
+    static float cervicalYNeutralEuler;
+    static float cervicalYRightEuler;
     static float cervicalLeftRotation = 0;
     static float cervicalRightRotation = 0;
 
@@ -333,15 +336,63 @@ public class Calculator {
 
     public static void printPoses(Pose pose, String message){
         Log.d("MEASUREMENT",message);
-        for(PoseLandmark p:pose.getAllPoseLandmarks()){
-            Log.d("LANDMARK "+String.valueOf(p.getLandmarkType()),"Position: " + String.valueOf(p.getPosition()) + " likelihood: "+String.valueOf(p.getInFrameLikelihood()));
+
+        int[] tragularLeftLandmarks = {7,13,15,19};
+        int[] tragularRightLandmarks = {8,14,16,20};
+        int[] lumbarLandmarks = {13,14,15,16,19,20,25,26,27,28};
+        int[] intermalleolarLandmarks = {25,26,27,28,29,30,31,32};
+
+        if(message.equals("TRAGULAR LEFT")){
+            for(int landmark: tragularLeftLandmarks){
+                Log.d("LANDMARK "+pose.getPoseLandmark(landmark).getLandmarkType(),String.valueOf(pose.getPoseLandmark(landmark).getPosition()));
+            }
+        }
+        else if(message.equals("TRAGULAR RIGHT")){
+            for(int landmark: tragularRightLandmarks){
+                Log.d("LANDMARK "+String.valueOf(pose.getPoseLandmark(landmark).getLandmarkType()),String.valueOf(pose.getPoseLandmark(landmark).getPosition()));
+            }
+        }
+        else if(message.equals("LUMBAR RIGHT") || message.equals("LUMBAR LEFT") || message.equals("LUMBAR NEUTRAL")){
+            for(int landmark: lumbarLandmarks){
+                Log.d("LANDMARK "+String.valueOf(pose.getPoseLandmark(landmark).getLandmarkType()),String.valueOf(pose.getPoseLandmark(landmark).getPosition()));
+            }
+        }
+        else if(message.equals("INTERMALLEOLAR POSE")){
+            for(int landmark: intermalleolarLandmarks){
+                Log.d("LANDMARK "+String.valueOf(pose.getPoseLandmark(landmark).getLandmarkType()),String.valueOf(pose.getPoseLandmark(landmark).getPosition()));
+            }
+        }
+        else{
+            Log.d("ERROR","PRINT FAILURE "+message);
         }
     }
 
     public static void printPoses(Face face, String message){
+        int[] cervicalLeftLandmarks = {0,9};
+        int[] cervicalNeutralLandmarks = {0,3,9};
+        int[] cervicalRightLandmarks = {0,3};
+
         Log.d("MEASUREMENT",message);
-        for(FaceLandmark p:face.getAllLandmarks()){
-            Log.d("LANDMARK "+String.valueOf(p.getLandmarkType()),"Position: " + String.valueOf(p.getPosition()));
+        if(message.equals("CERVICAL LEFT")){
+            Log.d("EULER ANGLE LEFT",String.valueOf(cervicalYLeftEuler));
+            for(int landmark: cervicalLeftLandmarks){
+                Log.d("LANDMARK "+String.valueOf(face.getLandmark(landmark).getLandmarkType()),String.valueOf(face.getLandmark(landmark).getPosition()));
+            }
+        }
+        else if(message.equals("CERVICAL NEUTRAL")){
+            Log.d("EULER ANGLE NEUTRAL",String.valueOf(cervicalYNeutralEuler));
+            for(int landmark: cervicalNeutralLandmarks){
+                Log.d("LANDMARK "+String.valueOf(face.getLandmark(landmark).getLandmarkType()),String.valueOf(face.getLandmark(landmark).getPosition()));
+            }
+        }
+        else if(message.equals("CERVICAL RIGHT")){
+            Log.d("EULER ANGLE RIGHT",String.valueOf(cervicalYRightEuler));
+            for(int landmark: cervicalRightLandmarks){
+                Log.d("LANDMARK "+String.valueOf(face.getLandmark(landmark).getLandmarkType()),String.valueOf(face.getLandmark(landmark).getPosition()));
+            }
+        }
+        else{
+            Log.d("ERROR","PRINT FAILURE "+message);
         }
     }
 
