@@ -58,11 +58,11 @@ public class ServerHandler {
         String tragularRoute = null;
 
         if(btnClicked == 0){
-            multipartBodyBuilder.addFormDataPart("leftTragular" , "left_tragular.png", RequestBody.create(byteArray,MediaType.parse("image/*jpg")));
+            multipartBodyBuilder.addFormDataPart("leftTragular" , "left_tragular.jpg", RequestBody.create(byteArray,MediaType.parse("image/*jpg")));
             tragularRoute = "tragularLeft";
             }
         else{
-            multipartBodyBuilder.addFormDataPart("rightTragular" , "right_tragular.png", RequestBody.create(byteArray,MediaType.parse("image/*jpg")));
+            multipartBodyBuilder.addFormDataPart("rightTragular" , "right_tragular.jpg", RequestBody.create(byteArray,MediaType.parse("image/*jpg")));
             tragularRoute = "tragularRight";
         }
         postBodyImage = multipartBodyBuilder.build();
@@ -101,7 +101,7 @@ public class ServerHandler {
             lumbarRoute = "lumbarNeutral";
         }
         else{
-            multipartBodyBuilder.addFormDataPart("rightLumbar","Right_lumbar.jpg",RequestBody.create(byteArray,MediaType.parse("image/*jpg")));
+            multipartBodyBuilder.addFormDataPart("rightLumbar","right_lumbar.jpg",RequestBody.create(byteArray,MediaType.parse("image/*jpg")));
             lumbarRoute = "lumbarRight";
         }
 
@@ -157,7 +157,7 @@ public class ServerHandler {
         image.compress(Bitmap.CompressFormat.JPEG,100,stream);
         byte[] byteArray = stream.toByteArray();
         RequestBody postBodyImage;
-        String cervicalRoute = null;
+        String cervicalRoute;
 
         if(btnClicked == -1){
             multipartBodyBuilder.addFormDataPart("leftCervical","left_cervical.jpg",RequestBody.create(byteArray,MediaType.parse("image/*jpg")));
@@ -168,7 +168,7 @@ public class ServerHandler {
             cervicalRoute = "cervicalNeutral";
         }
         else{
-            multipartBodyBuilder.addFormDataPart("rightCervical","Right_cervical.jpg",RequestBody.create(byteArray,MediaType.parse("image/*jpg")));
+            multipartBodyBuilder.addFormDataPart("rightCervical","right_cervical.jpg",RequestBody.create(byteArray,MediaType.parse("image/*jpg")));
             cervicalRoute = "cervicalRight";
         }
 
@@ -190,5 +190,52 @@ public class ServerHandler {
                 Log.d("Server Connection","HUZZAH");
             }
         });
+    }
+
+    public static void flexionPostImage(int btnClicked, Bitmap image, OkHttpClient okHttpClient, ByteArrayOutputStream stream){
+        MultipartBody.Builder multipartBodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        image.compress(Bitmap.CompressFormat.JPEG,100,stream);
+        byte[] byteArray = stream.toByteArray();
+        RequestBody postBodyImage;
+        String flexionRoute;
+
+        if(btnClicked == -1){
+            flexionRoute = "flexionLeftNeutral";
+            multipartBodyBuilder.addFormDataPart("leftFlexionNeutral","left_flexion_neutral.jpg",RequestBody.create(byteArray,MediaType.parse("image/*jpg")));
+        }
+        else if(btnClicked == 0){
+            flexionRoute = "flexionLeftExtension";
+            multipartBodyBuilder.addFormDataPart("leftFlexionExtension","left_flexion_extension.jpg",RequestBody.create(byteArray,MediaType.parse("image/*jpg")));
+
+        }
+        else if(btnClicked == 1){
+            flexionRoute = "flexionRightNeutral";
+            multipartBodyBuilder.addFormDataPart("rightFlexionNeutral","right_flexion_neutral.jpg",RequestBody.create(byteArray,MediaType.parse("image/*jpg")));
+        }
+
+        else{
+            flexionRoute = "flexionRightExtension";
+            multipartBodyBuilder.addFormDataPart("rightFlexionExtension","right_flexion_extension.jpg",RequestBody.create(byteArray,MediaType.parse("image/*jpg")));
+        }
+
+        postBodyImage = multipartBodyBuilder.build();
+        Request request = new Request.Builder()
+                .url(url+flexionRoute)
+                .post(postBodyImage)
+                .build();
+
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                call.cancel();
+                Log.d("FAILURE TO CONNECT","ERROR L151");
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                Log.d("Server Connection","HUZZAH");
+            }
+        });
+
     }
 }

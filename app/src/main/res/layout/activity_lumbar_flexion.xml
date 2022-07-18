@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LumbarFlexionActivity">
+
+    <Button
+        android:id="@+id/flexionRightNeutral"
+        android:layout_width="133dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginBottom="304dp"
+        android:onClick="onClickFlexionUpload"
+        android:text="Right Neutral Upload"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/flexionLeftNeutral"
+        android:layout_width="133dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginBottom="148dp"
+        android:onClick="onClickFlexionUpload"
+        android:text="left neutral upload"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/flexionLeftExtension"
+        android:layout_width="133dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="20dp"
+        android:onClick="onClickFlexionUpload"
+        android:text="Left extension upload"
+        app:layout_constraintBottom_toBottomOf="@+id/flexionLeftNeutral"
+        app:layout_constraintStart_toEndOf="@+id/flexionLeftNeutral"
+        app:layout_constraintTop_toTopOf="@+id/flexionLeftNeutral"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/flexionRightExtension"
+        android:layout_width="133dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="20dp"
+        android:onClick="onClickFlexionUpload"
+        android:text="Right Extension upload"
+        app:layout_constraintBottom_toBottomOf="@+id/flexionRightNeutral"
+        app:layout_constraintStart_toEndOf="@+id/flexionRightNeutral"
+        app:layout_constraintTop_toTopOf="@+id/flexionRightNeutral"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/btnLumbarFlexionNext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="28dp"
+        android:onClick="onClickFlexionNext"
+        android:text="Next"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/FlexionTitle"
+        android:layout_width="102dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="156dp"
+        android:text="Lumbar Flexion "
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

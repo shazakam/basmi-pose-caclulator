@@ -254,7 +254,7 @@ public class CervicalActivity extends AppCompatActivity {
     }
 
     public void onClickCervicalNext(View view){
-        Intent intent = new Intent(this, EndActivity.class);
+        Intent intent = new Intent(this, LumbarFlexionActivity.class);
         startActivity(intent);
     }
 

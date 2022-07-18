@@ -57,6 +57,12 @@ public class Calculator {
     static float cervicalLeftRotation = 0;
     static float cervicalRightRotation = 0;
 
+    //Lumbar Flexion Measurements
+    static Pose flexionRightNeutralPose;
+    static Pose flexionLeftNeutralPose;
+    static Pose flexionRightExtensionPose;
+    static Pose flexionLeftExtensionPose;
+
     //Final results obtained from each activity
     static int tragusToWallScore = 0;
     static int lumbarSideFlexionScore = 0;
@@ -341,6 +347,8 @@ public class Calculator {
         int[] tragularRightLandmarks = {8,14,16,20};
         int[] lumbarLandmarks = {13,14,15,16,19,20,25,26,27,28};
         int[] intermalleolarLandmarks = {25,26,27,28,29,30,31,32};
+        int[] flexionLeftLandmarks = {11,23};
+        int[] flexionRightLandmarks = {12,24};
 
         if(message.equals("TRAGULAR LEFT")){
             for(int landmark: tragularLeftLandmarks){
@@ -359,6 +367,17 @@ public class Calculator {
         }
         else if(message.equals("INTERMALLEOLAR POSE")){
             for(int landmark: intermalleolarLandmarks){
+                Log.d("LANDMARK "+String.valueOf(pose.getPoseLandmark(landmark).getLandmarkType()),String.valueOf(pose.getPoseLandmark(landmark).getPosition()));
+            }
+        }
+
+        else if(message.equals("FLEXION LEFT NEUTRAL")||message.equals("FLEXION LEFT EXTENSION")){
+            for(int landmark:flexionLeftLandmarks){
+                Log.d("LANDMARK "+String.valueOf(pose.getPoseLandmark(landmark).getLandmarkType()),String.valueOf(pose.getPoseLandmark(landmark).getPosition()));
+            }
+        }
+        else if(message.equals("FLEXION RIGHT NEUTRAL")||message.equals("FLEXION RIGHT EXTENSION")){
+            for(int landmark:flexionRightLandmarks){
                 Log.d("LANDMARK "+String.valueOf(pose.getPoseLandmark(landmark).getLandmarkType()),String.valueOf(pose.getPoseLandmark(landmark).getPosition()));
             }
         }
