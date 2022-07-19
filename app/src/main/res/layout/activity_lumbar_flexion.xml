@@ -10,10 +10,11 @@
         android:id="@+id/flexionRightNeutral"
         android:layout_width="133dp"
         android:layout_height="70dp"
-        android:layout_marginStart="56dp"
-        android:layout_marginBottom="304dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginBottom="176dp"
         android:onClick="onClickFlexionUpload"
         android:text="Right Neutral Upload"
+        app:backgroundTint="#090808"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -21,10 +22,11 @@
         android:id="@+id/flexionLeftNeutral"
         android:layout_width="133dp"
         android:layout_height="70dp"
-        android:layout_marginStart="56dp"
-        android:layout_marginBottom="148dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginBottom="84dp"
         android:onClick="onClickFlexionUpload"
         android:text="left neutral upload"
+        app:backgroundTint="#090808"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -35,6 +37,7 @@
         android:layout_marginStart="20dp"
         android:onClick="onClickFlexionUpload"
         android:text="Left extension upload"
+        app:backgroundTint="#0C0B0B"
         app:layout_constraintBottom_toBottomOf="@+id/flexionLeftNeutral"
         app:layout_constraintStart_toEndOf="@+id/flexionLeftNeutral"
         app:layout_constraintTop_toTopOf="@+id/flexionLeftNeutral"
@@ -47,6 +50,7 @@
         android:layout_marginStart="20dp"
         android:onClick="onClickFlexionUpload"
         android:text="Right Extension upload"
+        app:backgroundTint="#0E0D0D"
         app:layout_constraintBottom_toBottomOf="@+id/flexionRightNeutral"
         app:layout_constraintStart_toEndOf="@+id/flexionRightNeutral"
         app:layout_constraintTop_toTopOf="@+id/flexionRightNeutral"
@@ -56,10 +60,11 @@
         android:id="@+id/btnLumbarFlexionNext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="40dp"
-        android:layout_marginBottom="28dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="16dp"
         android:onClick="onClickFlexionNext"
         android:text="Next"
+        app:backgroundTint="#070707"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

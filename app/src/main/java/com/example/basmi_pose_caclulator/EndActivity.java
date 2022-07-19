@@ -3,8 +3,11 @@ package com.example.basmi_pose_caclulator;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+
+import java.io.IOException;
 
 public class EndActivity extends AppCompatActivity {
 
@@ -14,7 +17,7 @@ public class EndActivity extends AppCompatActivity {
         setContentView(R.layout.activity_end);
     }
 
-    public void onClickPrintResults(View view ){
+    public void onClickPrintResults(View view ) throws IOException {
         /*
         Log.d("TRAGULAR LEFT ELBOW",String.valueOf(Calculator.tragularLeftElbow));
         Log.d("TRAGULAR RIGHT ELBOW",String.valueOf(Calculator.tragularRightElbow));

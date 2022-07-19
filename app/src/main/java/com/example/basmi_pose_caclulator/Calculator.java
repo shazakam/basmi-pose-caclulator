@@ -341,7 +341,7 @@ public class Calculator {
     }
 
     public static void printPoses(Pose pose, String message){
-        Log.d("MEASUREMENT",message);
+        Log.d("LMEASUREMENT",message);
 
         int[] tragularLeftLandmarks = {7,13,15,19};
         int[] tragularRightLandmarks = {8,14,16,20};
@@ -391,7 +391,7 @@ public class Calculator {
         int[] cervicalNeutralLandmarks = {0,3,9};
         int[] cervicalRightLandmarks = {0,3};
 
-        Log.d("MEASUREMENT",message);
+        Log.d("LMEASUREMENT",message);
         if(message.equals("CERVICAL LEFT")){
             Log.d("EULER ANGLE LEFT",String.valueOf(cervicalYLeftEuler));
             for(int landmark: cervicalLeftLandmarks){
