@@ -46,6 +46,7 @@ public class EndActivity extends AppCompatActivity {
         Calculator.printPoses(Calculator.cervicalLeftFace,"CERVICAL LEFT");
         Calculator.printPoses(Calculator.cervicalRightFace,"CERVICAL RIGHT");
 
+
         Calculator.printPoses(Calculator.flexionLeftNeutralPose,"FLEXION LEFT NEUTRAL");
         Calculator.printPoses(Calculator.flexionLeftExtensionPose,"FLEXION LEFT EXTENSION");
         Calculator.printPoses(Calculator.flexionRightNeutralPose,"FLEXION RIGHT NEUTRAL");
