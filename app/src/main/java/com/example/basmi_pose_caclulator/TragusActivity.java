@@ -167,7 +167,7 @@ public class TragusActivity extends AppCompatActivity{
                 }
             }
     );
-
+//note
 
     public Bitmap resizeBitmap(Bitmap inputBitmap,ImageView view){
         if (inputBitmap.getWidth() == view.getWidth()
