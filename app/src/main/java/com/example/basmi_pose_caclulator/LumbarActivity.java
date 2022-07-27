@@ -180,7 +180,7 @@ public class LumbarActivity extends AppCompatActivity {
     public boolean extremeCaseEliminator(){
         float limit = 50;
         try{
-            if(leftLumbar[0] >= limit || leftLumbar[1] >= limit || rightLumbar[0] >= limit || rightLumbar[1] >= limit){
+            if((leftLumbar[0] >= limit && leftLumbar[1] >= limit) || (rightLumbar[0] >= limit && rightLumbar[1] >= limit)){
                 toastMessage("Image result faulty, reload image again please");
                 if((leftLumbar[0] >= limit || leftLumbar[1] >= limit)&&(rightLumbar[0] >= limit || rightLumbar[1] >= limit)){
                     leftBtn.setEnabled(true);
