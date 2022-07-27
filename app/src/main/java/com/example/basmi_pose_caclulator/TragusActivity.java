@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -28,6 +29,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -47,6 +49,9 @@ import java.io.IOException;
 public class TragusActivity extends AppCompatActivity{
     Button leftButton;
     Button rightButton;
+    EditText rightTragPhysInput;
+    EditText leftTragPhysInput;
+    SharedPreferences sp;
     /*The following two store the measured results for the right side and left side.
     First the [0] position in both leftTragular and rightTragular is the result calculated
     using the index to elbow length whilst [1] are the results calculated using the
@@ -69,6 +74,10 @@ public class TragusActivity extends AppCompatActivity{
         setContentView(R.layout.activity_tragus);
         okHttpClient = new OkHttpClient();
         ServerHandler.checkConnection(okHttpClient,"TRAGULAR CONNECTED");
+        sp = getSharedPreferences("userLengths", Context.MODE_PRIVATE);
+
+        rightTragPhysInput = findViewById(R.id.rightTragularPhysInput);
+        leftTragPhysInput = findViewById(R.id.lefttragularPhysInput);
 
         //Initialising all the views, buttons and values
         leftButton = findViewById(R.id.btnLeftUploadTragus);
@@ -78,6 +87,17 @@ public class TragusActivity extends AppCompatActivity{
         leftTragular = null;
         rightTragular = null;
         btnClicked = -1;
+
+        if(sp.contains("rightTragularMeasured") == true
+                && sp.contains("leftTragularMeasured") == true){
+            rightTragPhysInput.setText(String.valueOf(sp.getFloat("rightTragularMeasured",-1)));
+            leftTragPhysInput.setText(String.valueOf(sp.getFloat("leftTragularMeasured",-1)));
+
+            Calculator.rightTragular = sp.getFloat("rightTragularMeasured",-1);
+            Calculator.leftTragular = sp.getFloat("leftTragularMeasured",-1);
+        }
+
+
 
     }
 
@@ -243,6 +263,27 @@ public class TragusActivity extends AppCompatActivity{
         intent.setType("image/*");
         getImageTragular.launch(intent);
 
+    }
+
+    public void onTragularMeasurmentsClick(View view){
+
+        try{
+            float rightTragMeasured = Float.parseFloat(rightTragPhysInput.getText().toString());
+            float leftTragMeasured = Float.parseFloat(leftTragPhysInput.getText().toString());
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putFloat("rightTragularMeasured",rightTragMeasured);
+            editor.apply();
+            editor.putFloat("leftTragularMeasured",leftTragMeasured);
+            editor.apply();
+            Calculator.rightTragular = rightTragMeasured;
+            Calculator.leftTragular = leftTragMeasured;
+            toastMessage("Lengths Submitted");
+
+            Log.d("right tragular",String.valueOf(Calculator.rightTragular));
+            Log.d("left tragular",String.valueOf(Calculator.leftTragular));
+        } catch(NumberFormatException e){
+            toastMessage("Please input a valid length");
+        }
     }
 
     public void onTragusNextClick(View view){

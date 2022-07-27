@@ -31,7 +31,7 @@
         android:id="@+id/lumbarLeftExample"
         android:layout_width="180dp"
         android:layout_height="160dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="@+id/lumbarRightExample"
         app:layout_constraintHorizontal_bias="0.478"
         app:layout_constraintStart_toStartOf="@+id/lumbarNeutralExample"
@@ -50,21 +50,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.987"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/lumbarDescription"
-        android:layout_width="332dp"
-        android:layout_height="156dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="12dp"
-        android:text="@string/lumbar_explanation"
-        app:layout_constraintBottom_toTopOf="@+id/btnNeutralLumbarUpload"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.49"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lumbarLeftExample"
-        app:layout_constraintVertical_bias="0.914" />
 
     <Button
         android:id="@+id/btnNeutralLumbarUpload"
@@ -134,5 +119,104 @@
         app:layout_constraintEnd_toEndOf="@+id/lumbarLeftExample"
         app:layout_constraintStart_toStartOf="@+id/lumbarLeftExample"
         app:layout_constraintTop_toBottomOf="@+id/lumbarLeftExample" />
+
+    <TextView
+        android:id="@+id/rightLumbarExtensionPhys"
+        android:layout_width="93dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="188dp"
+        android:text="Right Lumbar Extension"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/leftLumbarExtensionPhysInput"
+        android:layout_width="69dp"
+        android:layout_height="49dp"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        app:layout_constraintBottom_toBottomOf="@+id/leftLumbarExtensionPhys"
+        app:layout_constraintStart_toEndOf="@+id/leftLumbarExtensionPhys"
+        app:layout_constraintTop_toTopOf="@+id/leftLumbarExtensionPhys"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/leftLumbarExtensionPhys"
+        android:layout_width="93dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="4dp"
+        android:text="Left Lumbar Extension"
+        app:layout_constraintBottom_toBottomOf="@+id/rightLumbarExtensionPhysInput"
+        app:layout_constraintStart_toEndOf="@+id/rightLumbarExtensionPhysInput"
+        app:layout_constraintTop_toTopOf="@+id/rightLumbarExtensionPhysInput"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <EditText
+        android:id="@+id/rightLumbarExtensionPhysInput"
+        android:layout_width="69dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        app:layout_constraintBottom_toBottomOf="@+id/rightLumbarExtensionPhys"
+        app:layout_constraintStart_toEndOf="@+id/rightLumbarExtensionPhys"
+        app:layout_constraintTop_toTopOf="@+id/rightLumbarExtensionPhys"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/rightLumbarNeutralPhys"
+        android:layout_width="93dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="252dp"
+        android:text="Right Lumbar Neutral"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/rightLumbarNeutralPhysInput"
+        android:layout_width="69dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="8dp"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        app:layout_constraintBottom_toBottomOf="@+id/rightLumbarNeutralPhys"
+        app:layout_constraintStart_toEndOf="@+id/rightLumbarNeutralPhys"
+        app:layout_constraintTop_toTopOf="@+id/rightLumbarNeutralPhys"
+        app:layout_constraintVertical_bias="0.636" />
+
+    <EditText
+        android:id="@+id/leftLumbarNeutralPhysInput"
+        android:layout_width="69dp"
+        android:layout_height="49dp"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        app:layout_constraintBottom_toBottomOf="@+id/leftLumbarNeutralPhys"
+        app:layout_constraintStart_toEndOf="@+id/leftLumbarNeutralPhys"
+        app:layout_constraintTop_toTopOf="@+id/leftLumbarNeutralPhys"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/leftLumbarNeutralPhys"
+        android:layout_width="93dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="4dp"
+        android:text="Left Lumbar Neutral"
+        app:layout_constraintBottom_toBottomOf="@+id/rightLumbarNeutralPhysInput"
+        app:layout_constraintStart_toEndOf="@+id/rightLumbarNeutralPhysInput"
+        app:layout_constraintTop_toTopOf="@+id/rightLumbarNeutralPhysInput"
+        app:layout_constraintVertical_bias="0.636" />
+
+    <Button
+        android:id="@+id/submitLumbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="132dp"
+        android:onClick="onLumbarMeasurmentsClick"
+        android:text="submit Lumbar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

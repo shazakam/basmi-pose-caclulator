@@ -18,9 +18,20 @@ import java.io.IOException;
 
 
 public class Calculator {
-    static int indexToElbow = 0;
-    static int ankleToKnee = 0;
-    static int indexToWrist = 0;
+    //PHYSICAL MEASUREMENTS
+    static float indexToElbow = 0;
+    static float ankleToKnee = 0;
+    static float indexToWrist = 0;
+    static float rightTragular = 0;
+    static float leftTragular = 0;
+    static float rightLumbarNeutral = 0;
+    static float leftLumbarNeutral = 0;
+    static float rightLumbarExtension = 0;
+    static float leftLumbarExtension = 0;
+    static float intermalleolar = 0;
+    static float cervicalRight = 0;
+    static float cervicalLeft = 0;
+    static float flexion = 0;
 
     //Tragular Measurements
         static Pose tragularLeftPose;

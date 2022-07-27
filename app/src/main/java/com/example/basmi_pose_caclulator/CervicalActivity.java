@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -20,6 +21,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -50,6 +52,7 @@ public class CervicalActivity extends AppCompatActivity {
     Button leftBtn;
     float leftRotation;
     float rightRotation;
+    SharedPreferences sp;
 
     FaceDetectorOptions highAccuracyOpts =
             new FaceDetectorOptions.Builder()
@@ -63,6 +66,9 @@ public class CervicalActivity extends AppCompatActivity {
     float radius;
     OkHttpClient okHttpClient;
 
+    EditText rightRotationInput;
+    EditText leftRotationInput;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +80,19 @@ public class CervicalActivity extends AppCompatActivity {
         radius = 0;
         okHttpClient = new OkHttpClient();
         ServerHandler.checkConnection(okHttpClient,"CERVICAL CONNECTED");
+        sp = getSharedPreferences("userLengths", Context.MODE_PRIVATE);
+
+        rightRotationInput = findViewById(R.id.rightRotationPhysInput);
+        leftRotationInput = findViewById(R.id.leftRotationPhysInput);
+
+        if(sp.contains("rightRotationMeasured") == true
+                && sp.contains("leftRotationMeasured") == true){
+            rightRotationInput.setText(String.valueOf(sp.getFloat("rightRotationMeasured",-1)));
+            leftRotationInput.setText(String.valueOf(sp.getFloat("leftRotationMeasured",-1)));
+
+            Calculator.cervicalRight= sp.getFloat("rightRotationMeasured",-1);
+            Calculator.cervicalLeft = sp.getFloat("leftRotationMeasured",-1);
+        }
     }
 
 
@@ -256,6 +275,27 @@ public class CervicalActivity extends AppCompatActivity {
     public void onClickCervicalNext(View view){
         Intent intent = new Intent(this, LumbarFlexionActivity.class);
         startActivity(intent);
+    }
+
+    public void onCervicalMeasurmentsClick(View view){
+
+        try{
+            float rightRotationMeasured = Float.parseFloat(rightRotationInput.getText().toString());
+            float leftRotationMeasured = Float.parseFloat(leftRotationInput.getText().toString());
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putFloat("rightRotationMeasured",rightRotationMeasured);
+            editor.apply();
+            editor.putFloat("leftRotationMeasured",leftRotationMeasured);
+            editor.apply();
+            Calculator.cervicalRight= rightRotationMeasured;
+            Calculator.cervicalLeft = leftRotationMeasured;
+            toastMessage("Lengths Submitted");
+
+            Log.d("right tragular",String.valueOf(Calculator.cervicalRight));
+            Log.d("left tragular",String.valueOf(Calculator.cervicalLeft));
+        } catch(NumberFormatException e){
+            toastMessage("Please input a valid length");
+        }
     }
 
     public void toastMessage(String message){

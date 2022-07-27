@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -19,6 +20,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -38,6 +40,7 @@ import java.io.IOException;
 import okhttp3.OkHttpClient;
 
 public class LumbarActivity extends AppCompatActivity {
+    SharedPreferences sp;
     Button neutralBtn;
     Button rightBtn;
     Button leftBtn;
@@ -57,6 +60,11 @@ public class LumbarActivity extends AppCompatActivity {
     int btnClicked;
     OkHttpClient okHttpClient;
 
+    EditText rightLumbarNeutralInput;
+    EditText leftLumbarNeutralInput;
+    EditText rightLumbarExtensionInput;
+    EditText leftLumbarExtensionInput;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +76,28 @@ public class LumbarActivity extends AppCompatActivity {
         btnClicked = -2;
         okHttpClient = new OkHttpClient();
         ServerHandler.checkConnection(okHttpClient,"LUMBAR CONNECTED");
+        sp = getSharedPreferences("userLengths", Context.MODE_PRIVATE);
+
+        rightLumbarNeutralInput = findViewById(R.id.rightLumbarNeutralPhysInput);
+        leftLumbarNeutralInput = findViewById(R.id.leftLumbarNeutralPhysInput);
+        rightLumbarExtensionInput = findViewById(R.id.rightLumbarExtensionPhysInput);
+        leftLumbarExtensionInput = findViewById(R.id.leftLumbarExtensionPhysInput);
+
+        if(sp.contains("rightLumbarNeutralMeasured") == true
+                && sp.contains("leftLumbarNeutralMeasured") == true
+                && sp.contains("rightLumbarExtensionMeasured") == true
+                && sp.contains("leftLumbarExtensionMeasured") == true){
+            Log.d("SAVED","Values saved");
+            rightLumbarNeutralInput.setText(String.valueOf(sp.getFloat("rightLumbarNeutralMeasured",-1)));
+            leftLumbarNeutralInput.setText(String.valueOf(sp.getFloat("leftLumbarNeutralMeasured",-1)));
+            rightLumbarExtensionInput.setText(String.valueOf(sp.getFloat("rightLumbarExtensionMeasured",-1)));
+            leftLumbarExtensionInput.setText(String.valueOf(sp.getFloat("leftLumbarExtensionMeasured",-1)));
+
+            Calculator.rightLumbarNeutral = sp.getFloat("rightLumbarNeutralMeasured",-1);
+            Calculator.leftLumbarNeutral = sp.getFloat("leftLumbarNeutralMeasured",-1);
+            Calculator.rightLumbarExtension = sp.getFloat("rightLumbarExtensionMeasured",-1);
+            Calculator.leftLumbarExtension = sp.getFloat("leftLumbarExtensionMeasured",-1);
+        }
     }
 
     //This tells what getImage should do with the result from the intent
@@ -244,5 +274,37 @@ public class LumbarActivity extends AppCompatActivity {
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
+    }
+
+
+    public void onLumbarMeasurmentsClick(View view){
+
+        try{
+            float rightLumbarNeutralMeasured = Float.parseFloat(rightLumbarNeutralInput.getText().toString());
+            float leftLumbarNeutralMeasured = Float.parseFloat(leftLumbarNeutralInput.getText().toString());
+            float rightLumbarExtensionMeasured = Float.parseFloat(rightLumbarExtensionInput.getText().toString());
+            float leftLumbarExtensionMeasured = Float.parseFloat(leftLumbarExtensionInput.getText().toString());
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putFloat("rightLumbarNeutralMeasured",rightLumbarNeutralMeasured);
+            editor.apply();
+            editor.putFloat("leftLumbarNeutralMeasured",leftLumbarNeutralMeasured);
+            editor.apply();
+            editor.putFloat("rightLumbarExtensionMeasured",rightLumbarExtensionMeasured);
+            editor.apply();
+            editor.putFloat("leftLumbarExtensionMeasured",leftLumbarExtensionMeasured);
+            editor.apply();
+            Calculator.rightLumbarNeutral = rightLumbarNeutralMeasured;
+            Calculator.leftLumbarNeutral = leftLumbarNeutralMeasured;
+            Calculator.rightLumbarExtension = rightLumbarExtensionMeasured;
+            Calculator.leftLumbarExtension = leftLumbarExtensionMeasured;
+            toastMessage("Lengths Submitted");
+
+            Log.d("right neutral",String.valueOf(Calculator.rightLumbarNeutral));
+            Log.d("left neutral",String.valueOf(Calculator.leftLumbarNeutral));
+            Log.d("right extension",String.valueOf(Calculator.rightLumbarExtension));
+            Log.d("left extension",String.valueOf(Calculator.leftLumbarExtension));
+        } catch(NumberFormatException e){
+            toastMessage("Please input a valid length");
+        }
     }
 }

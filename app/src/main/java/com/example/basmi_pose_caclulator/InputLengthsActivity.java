@@ -52,12 +52,12 @@ public class InputLengthsActivity extends AppCompatActivity {
         if(sp.contains("indexToElbow") == true
         && sp.contains("indexToWrist") == true
         && sp.contains("ankleToKnee") == true){
-            indexToElbowLengthsText.setText(String.valueOf(sp.getInt("indexToElbow",-1)));
-            indexToWristLengthsText.setText(String.valueOf(sp.getInt("indexToWrist",-1)));
-            ankleToKneeLengthstext.setText(String.valueOf(sp.getInt("ankleToKnee",-1)));
-            Calculator.indexToElbow = sp.getInt("indexToElbow",-1);
-            Calculator.indexToWrist = sp.getInt("indexToWrist",-1);
-            Calculator.ankleToKnee = sp.getInt("ankleToKnee",-1);
+            indexToElbowLengthsText.setText(String.valueOf(sp.getFloat("indexToElbow",-1)));
+            indexToWristLengthsText.setText(String.valueOf(sp.getFloat("indexToWrist",-1)));
+            ankleToKneeLengthstext.setText(String.valueOf(sp.getFloat("ankleToKnee",-1)));
+            Calculator.indexToElbow = sp.getFloat("indexToElbow",-1);
+            Calculator.indexToWrist = sp.getFloat("indexToWrist",-1);
+            Calculator.ankleToKnee = sp.getFloat("ankleToKnee",-1);
         }
     }
 
@@ -67,15 +67,15 @@ public class InputLengthsActivity extends AppCompatActivity {
      */
     public void onSubmitLengthsClick(View view){
             try{
-                int indexToElbowValue = Integer.parseInt(indexToElbowLengthsText.getText().toString());
-                int indexToWristValue = Integer.parseInt(indexToWristLengthsText.getText().toString());
-                int ankleToKneeValue = Integer.parseInt(ankleToKneeLengthstext.getText().toString());
+                float indexToElbowValue = Float.parseFloat(indexToElbowLengthsText.getText().toString());
+                float indexToWristValue = Float.parseFloat(indexToWristLengthsText.getText().toString());
+                float ankleToKneeValue = Float.parseFloat(ankleToKneeLengthstext.getText().toString());
                 SharedPreferences.Editor editor = sp.edit();
-                editor.putInt("indexToElbow",indexToElbowValue);
+                editor.putFloat("indexToElbow",indexToElbowValue);
                 editor.apply();
-                editor.putInt("indexToWrist",indexToWristValue);
+                editor.putFloat("indexToWrist",indexToWristValue);
                 editor.apply();
-                editor.putInt("ankleToKnee",ankleToKneeValue);
+                editor.putFloat("ankleToKnee",ankleToKneeValue);
                 editor.apply();
                 Calculator.indexToElbow = indexToElbowValue;
                 Calculator.indexToWrist = indexToWristValue;

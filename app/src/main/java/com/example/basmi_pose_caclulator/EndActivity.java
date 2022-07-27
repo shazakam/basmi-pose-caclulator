@@ -24,6 +24,19 @@ public class EndActivity extends AppCompatActivity {
         Log.d("TRAGULAR LEFT WRIST",String.valueOf(Calculator.tragularLeftWrist));
         Log.d("TRAGULAR RIGHT WRIST",String.valueOf(Calculator.tragularRightWrist));*/
 
+        Log.d("PHYSICAL MEASUREMENTS","START");
+        Log.d("TRAGULAR RIGHT",String.valueOf(Calculator.rightTragular));
+        Log.d("TRAGULAR LEFT",String.valueOf(Calculator.leftTragular));
+        Log.d("LUMBAR RIGHT NEUTRAL",String.valueOf(Calculator.rightLumbarNeutral));
+        Log.d("LUMBAR LEFT NEUTRAL",String.valueOf(Calculator.leftLumbarNeutral));
+        Log.d("RIGHT LUMBAR EXTENSION",String.valueOf(Calculator.rightLumbarExtension));
+        Log.d("LEFT LUMBAR EXTENSION",String.valueOf(Calculator.leftLumbarExtension));
+        Log.d("INTERMALLEOLAR",String.valueOf(Calculator.intermalleolar));
+        Log.d("CERVICAL RIGHT ROTATION",String.valueOf(Calculator.cervicalRight));
+        Log.d("CERVICAL LEFT ROTATION",String.valueOf(Calculator.cervicalLeft));
+        Log.d("FLEXION",String.valueOf(Calculator.flexion));
+        Log.d("PHYSICAL MEASUREMENTS","END");
+
         Calculator.printPoses(Calculator.tragularLeftPose,"TRAGULAR LEFT");
         Calculator.printPoses(Calculator.tragularRightPose,"TRAGULAR RIGHT");
         /*

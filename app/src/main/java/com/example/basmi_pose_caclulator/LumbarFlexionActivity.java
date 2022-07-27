@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
@@ -16,6 +17,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -46,6 +48,9 @@ public class LumbarFlexionActivity extends AppCompatActivity {
             .build();
 
     OkHttpClient okHttpClient;
+    SharedPreferences sp;
+
+    EditText flexionInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,9 +62,15 @@ public class LumbarFlexionActivity extends AppCompatActivity {
         rightNeutralButton = findViewById(R.id.flexionRightNeutral);
         rightExtensionButton = findViewById(R.id.flexionRightExtension);
 
+        flexionInput = findViewById(R.id.flexionPhysInput);
         okHttpClient = new OkHttpClient();
         ServerHandler.checkConnection(okHttpClient,"LUMBAR FLEXION CONNECTED");
+        sp = getSharedPreferences("userLengths", Context.MODE_PRIVATE);
 
+        if(sp.contains("flexionMeasured") == true){
+            flexionInput.setText(String.valueOf(sp.getFloat("flexionMeasured",-1)));
+            Calculator.flexion= sp.getFloat("flexionMeasured",-1);
+        }
 
     }
 
@@ -192,5 +203,22 @@ public class LumbarFlexionActivity extends AppCompatActivity {
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
+    }
+
+    public void onFlexionMeasurmentsClick(View view){
+
+        try{
+            float flexionMeasured = Float.parseFloat(flexionInput.getText().toString());
+
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putFloat("flexionMeasured",flexionMeasured);
+            editor.apply();
+            Calculator.flexion = flexionMeasured;
+            toastMessage("Lengths Submitted");
+
+            Log.d("flexion",String.valueOf(Calculator.flexion));
+        } catch(NumberFormatException e){
+            toastMessage("Please input a valid length");
+        }
     }
 }

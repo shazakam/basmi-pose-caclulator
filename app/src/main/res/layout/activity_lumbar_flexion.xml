@@ -77,4 +77,35 @@
         android:text="Lumbar Flexion "
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/flexionPhys"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginBottom="368dp"
+        android:text="Lumbar Flexion"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/flexionPhysInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        app:layout_constraintBottom_toBottomOf="@+id/flexionPhys"
+        app:layout_constraintStart_toEndOf="@+id/flexionPhys"
+        app:layout_constraintTop_toTopOf="@+id/flexionPhys" />
+
+    <Button
+        android:id="@+id/submitFlexion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginBottom="272dp"
+        android:onClick="onFlexionMeasurmentsClick"
+        android:text="Submit Flexion"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
