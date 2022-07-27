@@ -49,17 +49,6 @@
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/left_tragular_2" />
 
-    <TextView
-        android:id="@+id/tragularExplanation"
-        android:layout_width="338dp"
-        android:layout_height="167dp"
-        android:layout_marginTop="36dp"
-        android:text="@string/tragular_explanation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.219"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tragularRightExample" />
-
     <Button
         android:id="@+id/btnRightUploadTragus"
         style="?android:attr/buttonBarButtonStyle"
@@ -124,5 +113,58 @@
         app:layout_constraintEnd_toEndOf="@+id/tragularLeftExample"
         app:layout_constraintStart_toStartOf="@+id/tragularLeftExample"
         app:layout_constraintTop_toBottomOf="@+id/tragularLeftExample" />
+
+    <TextView
+        android:id="@+id/rightPhysicalInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginBottom="316dp"
+        android:text="Right Tragular"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/rightTragularPhysInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        app:layout_constraintBottom_toBottomOf="@+id/rightPhysicalInput"
+        app:layout_constraintStart_toEndOf="@+id/rightPhysicalInput"
+        app:layout_constraintTop_toTopOf="@+id/rightPhysicalInput"
+        app:layout_constraintVertical_bias="0.576" />
+
+    <EditText
+        android:id="@+id/lefttragularPhysInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        app:layout_constraintBottom_toBottomOf="@+id/leftPhysicalInput"
+        app:layout_constraintStart_toEndOf="@+id/leftPhysicalInput"
+        app:layout_constraintTop_toTopOf="@+id/leftPhysicalInput"
+        app:layout_constraintVertical_bias="0.461" />
+
+    <TextView
+        android:id="@+id/leftPhysicalInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginBottom="264dp"
+        android:text="Left Tragular"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/submitTragular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="140dp"
+        android:onClick="onTragularMeasurmentsClick"
+        android:text="Submit Tragular"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

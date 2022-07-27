@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -18,6 +19,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -44,6 +46,8 @@ public class IntermalleolarActivity extends AppCompatActivity {
             .build();
 
     OkHttpClient okHttpClient;
+    SharedPreferences sp;
+    EditText intermalleolarInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +56,13 @@ public class IntermalleolarActivity extends AppCompatActivity {
         intermalleolarUploadBtn = findViewById(R.id.btnIntermalleolarUpload);
         okHttpClient = new OkHttpClient();
         ServerHandler.checkConnection(okHttpClient,"INTERMALLEOLAR CONNECTED");
+        sp = getSharedPreferences("userLengths", Context.MODE_PRIVATE);
+        intermalleolarInput = findViewById(R.id.intermalleolarPhysInput);
+
+        if(sp.contains("intermalleolarMeasured") == true){
+            intermalleolarInput.setText(String.valueOf(sp.getFloat("intermalleolarMeasured",-1)));
+            Calculator.intermalleolar = sp.getFloat("intermalleolarMeasured",-1);
+        }
     }
 
     ActivityResultLauncher<Intent> getImageIntermalleolar = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
@@ -122,5 +133,21 @@ public class IntermalleolarActivity extends AppCompatActivity {
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
+    }
+
+    public void onIntermalleolarMeasurmentsClick(View view){
+
+        try{
+            float intermalleolarMeasured = Float.parseFloat(intermalleolarInput.getText().toString());
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putFloat("intermalleolarMeasured",intermalleolarMeasured);
+            editor.apply();
+            Calculator.intermalleolar = intermalleolarMeasured;
+            toastMessage("Lengths Submitted");
+
+            Log.d("intermalleolar measured",String.valueOf(Calculator.intermalleolar));
+        } catch(NumberFormatException e){
+            toastMessage("Please input a valid length");
+        }
     }
 }
