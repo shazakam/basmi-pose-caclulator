@@ -23,7 +23,7 @@ import okhttp3.Response;
 
 public class ServerHandler {
 
-    static String url = "http://138.38.187.62:5000/";
+    static String url = "http://138.38.220.215:5000/";
 
     public static void checkConnection(OkHttpClient okHttpClient,String text){
         try {
